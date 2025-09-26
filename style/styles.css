@@ -1,0 +1,40 @@
+.titulo{
+    display: flex;
+    align-items: center;
+}
+.titulo__ANM{
+    display: flex;
+    align-items: center;
+}
+.titulo__municipio{
+    display: flex;
+    align-items: center;
+}
+.titulo__mes{
+    display: flex;
+    align-items: center;
+}
+.titulo__venda{
+    display: flex;
+    align-items: center;
+}
+.titulo__quantidade{
+    display: flex;
+    align-items: center;
+}
+.botao{
+    display: flex;
+    align-items: center;
+}
+.botao__exportar{
+    display: flex;
+    align-items: center;
+}
+.botao__download{
+    display: flex;
+    align-items: center;
+}
+.contadores{
+    display: flex;
+    align-items: center;
+}
