@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de CSV - Mineração (Final)</title>
+    <style>
+        body { font-family: Segoe UI, sans-serif; background-color: #f4f4f9; padding: 20px; }
+        .container { max-width: 95%; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h2 { text-align: center; color: #333; margin-top: 0; }
+        
+        /* Formulário */
+        form { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-bottom: 30px; border-bottom: 2px solid #eee; padding-bottom: 20px; }
+        .full-width { grid-column: 1 / -1; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 0.85em; color: #555; }
+        input, select { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        
+        /* Destaque para inputs com máscara */
+        input[name="numero_processo"], input[name="mes_apuracao"] { border-color: #007bff; background-color: #fcfcfc; }
+        
+        /* Destaque para campos monetários */
+        .money-mask { text-align: right; }
+
+        /* Botões */
+        .btn-add { background-color: #007bff; color: white; padding: 12px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; grid-column: 1 / -1; }
+        .btn-add:hover { background-color: #0056b3; }
+        
+        .btn-download { background-color: #28a745; color: white; padding: 15px 30px; border: none; border-radius: 4px; cursor: pointer; font-size: 18px; display: block; margin: 20px auto 0; }
+        .btn-download:hover { background-color: #218838; }
+        .btn-download:disabled { background-color: #ccc; cursor: not-allowed; }
+
+        /* Tabela */
+        .table-wrapper { overflow-x: auto; margin-top: 20px; border: 1px solid #ddd; border-radius: 4px; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.85em; min-width: 1500px; }
+        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; white-space: nowrap; }
+        th { background-color: #f8f9fa; position: sticky; top: 0; font-weight: bold; }
+        td { text-align: right; } /* Alinha números à direita na tabela */
+        /* Alinha textos à esquerda */
+        td:nth-child(1), td:nth-child(2), td:nth-child(3), td:nth-child(4), td:nth-child(5), td:nth-child(6), td:nth-child(7), td:nth-child(10), td:nth-child(13), td:nth-child(15), td:nth-child(21), td:nth-child(22), td:nth-child(23) {
+            text-align: left; 
+        }
+
+        tr:hover { background-color: #f1f1f1; }
+        
+        .btn-delete { background-color: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; }
+        .btn-delete:hover { background-color: #c82333; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>1. Preencher Dados</h2>
+    <form id="miningForm">
+        <div><label>CPF/CNPJ</label><input type="text" name="cpf_cnpj" required></div>
+        
+        <div>
+            <label>Nº Processo (000.000/0000)</label>
+            <input type="text" name="numero_processo" id="numero_processo" placeholder="000.000/0000" maxlength="12" required>
+        </div>
+
+        <div><label>Substância</label><input type="text" name="substancia" required></div>
+        
+        <div>
+            <label>Unid. Medida</label>
+            <select name="unidade_medida" required>
+                <option value="">Selecione...</option>
+                <option value="t">t</option>
+                <option value="kg">kg</option>
+            </select>
+        </div>
+
+        <div><label>Município</label><input type="text" name="municipio"></div>
+        <div><label>Uso</label><input type="text" name="uso"></div>
+        
+        <div>
+            <label>Mês Apuração (MM/AAAA)</label>
+            <input type="text" name="mes_apuracao" id="mes_apuracao" placeholder="Ex: 01/2024" maxlength="7" required>
+        </div>
+
+        <div><label>Vlr Venda Interno</label><input type="text" class="money-mask" name="valor_venda_interno" placeholder="0,00"></div>
+        <div><label>Qtd Venda Interno</label><input type="text" class="money-mask" name="qtd_venda_interno" placeholder="0,00"></div>
+        <div class="full-width">
+            <label>NCM Interno</label>
+            <select name="ncm_interno" class="ncm-selector">
+                <option value="">Selecione o NCM...</option>
+            </select>
+        </div>
+
+        <div><label>Vlr Exportação</label><input type="text" class="money-mask" name="valor_exportacao" placeholder="0,00"></div>
+        <div><label>Qtd Exportação</label><input type="text" class="money-mask" name="qtd_exportacao" placeholder="0,00"></div>
+        <div class="full-width">
+            <label>NCM Exportação</label>
+            <select name="ncm_exportacao" class="ncm-selector">
+                <option value="">Selecione o NCM...</option>
+            </select>
+        </div>
+
+        <div><label>Qtd Transformação</label><input type="text" class="money-mask" name="qtd_transformacao" placeholder="0,00"></div>
+        <div class="full-width">
+            <label>NCM Transformação</label>
+            <select name="ncm_transformacao" class="ncm-selector">
+                <option value="">Selecione o NCM...</option>
+            </select>
+        </div>
+
+        <div><label>Vlr Consumo Mina</label><input type="text" class="money-mask" name="valor_consumo_mina" placeholder="0,00"></div>
+        <div><label>Qtd Consumo Mina</label><input type="text" class="money-mask" name="qtd_consumo_mina" placeholder="0,00"></div>
+
+        <div><label>ICMS</label><input type="text" class="money-mask" name="icms" placeholder="0,00"></div>
+        <div><label>PIS</label><input type="text" class="money-mask" name="pis" placeholder="0,00"></div>
+        <div><label>COFINS</label><input type="text" class="money-mask" name="cofins" placeholder="0,00"></div>
+
+        <div>
+            <label>Uso Específico?</label>
+            <select name="possui_uso_especifico" id="possui_uso_especifico">
+                <option value="NAO">Não</option>
+                <option value="SIM">Sim</option>
+            </select>
+        </div>
+        
+        <div id="div_tipo_uso_especifico" style="display: none;">
+            <label>Tipo Uso Esp.</label>
+            <select name="tipo_uso_especifico">
+                <option value="">Selecione...</option>
+                <option value="Abrasivo">Abrasivo</option>
+                <option value="Brita">Brita</option>
+                <option value="Construção Civil">Construção Civil</option>
+                <option value="Demais substâncias">Demais substâncias</option>
+                <option value="Gema">Gema</option>
+                <option value="Revestimento">Revestimento</option>
+            </select>
+        </div>
+
+        <div>
+            <label>Rejeitos Estéreis</label>
+            <select name="rejeitos_estereis">
+                <option value="NAO">Não</option>
+                <option value="SIM">Sim</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn-add">+ Adicionar à Tabela</button>
+    </form>
+
+    <h2>2. Verificar Dados</h2>
+    <div class="table-wrapper">
+        <table id="dataTable">
+            <thead></thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <button id="btnDownload" class="btn-download" disabled>Baixar CSV Completo</button>
+</div>
+
+<script>
+    // === LISTA DE NCMs ===
+    const ncmList = [
+        "22011000 - Águas minerais e águas gaseificadas, não adicionadas de açúcar ou de outros edulcorantes nem aromatizadas.",
+        "22019000 - Outras águas, não adicionadas de açúcar ou de outros edulcorantes nem aromatizadas; gelo e neve.",
+        "22021000 - Águas, incluindo as águas minerais e as águas gaseificadas, adicionadas de açúcar ou de outros edulcorantes ou aromatizadas.",
+        "25010019 - Outros tipos de sal a granel, sem agregados.",
+        "25030010 - Enxofre de qualquer espécie, exceto o enxofre sublimado, o precipitado e o coloidal, a granel.",
+        "25041000 - Grafita natural em pó ou em escamas.",
+        "25049000 - Grafita natural, em outras formas.",
+        "25051000 - Areias silíciosas e areias quartzosas.",
+        "25059000 - Outras areias naturais de qualquer espécie, mesmo coradas, exceto areias metalíferas do Capítulo 26.",
+        "25061000 - Quartzo.",
+        "25062000 - Quartzitos, mesmo desbastados ou simplesmente cortados a serra ou por outro meio, em blocos ou placas de forma quadrada ou retangular.",
+        "25070010 - Caulim (caulino), mesmo calcinados.",
+        "25070090 - Outras argilas caulínicas, mesmo calcinadas.",
+        "25081000 - Bentonita.",
+        "25083000 - Argilas refratárias.",
+        "25084010 - Argilas plásticas, com teor de Fe2O3, em peso, inferior a 1,5 % e com perda por calcinação, em peso, superior a 12 %.",
+        "25084090 - Outras argilas.",
+        "25085000 - Andaluzita, cianita e silimanita.",
+        "25087000 - Barro cozido em pó (terra de chamotte) e terra de dinas.",
+        "25090000 - Cré.",
+        "25101010 - Fosfatos de cálcio naturais, não moídos.",
+        "25101090 - Fosfatos aluminocálcicos, naturais, cré fosfatado, não moídos.",
+        "25102010 - Fosfatos de cálcio naturais, moídos.",
+        "25102090 - Fosfatos aluminocálcicos, naturais, cré fosfatado, moídos.",
+        "25111000 - Sulfato de bário natural (baritina).",
+        "25120000 - Farinhas silicosas fósseis (por exemplo, Kieselguhr, tripolita, diatomita) e outras terras silicosas análogas de densidade aparente não superior a 1, mesmo calcinadas.",
+        "25132000 - Esmeril, corindo natural, granada natural e outros abrasivos naturais.",
+        "25140000 - Ardósia, mesmo desbastada ou simplesmente cortada a serra ou por outro meio, em blocos ou placas de forma quadrada ou retangular.",
+        "25151100 - Mármores e travertinos, em bruto ou desbastados.",
+        "25151210 - Mármores, simplesmente cortados a serra ou por outro meio, em blocos ou placas de forma quadrada ou retangular.",
+        "25151220 - Travertinos, simplesmente cortados a serra ou por outro meio, em blocos ou placas de forma quadrada ou retangular.",
+        "25152000 - Granitos belgas e outras pedras calcárias de cantaria ou de construção; alabastro.",
+        "25161100 - Granito em bruto ou desbastado.",
+        "25161200 - Granito, simplesmente cortado a serra ou por outro meio, em blocos ou placas de forma quadrada ou retangular.",
+        "25162000 - Arenito (grés), cortado em blocos, placas, quadrado, retangular.",
+        "25169000 - Outras pedras de cantaria ou de construção.",
+        "25171000 - Calhaus, cascalho, pedras britadas, dos tipos geralmente usados em concreto ou para empedramento de estradas, de vias férreas ou outros balastros, seixos rolados e sílex, mesmo tratados termicamente.",
+        "25174100 - Grânulos, lascas e pós, das pedras das posições 25.15 ou 25.16, mesmo tratados termicamente, de mármore.",
+        "25174900 - Grânulos, lascas e pós, das pedras das posições 25.15 ou 25.16, mesmo tratados termicamente, de outras pedras de cantaria.",
+        "25181000 - Dolomita não calcinada nem sinterizada, denominada 'crua'.",
+        "25182000 - Dolomita calcinada ou sinterizada.",
+        "25191000 - Carbonato de magnésio natural (magnesita).",
+        "25199010 - Magnésia eletrofundida.",
+        "25199090 - Magnésia calcinada a fundo e outros oxidos de magnésio.",
+        "25201011 - Gipsita em pedaços irregulares (pedras).",
+        "25201019 - Outras formas de gipsitas.",
+        "25201020 - Anidrita.",
+        "25210000 - Castinas; pedras calcárias utilizadas na fabricação de cal ou de cimento.",
+        "25221000 - Cal viva.",
+        "25222000 - Cal apagada.",
+        "25223000 - Cal hidráulica.",
+        "25249000 - Outras formas de amianto.",
+        "25251000 - Mica em bruto ou clivada em folhas ou lamelas irregulares (desdobramentos).",
+        "25252000 - Mica em pó.",
+        "25261000 - Esteatita natural, mesmo desbastada ou simplesmente cortada a serra ou por outro meio, em blocos ou placas de forma quadrada ou retangular, não triturada nem em pó.",
+        "25262000 - Esteatita natural, mesmo desbastada ou simplesmente cortado a serra ou por outro meio, em blocos ou placas de forma quadrada ou retangular, triturada ou em pó e talco.",
+        "25280000 - Boratos naturais e seus concentrados (calcinados ou não), exceto boratos extraídos.",
+        "25291000 - Feldspato.",
+        "25292100 - Espatoflúor: que contenha, em peso, 97% ou menos de fluoreto de cálcio.",
+        "25292200 - Espatoflúor: que contenha, em peso, mais de 97% de fluoreto de cálcio.",
+        "25293000 - Leucita; nefelina e nefelina.",
+        "25301090 - Vermiculita e cloritas, não expandidas.",
+        "25309010 - Espodumênio.",
+        "25309020 - Areia de zircônio micronizada, própria para a preparação de esmaltes cerâmicos.",
+        "25309030 - Minerais de metais das terras raras.",
+        "25309040 - Terras Corantes.",
+        "25309090 - Outras matérias minerais.",
+        "26011100 - Minérios de ferro e seus concentrados, exceto as piritas de ferro ustuladas (cinzas de piritas), não aglomerados.",
+        "26011210 - Minérios de ferro e seus concentrados, exceto as piritas de ferro ustuladas (cinzas de piritas), aglomerados por processo de peletização,.",
+        "26011290 - Outros minérios de ferro aglomerados.",
+        "26020010 - Minérios de manganês e seus concentrados, incluindo os minérios de manganês ferruginosos e seus concentrados, de teor em manganês de 20 % ou mais, em peso, sobre o produto seco, aglomerados.",
+        "26020090 - Outros minérios de manganês e seus concentrados, incluindo os minérios de manganês ferruginosos e seus concentrados, de teor em manganês.",
+        "26030010 - Sulfetos de minérios de cobre e seus concentrados.",
+        "26030090 - Outros minérios de cobre e seus concentrados.",
+        "26040000 - Minérios de níquel e seus concentrados.",
+        "26050000 - Minérios de cobalto e seus concentrados.",
+        "26060011 - Bauxita não calcinada (minério de alumínio).",
+        "26060012 - Bauxita calcinada (minério de alumínio).",
+        "26060090 - Outros minérios de alumínio e seus concentrados.",
+        "26070000 - Minérios de chumbo e seus concentrados.",
+        "26080010 - Sulfetos de minérios de zinco.",
+        "26080090 - Outros minérios de zinco e seus concentrados.",
+        "26090000 - Minérios de estanho e seus concentrados.",
+        "26100010 - Cromita (minérios de cromo).",
+        "26100090 - Outros minérios de cromo e seus concentrados.",
+        "26110000 - Minérios de tungstênio (volfrâmio) e seus concentrados.",
+        "26121000 - Minérios de urânio e seus concentrados.",
+        "26122000 - Minérios de tório e seus concentrados.",
+        "26131010 - Molibdenita ustulada (minérios de molibdênio).",
+        "26131090 - Outros minérios de molibdênio, ustulados, seus concentrados.",
+        "26139010 - Molibdenita não ustulada (minérios de molibdênio).",
+        "26139090 - Outros minérios de molibdênio, não ustulados, seus concentrados.",
+        "26140010 - Ilmenita.",
+        "26140090 - Outros minérios de titânio e seus concentrados.",
+        "26151010 - Badeleita (minério de zircônio).",
+        "26151020 - Zirconita (minério de zircônio).",
+        "26151090 - Outros minérios de zircônio e seus concentrados.",
+        "26159000 - Minérios de nióbio, tântalo ou vanádio, seus concentrados.",
+        "26161000 - Minérios de prata e seus concentrados.",
+        "26169000 - Minérios de outros metais preciosos e seus concentrados.",
+        "26171000 - Minérios de antimônio e seus concentrados.",
+        "26179000 - Outros minérios e seus concentrados.",
+        "27011100 - Hulha antracita, não aglomerada.",
+        "27011200 - Hulha betuminosa, não aglomerada.",
+        "27011900 - Outras hulhas, mesmo em pó, mas não aglomeradas.",
+        "27021000 - Linhitas, mesmo em pó, mas não aglomeradas.",
+        "27030000 - Turfa (incluindo a turfa para cama de animais), mesmo aglomerada.",
+        "28012090 - Outras formas de iodo.",
+        "28070010 - Ácido sulfúrico.",
+        "28365000 - Carbonato de cálcio.",
+        "31039011 - Hidrogeno.",
+        "31039019 - Outros hidrogenos.",
+        "31039090 - Outros adubos ou fertilizantes minerais/químicos, fosfatados.",
+        "31042010 - Cloreto de potássio, com teor de óxido de potássio (K2O) não superior a 60 % em peso.",
+        "31042090 - Outros cloretos de potássio.",
+        "31043010 - Sulfato de potássio, com teor de óxido de potássio (K2O) não superior a 52 %, em peso.",
+        "31043090 - Outros sulfatos de potássio.",
+        "31049090 - Outros adubos ou fertilizantes minerais/químicos, potássicos.",
+        "31056000 - Adubos (fertilizantes) minerais ou químicos, que contenham os dois elementos fertilizantes: fósforo e potássio.",
+        "31059090 - Outros adubos/fertilizantes minerais químicos com nitrogênio e potássio.",
+        "38029020 - Bentonita (matéria mineral natural ativada).",
+        "38029030 - Atapulgita.",
+        "68010000 - Pedras para calcetar, meios.",
+        "68021000 - Ladrilhos, cubos, pastilhas e artigos semelhantes, mesmo de forma diferente da quadrada ou retangular, cuja maior superfície possa ser inscrita num quadrado de lado inferior a 7 cm; grânulos, fragmentos e pós, corados artificialmente.",
+        "68022100 - Mármore, travertino e alabastro, simplesmente talhados ou serrados, de superfície plana ou lisa.",
+        "68022300 - Granito, simplesmente talhados ou serrados, de superfície plana ou lisa.",
+        "68022900 - Outras pedras de cantaria, simplesmente talhadas ou serradas, de superfície plana ou lisa.",
+        "68029100 - Mármore, travertino e alabastro, trabalhado de outro modo, e obras.",
+        "68029200 - Outras pedras calcárias, trabalhadas de outro modo e obras.",
+        "68029310 - Esferas para moinho, de granito.",
+        "68029390 - Outros granitos trabalhados de outro modo e suas obras.",
+        "68029910 - Esferas para moinho, de outras pedras de cantaria, etc..",
+        "68029990 - Outras pedras de cantaria, etc, trabalhadas de outro modo e obra.",
+        "68030000 - Ardósia natural trabalhada e obras de ardósia natural ou aglomerada.",
+        "68062000 - Vermiculita e argilas, expandidas, espuma de escórias e produtos minerais semelhantes, expandidos, mesmo misturados entre si.",
+        "71021000 - Diamantes, mesmo trabalhados, mas não montados nem engastados, não selecionados.",
+        "71022100 - Diamantes industriais, em bruto ou simplesmente serrados, clivados ou desbastados.",
+        "71023100 - Diamantes não industriais, em bruto ou simplesmente serrados, clivados ou desbastados.",
+        "71031000 - Pedras preciosas (exceto diamantes) ou semipreciosas, em bruto ou simplesmente serradas ou desbastadas.",
+        "71041000 - Quartzo piezoelétrico.",
+        "71059000 - Pó de pedras preciosas ou semipreciosas ou de pedras sintéticas.",
+        "71069100 - Prata, em formas brutas.",
+        "71069210 - Prata,em barras, fios e perfis de seção maciça.",
+        "71081210 - Bulhão dourado (bullion doré), em formas brutas, para uso não monetário.",
+        "71081290 - Ouro em outras formas brutas, para uso não monetário.",
+        "71081310 - Ouro em barras, fios e perfis de seção maciça.",
+        "71081390 - Ouro em outras formas semimanufaturadas, bulhão dourado, uso não monetário.",
+        "71082000 - Ouro (incluindo o ouro platinado), em formas brutas ou semimanufaturadas, para uso monetário.",
+        "71101100 - Platina, em formas brutas ou em pó.",
+        "71101910 - Platina, em barras, fios e perfis de seção maciça.",
+        "71101990 - Platina, em outras formas semimanufaturadas.",
+        "71102100 - Paládio em formas brutas ou em pó.",
+        "71102900 - Paladio em formas semimanufaturadas.",
+        "71103100 - Ródio em formas brutas ou em pó.",
+        "71103900 - Ródio em formas semimanufaturadas.",
+        "71104100 - Irídio, ósmio e rutênio, em formas brutas ou em pó.",
+        "71104900 - Irídio, ósmio e rutênio, em formas semimanufaturadas.",
+        "75011000 - Mates de níquel."
+    ];
+
+    // === POPULAR OS SELECTS DE NCM ===
+    function populateNCMSelects() {
+        const selectors = document.querySelectorAll('.ncm-selector');
+        selectors.forEach(selectElement => {
+            ncmList.forEach(ncmItem => {
+                const ncmCode = ncmItem.split(' - ')[0]; 
+                const option = document.createElement('option');
+                option.value = ncmCode; 
+                option.textContent = ncmItem; 
+                selectElement.appendChild(option);
+            });
+        });
+    }
+
+    const fields = [
+        "cpf_cnpj", "numero_processo", "substancia", "unidade_medida", "municipio",
+        "uso", "mes_apuracao", "valor_venda_interno", "qtd_venda_interno", "ncm_interno",
+        "valor_exportacao", "qtd_exportacao", "ncm_exportacao", "qtd_transformacao",
+        "ncm_transformacao", "valor_consumo_mina", "qtd_consumo_mina", "icms",
+        "pis", "cofins", "possui_uso_especifico", "tipo_uso_especifico", "rejeitos_estereis"
+    ];
+
+    let storedData = [];
+    const form = document.getElementById('miningForm');
+    const tableHead = document.querySelector('#dataTable thead');
+    const tableBody = document.querySelector('#dataTable tbody');
+    const btnDownload = document.getElementById('btnDownload');
+    
+    // Inputs Especiais
+    const inputProcesso = document.getElementById('numero_processo');
+    const inputMes = document.getElementById('mes_apuracao');
+
+    // === MÁSCARA PARA VALORES E QUANTIDADES (0,00) ===
+    document.querySelectorAll('.money-mask').forEach(input => {
+        input.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, ""); // Remove tudo que não é número
+            
+            if (value === "") {
+                e.target.value = "";
+                return;
+            }
+
+            // Converte para decimal (divide por 100 para ter 2 casas decimais)
+            let number = parseInt(value) / 100;
+            
+            // Formata para o padrão brasileiro (0,00)
+            e.target.value = number.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        });
+    });
+
+    // === LÓGICA DE EXIBIÇÃO CONDICIONAL ===
+    const selectUso = document.getElementById('possui_uso_especifico');
+    const divTipoUso = document.getElementById('div_tipo_uso_especifico');
+    const inputTipoUso = document.querySelector('[name="tipo_uso_especifico"]');
+
+    function toggleTipoUso() {
+        if (selectUso.value === 'SIM') {
+            divTipoUso.style.display = 'block';
+        } else {
+            divTipoUso.style.display = 'none';
+            inputTipoUso.value = ""; 
+        }
+    }
+    selectUso.addEventListener('change', toggleTipoUso);
+    
+    // === MÁSCARA: Nº PROCESSO (000.000/0000) ===
+    inputProcesso.addEventListener('input', function(e) {
+        let v = e.target.value.replace(/\D/g, "");
+        if (v.length > 10) v = v.slice(0, 10);
+        v = v.replace(/^(\d{3})(\d)/, "$1.$2");
+        v = v.replace(/^(\d{3})\.(\d{3})(\d)/, "$1.$2/$3");
+        e.target.value = v;
+    });
+
+    // === MÁSCARA: MÊS APURAÇÃO (MM/AAAA) ===
+    inputMes.addEventListener('input', function(e) {
+        let v = e.target.value.replace(/\D/g, "");
+        if (v.length > 6) v = v.slice(0, 6); 
+        if (v.length > 2) {
+            v = v.replace(/^(\d{2})(\d)/, "$1/$2");
+        }
+        e.target.value = v;
+    });
+
+    // Inicializa Tabela e Dropdowns
+    function initTable() {
+        let headerRow = '<tr>';
+        fields.forEach(f => {
+            let headerTitle = f.replace(/_/g, ' ').toUpperCase();
+            headerRow += `<th>${headerTitle}</th>`;
+        });
+        headerRow += '<th>AÇÃO</th></tr>';
+        tableHead.innerHTML = headerRow;
+    }
+
+    // Renderiza Tabela
+    function renderTable() {
+        tableBody.innerHTML = '';
+        storedData.forEach((rowObj, index) => {
+            let tr = document.createElement('tr');
+            fields.forEach(key => {
+                let td = document.createElement('td');
+                td.textContent = rowObj[key];
+                tr.appendChild(td);
+            });
+            let tdAction = document.createElement('td');
+            let btnDelete = document.createElement('button');
+            btnDelete.textContent = 'Excluir';
+            btnDelete.className = 'btn-delete';
+            btnDelete.onclick = () => deleteRow(index);
+            tdAction.appendChild(btnDelete);
+            tr.appendChild(tdAction);
+            tableBody.appendChild(tr);
+        });
+        btnDownload.disabled = storedData.length === 0;
+        btnDownload.textContent = storedData.length === 0 ? "Baixar CSV (Tabela Vazia)" : `Baixar CSV (${storedData.length} registros)`;
+    }
+
+    // Adicionar Dados
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // 1. Validação Processo
+        const regexProcesso = /^\d{3}\.\d{3}\/\d{4}$/;
+        if (!regexProcesso.test(inputProcesso.value)) {
+            alert("Erro: O Nº Processo deve estar completo (000.000/0000).");
+            inputProcesso.focus();
+            return;
+        }
+
+        // 2. Validação Data (Mês/Ano)
+        const mesVal = inputMes.value;
+        const regexMes = /^\d{2}\/\d{4}$/; 
+        if (!regexMes.test(mesVal)) {
+            alert("Erro: O Mês deve estar no formato MM/AAAA (ex: 01/2024).");
+            inputMes.focus();
+            return;
+        }
+        const parts = mesVal.split('/');
+        const mesInt = parseInt(parts[0]);
+        if (mesInt < 1 || mesInt > 12) {
+            alert("Erro: O mês deve ser entre 01 e 12.");
+            inputMes.focus();
+            return;
+        }
+
+        const formData = new FormData(form);
+        let newRow = {};
+
+        fields.forEach(field => {
+            let val = formData.get(field) || "";
+            newRow[field] = val.replace(/;/g, " "); 
+        });
+
+        storedData.push(newRow);
+        renderTable();
+        
+        form.reset(); 
+        toggleTipoUso(); 
+        document.querySelector('[name="cpf_cnpj"]').focus();
+    });
+
+    function deleteRow(index) {
+        if(confirm('Tem certeza que deseja remover esta linha?')) {
+            storedData.splice(index, 1);
+            renderTable();
+        }
+    }
+
+    btnDownload.addEventListener('click', function() {
+        if (storedData.length === 0) return;
+        let csvContent = fields.join(";") + "\n";
+        storedData.forEach(row => {
+            let rowString = fields.map(field => row[field]).join(";");
+            csvContent += rowString + "\n";
+        });
+        const blob = new Blob(["\ufeff" + csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        const timestamp = new Date().toISOString().slice(0,19).replace(/[-T:]/g,"");
+        link.setAttribute("href", url);
+        link.setAttribute("download", `Lote_Mineracao_${timestamp}.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    });
+
+    // Inicialização
+    initTable();
+    populateNCMSelects();
+    toggleTipoUso();
+
+</script>
+
+</body>
+</html>
