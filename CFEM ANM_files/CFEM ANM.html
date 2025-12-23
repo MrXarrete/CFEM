@@ -1,0 +1,2709 @@
+<!DOCTYPE html>
+<!-- saved from url=(0049)https://app.anm.gov.br/BoletosCfem/NaoDivida/Cfem -->
+<html class="no-js" lang="pt-br" dir="ltr"><!--<![endif]--><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\:form{display:block;}</style>
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title> .:ANM - Agência Nacional de Mineração:. </title>
+    <!-- <base href="" /> -->
+    <meta name="keywords" content="Minério, Boleto, Mineração, Mineral, Departamento, Agência, CFEM, TAH, Taxa Anual por Hectare">
+    <meta name="description" content="Sistema de Emissão de Boletos do DNPM/Dipar">
+    <meta name="author" content="Valdevino Peixoto">
+    <meta name="author" content="Vassili Helou">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async="" src="./CFEM ANM_files/js"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-832SX2RVFX');
+    </script>
+
+    
+
+    <meta name="description" content="">
+    <meta name="generator" content="">
+    <!--[if lt IE 9]><script src="js/html5shiv.js"></script><![endif]-->
+    <link href="https://app.anm.gov.br/BoletosCfem/Content/Portal/img/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <!--<link rel="stylesheet" href="~/Content/Portal/bootstrap/css/bootstrap.css" type='text/css' />-->
+    <link href="./CFEM ANM_files/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./CFEM ANM_files/template-azul.css" type="text/css">
+    <!--<link rel="stylesheet" href="~/Content/Portal/css/app.css" type='text/css' /> -->
+
+
+    <link rel="stylesheet" href="./CFEM ANM_files/jquery-ui.css">
+
+    <!-- SmartAdmin Styles : Caution! DO NOT change the order  -->
+    <link rel="stylesheet" type="text/css" media="screen" href="./CFEM ANM_files/smartadmin-production-plugins.min.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="./CFEM ANM_files/smartadmin-production.min.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="./CFEM ANM_files/smartadmin-skins.min.css">
+    <link rel="stylesheet" href="./CFEM ANM_files/site.css" type="text/css">
+    <!-- SmartAdmin RTL Support  -->
+    <link rel="stylesheet" type="text/css" media="screen" href="./CFEM ANM_files/smartadmin-rtl.min.css">
+
+
+    <link rel="stylesheet" href="./CFEM ANM_files/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="./CFEM ANM_files/font-awesome(1).min.css">
+    <!--[if lt IE 10]><link rel="stylesheet" href="css/ie.css" /><![endif]-->
+    <!--[if lt IE 9]><link rel="stylesheet" href="css/ie8.css" /><![endif]-->
+    <!--[if lt IE 8]><link rel="stylesheet" href="css/ie7.css" /><link rel="stylesheet" href="font-awesome/css/font-awesome-ie7.min.css" /><![endif]-->
+    <!-- chamada de fontes local --><!-- <link rel="stylesheet" href="css/fontes.css" type='text/css'/>		 -->
+    <!-- chamada de fontes externas -->
+    <link href="./CFEM ANM_files/css" rel="stylesheet" type="text/css">
+    <script src="./CFEM ANM_files/jquery.min.js.download"></script>
+    <link rel="stylesheet" href="./CFEM ANM_files/jplayer.css" type="text/css">
+    <script src="./CFEM ANM_files/angular.min.js.download"></script>
+    <script src="./CFEM ANM_files/angular-locale_pt-br.js.download"></script>
+    <script src="./CFEM ANM_files/jquery-ui.min.js.download"></script>
+    <script src="./CFEM ANM_files/help.js.download"></script><script type="text/javascript" src="./CFEM ANM_files/sweetalert.min.js.download"></script><link href="./CFEM ANM_files/sweetalert.css" rel="stylesheet">
+    <script>
+        var pathApi = "/BoletosCfem/api";
+        var urlCfemManual = "/BoletosCfem/NaoDivida/CfemParcelamentoManual";
+
+        //Verifica se browser do usuário é o IE.
+        function VerificaNavegadorUsuarioIE() {
+            var isIE = false || !!document.documentMode;
+            if (isIE) {
+                //alert("Seu navegador não tem compatibilidade com o novo boleto CFEM. \nUtilize outro navegador! \nNavegadores suportados: Chrome, Firefox, Edge, Safari e Opera.")
+            }
+        }
+
+        // DO NOT REMOVE : GLOBAL FUNCTIONS!
+
+        $(document).ready(function () {
+
+
+           exibirAvisoCfemParcManual = function () {
+               $("#processing-modal").after( $("#processing-modal").clone().prop('id', 'avisoCfemModal'));
+               $("#avisoCfemModal").show();
+               setTimeout(function () {
+                   var htmlModalCfem = "<h3>Minerador, caso você tenha parcelamento manual entre em contato com a gerência do seu estado.</h3>";
+                   htmlModalCfem += " <a  href='" + urlCfemManual + "' class='btn btn-default' data-dismiss='modal'>Acesso gerência</a> ";
+                   htmlModalCfem += " <button type='button' class='btn btn-primary' data-dismiss='modal' onclick='fecharModalAlertaCfem()'>Fechar</button>";
+
+                   $("#avisoCfemModal .modal-body div").html(htmlModalCfem);
+               }, 3000);
+            };
+
+           fecharModalAlertaCfem = function () {
+               $("#avisoCfemModal").hide().remove();
+           };
+
+            var isIE = false || !!document.documentMode;
+            if (isIE) {
+                $("input.maskProcesso").mask("999.999/9999");
+                $("input.maskcboProcesso").mask("99999.999999/9999-99");
+                $("input.maskMesApuracao").mask("99/9999");
+                $("#dtEmissao").mask("99/99/9999");
+                $.fn.datepicker && $(".datepicker").each(function () {
+                    var a = $(this),
+                        b = a.attr("data-dateformat") || "dd.mm.yy";
+                    $.datepicker.regional['pt-BR'];
+                    a.datepicker({
+                        "dateFormat": b,
+                        "prevText": '<i class="fa fa-chevron-left"></i>',
+                        "nextText": '<i class="fa fa-chevron-right"></i>'
+                    }), a = null
+                });
+            }
+            else {
+                pageSetUp();
+            }
+
+        })
+    </script>
+<style type="text/css" media="all">#barra-brasil div,#barra-brasil a,#barra-brasil ul,#barra-brasil li{margin:0;padding:0;font-size:100%;font-family:inherit;vertical-align:baseline;font-size:1rem}#barra-brasil ul{list-style:none}@font-face{font-family:"Raleway";font-weight:bold;font-display:swap;src:url("//barra.brasil.gov.br/static/Raleway-Bold.woff") format("woff")}.conteudo-escondido{display:block;background:transparent;background-image:none;background-image:none;border:none;height:0.1em;overflow:hidden;padding:0;margin:-0.1em 0 0 -0.1em;width:1px}#barra-brasil div,#barra-brasil a,#barra-brasil ul,#barra-brasil li{margin:0;padding:0;font-size:100%;font-family:inherit;vertical-align:baseline;font-size:1rem}#barra-brasil ul{list-style:none}#barra-brasil{background-color:#071D41;box-sizing:content-box;display:flex;flex-direction:column-reverse;align-items:center}#barra-brasil .conteudo-barra-brasil{height:40px;width:95%;max-width:1150px;margin:0 auto;height:40px;display:flex;flex-flow:row nowrap;align-items:center;justify-content:space-between}#barra-brasil .pic-gov{background-image:url("data:image/svg+xml,%3Csvg%20width%3D%2250%22%20height%3D%2219%22%20version%3D%221.1%22%20viewBox%3D%220%200%2019%2050%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cg%20transform%3D%22matrix%28.23%200%200%20.23%20-153%20-147%29%22%3E%3Cg%20transform%3D%22matrix%281.3%200%200%201.3%20-200%20-209%29%22%20fill%3D%22%23fff%22%3E%3Cpath%20d%3D%22m576%20765c0%2034-17%2046-50%2046-14%200-25-2.9-32-5.3l1.4-23c8.8%204.3%2016%206.9%2028%206.9%2017%200%2026-7.9%2026-24v-4.5h-.32c-6.9%209.8-17%2014-28%2014-23%200-37-17-37-42%200-25%2012-44%2038-44%2012%200%2022%206.8%2028%2017h.32v-15h26v74m-46-12c10%200%2018-8.7%2018-22%200-9.3-5.5-20-18-20-11%200-16%209.5-16%2021%200%2013%207.7%2020%2016%2020z%22%2F%3E%3Cpath%20d%3D%22m662%20686h28l22%2062%2022-62h28l-35%2089h-31l-34-89%22%2F%3E%3Cpath%20d%3D%22m576%20732c0-28%2021-44%2049-44s49%2016%2049%2044c0%2028-21%2044-49%2044-28%200-49-16-49-44m68%200c0-13-5.5-24-19-24s-19%2011-19%2024c0%2012%205.5%2024%2019%2024s19-11%2019-24z%22%2F%3E%3Cpath%20d%3D%22m760%20762c0%207.6-6.2%2014-14%2014-7.6%200-14-6.2-14-14%200-7.6%206.2-14%2014-14%207.6%200%2014%206.2%2014%2014z%22%2F%3E%3Cpath%20d%3D%22m762%20654h29v48h.32c7.4-9.3%2017-13%2029-13%2023%200%2036%2022%2036%2042%200%2025-13%2045-38%2045-13%200-25-7.6-29-17h-.32v15h-27v-121m47%2057c-11%200-18%209.3-18%2022%200%2012%208%2021%2018%2021%2011%200%2018-9.2%2018-22%200-11-6.3-21-18-21z%22%2F%3E%3Cpath%20d%3D%22m916%20714c-3.2-.97-6.4-.97-9.8-.97-14%200-21%209.8-21%2026v35h-29v-84h26v15h.32c5-11%2012-17%2025-17%203.4%200%206.9.48%209.8.96l-1.4%2024z%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E");display:block;height:19px;min-width:50px;margin-right:10px;line-height:0;font-size:0;color:transparent}#barra-brasil .conteudo-barra-brasil nav{overflow-x:auto}#barra-brasil .conteudo-barra-brasil nav ul{display:flex;flex-flow:row nowrap;justify-content:flex-start;align-items:center;width:auto;max-width:none}#barra-brasil .conteudo-barra-brasil nav ul li.list-item{flex-shrink:0}#barra-brasil .conteudo-barra-brasil nav ul li.espacador{height:20px;width:1px;border-right:1px solid rgba(151,151,151,0.3);margin:0 7px 0 20px}#barra-brasil a{text-decoration:none;color:#fff;font-weight:bold;font-size:0.7em;font-family:Raleway,Arial,Helvetica,sans-serif;text-transform:uppercase;transition-property:all;transition-duration:0.1s;transition-timing-function:ease-in-out}#barra-brasil .conteudo-barra-brasil nav a.link-externo-barra::before{content:"";display:inline-block;width:11px;height:10px;margin-right:6px;background-image:url("data:image/svg+xml,%3Csvg%20width%3D%2211%22%20height%3D%2210%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cg%20fill%3D%22%23FFF%22%20fill-rule%3D%22evenodd%22%3E%3Cpath%20d%3D%22M10.174.169l-.003%204.002L6.173.173z%22%2F%3E%3Cpath%20d%3D%22M4%204.51L7.91.6l1.768%201.768-3.91%203.91zM0%200h3.5v2.5H0z%22%2F%3E%3Cpath%20d%3D%22M0%202h2.5v5H0zM7.5%206H10v3H7.5z%22%2F%3E%3Cpath%20d%3D%22M0%207h10v2.5H0z%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");opacity:0;transition-property:all;transition-duration:0.1s;transition-timing-function:ease-in-out}#barra-brasil .conteudo-barra-brasil nav a.link-discreto,#barra-brasil .conteudo-barra-brasil nav a.link-discreto-fixo,#barra-brasil .conteudo-barra-brasil nav:hover li:not(:hover)>a{opacity:0.3}#barra-brasil .conteudo-barra-brasil nav a:hover{opacity:1}#barra-brasil .conteudo-barra-brasil nav a.link-externo-barra:hover::before{opacity:1}#barra-brasil .conteudo-barra-brasil nav a.link-interno-barra{margin-left:13px}#barra-brasil .conteudo-barra-brasil nav a.link-baixo-barra::after{content:"";display:inline-block;width:13px;height:13px;margin-left:6px;background-image:url("data:image/svg+xml,%3Csvg%20width%3D%2214%22%20height%3D%229%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cg%20fill%3D%22%23FFF%22%20fill-rule%3D%22evenodd%22%3E%3Cpath%20d%3D%22M1.9.033L8.4%206.531%206.63%208.3.133%201.801z%22%2F%3E%3Cpath%20d%3D%22M11.395%200L5.03%206.364l1.767%201.768%206.364-6.364z%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");background-repeat:no-repeat;background-position:center;background-size:8px 6px;background-color:#3b3b3b;border-radius:50%}#barra-brasil .conteudo-barra-brasil nav a.link-baixo-barra.link-cima-barra::after{background-image:url("data:image/svg+xml,%3Csvg%20width%3D%2214%22%20height%3D%229%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cg%20fill%3D%22%23FFF%22%20fill-rule%3D%22evenodd%22%3E%3Cpath%20d%3D%22M1.9%208.967L8.4%202.469%206.63.7.133%207.199z%22%2F%3E%3Cpath%20d%3D%22M11.395%209L5.03%202.636%206.798.868l6.364%206.364z%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E")}#barra-brasil .conteudo-barra-brasil a.botao-seta-direita{display:none;width:9px;min-width:9px;margin-left:10px;height:13px;background-image:url("data:image/svg+xml,%3Csvg%20width%3D%2210%22%20height%3D%2213%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cg%20fill%3D%22%23FFF%22%20fill-rule%3D%22evenodd%22%3E%3Cpath%20d%3D%22M.533%2011.232L7.03%204.734%208.8%206.502%202.301%2013z%22%2F%3E%3Cpath%20d%3D%22M.5%201.738l6.364%206.364%201.768-1.768L2.268-.03z%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");line-height:0;font-size:0;color:transparent}#barra-brasil .orgaos-governo-barra{width:100%;border-bottom:0.5px solid rgba(255,255,255,0.3);max-height:0;overflow-y:hidden;transition-property:all;transition-duration:0.5s;transition-timing-function:ease-in-out}#barra-brasil .orgaos-governo-barra.mostra-orgaos{max-height:calc(90vh - 40px)}#barra-brasil .orgaos-governo-barra>div{width:100%;max-width:1150px;margin:0 auto}#barra-brasil .orgaos-governo-barra ul{margin-top:25px;width:calc(100% + 25px);display:flex;flex-flow:row wrap}#barra-brasil .orgaos-governo-barra ul li{width:168px;text-align:left;margin:0 25px 25px 0}#barra-brasil .orgaos-governo-barra ul li a{font-size:0.75em;text-transform:none;font-weight:bold}#barra-brasil .orgaos-governo-barra ul:hover li:not(:hover) a{opacity:0.3}#barra-brasil .orgaos-governo-barra ul li a:hover{font-weight:bold}@media only screen and (max-width: 600px){#barra-brasil .orgaos-governo-barra{overflow-y:auto}#barra-brasil .orgaos-governo-barra ul{width:100%;flex-flow:column nowrap}#barra-brasil .orgaos-governo-barra ul li{width:100%;margin:0 0 25px 0}#barra-brasil .conteudo-barra-brasil a.botao-seta-direita{display:block}}</style><style type="text/css" media="all">#footer-brasil{background-color:#F1F1F1;width:100%}#footer-brasil #wrapper-footer-brasil{width:95%;max-width:1150px;margin:0 auto;display:flex;flex-flow:row nowrap;align-items:center;justify-content:flex-end;padding:40px 0}#footer-brasil .logo-acesso-a-informacao,#footer-brasil .logo-governo-federal{line-height:0;font-size:0;color:transparent}#footer-brasil .logo-acesso-footer{width:117px;height:49px;margin-right:45px;background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20117%2049%22%20height%3D%2249%22%20width%3D%22117%22%20shape-rendering%3D%22geometricPrecision%22%20text-rendering%3D%22geometricPrecision%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%3C!%5BCDATA%5B.a%20%7Bfont%3A%20normal%20bold%2011px%20Open%20Sans%2C%20sans-serif%3B%7D%5D%5D%3E%3C%2Fstyle%3E%3C%2Fdefs%3E%3Ccircle%20cx%3D%2222%22%20cy%3D%2223%22%20r%3D%2222%22%20fill%3D%22%23222%22%2F%3E%3Cpath%20style%3D%22stroke%3A%23fff%3Bstroke-width%3A9%3Bstroke-linecap%3Around%3B%22%20d%3D%22m%2022%2C23%20v%2013%22%2F%3E%3Cpath%20style%3D%22stroke%3A%23222%3Bstroke-width%3A4%3Bstroke-linejoin%3Around%3B%22%20d%3D%22m%204%2C43%203%2C-6%204%2C3%20z%22%2F%3E%3Ccircle%20r%3D%224.5%22%20cy%3D%2211%22%20cx%3D%2222%22%20fill%3D%22%23fff%22%2F%3E%3Cg%20fill%3D%22%23222%22%3E%3Ctext%20x%3D%2247%22%20y%3D%2222%22%3E%3Ctspan%20class%3D%22a%22%20y%3D%2218%22%3EAcesso%20%C3%A0%3C%2Ftspan%3E%3Ctspan%20class%3D%22a%22%20x%3D%2247%22%20y%3D%2231%22%3EInforma%C3%A7%C3%A3o%3C%2Ftspan%3E%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fsvg%3E")}#footer-brasil .logo-governo-federal{width:149px;height:62px;background-repeat:no-repeat;background-position:bottom right;background-image:url("data:image/svg+xml,%3Csvg%20version%3D%221.1%22%20id%3D%22svg150%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20x%3D%220%22%20y%3D%220%22%20viewBox%3D%220%200%202000%20893.3%22%20style%3D%22enable-background%3Anew%200%200%202000%20893.3%22%20xml%3Aspace%3D%22preserve%22%3E%3Cstyle%3E.st0%2C.st1%2C.st2%2C.st3%7Bfill-rule%3Aevenodd%3Bclip-rule%3Aevenodd%3Bfill%3A%23fddb00%7D.st1%2C.st2%2C.st3%7Bfill%3A%2301d101%7D.st2%2C.st3%7Bfill%3A%234e4e4e%7D.st3%7Bfill%3A%23193dff%7D.st4%7Bfill%3Ared%7D.st4%2C.st5%7Bfill-rule%3Aevenodd%3Bclip-rule%3Aevenodd%7D%3C%2Fstyle%3E%3Cg%20id%3D%22g148%22%20transform%3D%22matrix(.77438%200%200%20.77438%20-1791.426%20-230.692)%22%3E%3Cg%20id%3D%22g146%22%20transform%3D%22translate(1982.62)%22%3E%3Cpath%20id%3D%22path2%22%20class%3D%22st0%22%20d%3D%22m1475.7%20551.9%20377.3%20629.5h-754.5l377.2-629.5z%22%2F%3E%3Cg%20id%3D%22g6%22%20transform%3D%22matrix(1.08397%200%200%201%20-324.434%200)%22%3E%3Cpath%20id%3D%22path4%22%20class%3D%22st1%22%20d%3D%22m1046%20551.9%20377.3%20629.5H1046V551.9z%22%2F%3E%3C%2Fg%3E%3Cg%20id%3D%22g10%22%20transform%3D%22translate(-1982.62)%22%3E%3Cpath%20id%3D%22path8%22%20class%3D%22st2%22%20d%3D%22m3138.6%201085.3-57.5%2096H3201l-62.4-96z%22%2F%3E%3C%2Fg%3E%3Cg%20id%3D%22g14%22%20transform%3D%22translate(31.164%2057.068)%20scale(1.20387)%22%3E%3Cpath%20id%3D%22path12%22%20class%3D%22st3%22%20d%3D%22M1199.9%20742.2c105.8%200%20191.7%2085.9%20191.7%20191.7h-383.4c0-105.8%2085.9-191.7%20191.7-191.7z%22%2F%3E%3C%2Fg%3E%3Cg%20id%3D%22g18%22%20transform%3D%22translate(-1982.62)%22%3E%3Cpath%20id%3D%22path16%22%20class%3D%22st3%22%20d%3D%22M3039.4%20551.9c104.1%200%20188.6%2084.5%20188.6%20188.6s-84.5%20188.6-188.6%20188.6l-189.7-36.9-57.7-340.3h247.4z%22%2F%3E%3C%2Fg%3E%3Cg%20id%3D%22g22%22%20transform%3D%22matrix(1.02029%200%200%20.99172%20-29.368%205.752)%22%3E%3Cpath%20id%3D%22rect20%22%20class%3D%22st3%22%20d%3D%22M2670.3%20971.4h214v214h-214z%22%2F%3E%3C%2Fg%3E%3Cg%20id%3D%22g26%22%20transform%3D%22matrix(1.02029%200%200%20.99172%20-111.71%205.752)%22%3E%3Cpath%20id%3D%22rect24%22%20class%3D%22st2%22%20d%3D%22M2537.1%20971.4h214v214h-214z%22%2F%3E%3C%2Fg%3E%3Cg%20id%3D%22g30%22%20transform%3D%22matrix(1.02029%200%200%201.94506%20-111.71%20-736.926)%22%3E%3Cpath%20id%3D%22rect28%22%20class%3D%22st0%22%20d%3D%22M2537.1%20663.1h214v214h-214z%22%2F%3E%3C%2Fg%3E%3Cg%20id%3D%22g34%22%20transform%3D%22matrix(1.02029%200%200%202.93679%20-208.116%20-1346.21)%22%3E%3Cpath%20id%3D%22rect32%22%20class%3D%22st1%22%20d%3D%22M2381%20646.7h214v214h-214z%22%2F%3E%3C%2Fg%3E%3Cg%20id%3D%22g38%22%20transform%3D%22translate(-1982.62)%22%3E%3Cpath%20id%3D%22path36%22%20class%3D%22st0%22%20d%3D%22M3879.3%201142.3c-49.5-36.5-81.6-95.2-81.6-161.4s32.1-124.9%2081.6-161.4v-39h118.8c110.6%200%20200.4%2089.8%20200.4%20200.4s-89.8%20200.4-200.4%20200.4h-118.8v-39z%22%2F%3E%3C%2Fg%3E%3Cg%20id%3D%22g42%22%20transform%3D%22translate(-1982.62)%22%3E%3Cpath%20id%3D%22path40%22%20class%3D%22st1%22%20d%3D%22m3946.7%20741.4-7.7%2039.1v44.8h-77.6c-75.4%200-136.7-61.3-136.7-136.7%200-75.4%2061.3-136.7%20136.7-136.7h77.6l7.7%2039.1v150.4z%22%2F%3E%3C%2Fg%3E%3Cg%20id%3D%22g46%22%20transform%3D%22matrix(1%200%200%201.00463%200%20-2.516)%22%3E%3Cpath%20id%3D%22rect44%22%20class%3D%22st3%22%20d%3D%22M1956.4%20551.8H2184v227.6h-227.6z%22%2F%3E%3C%2Fg%3E%3Cg%20id%3D%22g50%22%20transform%3D%22matrix(.94166%200%200%201.56462%20-17.443%20-155.918)%22%3E%3Cpath%20id%3D%22rect48%22%20class%3D%22st4%22%20d%3D%22M1868.5%20627.1h227.6v227.6h-227.6z%22%2F%3E%3C%2Fg%3E%3Cg%20id%3D%22g54%22%20transform%3D%22translate(-1982.62)%22%3E%3Cpath%20id%3D%22path52%22%20class%3D%22st4%22%20d%3D%22M2603.4%20804.1c104.1%200%20188.6%2084.5%20188.6%20188.6s-84.5%20188.6-188.6%20188.6h-290V804.1h290z%22%2F%3E%3C%2Fg%3E%3Cg%20id%3D%22g58%22%20transform%3D%22translate(-1982.62)%22%3E%3Cpath%20id%3D%22path56%22%20class%3D%22st3%22%20d%3D%22M2583.4%20551.9c69.6%200%20126.1%2056.5%20126.1%20126.1s-56.5%20126.1-126.1%20126.1H2432l90.6-252.2h60.8z%22%2F%3E%3C%2Fg%3E%3Cg%20id%3D%22g88%22%20transform%3D%22translate(-2658.59%20-1693.18)%20scale(5.57805)%22%3E%3Cpath%20id%3D%22path60%22%20d%3D%22M584.4%20366.8v4.6h5.8c-.5%201.4-2%202.5-4.3%202.5-3.3%200-5.5-2.4-5.5-5.6%200-3.3%202.3-5.8%205.4-5.8%202%200%203.8%201%204.7%202.7l5-3c-2-3.3-5.7-5.4-9.6-5.4-6.3%200-11.3%205-11.3%2011.4%200%206.3%205%2011.3%2011.4%2011.3%206%200%2010.5-4.4%2010.5-11.1v-1.7l-12.1.1z%22%2F%3E%3Cpath%20id%3D%22path62%22%20d%3D%22M616.4%20379.6c6.3%200%2011.3-5%2011.3-11.3s-5-11.3-11.3-11.3c-6.3%200-11.4%205-11.4%2011.3s5%2011.3%2011.4%2011.3zm0-6c-2.9%200-5.1-2.3-5.1-5.3%200-3.1%202.2-5.3%205.1-5.3%202.8%200%205%202.3%205%205.3s-2.2%205.3-5%205.3z%22%2F%3E%3Cpath%20id%3D%22path64%22%20d%3D%22m649.4%20357.5-5.1%2013.3-5-13.3H633l8.4%2021.6h5.8l8.5-21.6h-6.3z%22%2F%3E%3Cpath%20id%3D%22path66%22%20d%3D%22M678.6%20362.7v-5.3h-15.5V379h15.5v-5.3H669v-3.2h6.4V366H669v-3.2l9.6-.1z%22%2F%3E%3Cpath%20id%3D%22path68%22%20d%3D%22M699.9%20379.1h6.5l-4.8-8.3c2.3-1.2%203.8-3.5%203.8-6.3%200-4-3.2-7-7.5-7h-10.5v21.6h5.8v-7.5h2.4l4.3%207.5zm-6.7-16.5h4.1c1.4%200%202.2%201%202.2%202s-.9%202-2.2%202h-4.1v-4z%22%2F%3E%3Cpath%20id%3D%22path70%22%20d%3D%22M727.9%20357.5v11.4l-8.7-11.4h-4.9v21.6h5.8v-11.4l8.7%2011.4h4.9v-21.6h-5.8z%22%2F%3E%3Cpath%20id%3D%22path72%22%20d%3D%22M753.3%20379.6c6.3%200%2011.3-5%2011.3-11.3s-5-11.3-11.3-11.3c-6.3%200-11.4%205-11.4%2011.3s5%2011.3%2011.4%2011.3zm0-6c-2.9%200-5.1-2.3-5.1-5.3%200-3.1%202.2-5.3%205.1-5.3%202.8%200%205%202.3%205%205.3s-2.2%205.3-5%205.3z%22%2F%3E%3Cpath%20id%3D%22path74%22%20d%3D%22M802.5%20362.6v-5.2H787V379h5.9v-7.9h6.4v-4.9h-6.4v-3.7h9.6z%22%2F%3E%3Cpath%20id%3D%22path76%22%20d%3D%22M826.5%20362.7v-5.3H811V379h15.5v-5.3h-9.6v-3.2h6.4V366h-6.4v-3.2l9.6-.1z%22%2F%3E%3Cpath%20id%3D%22path78%22%20d%3D%22M844.2%20357.5h-8.8v21.6h8.8c6.6%200%2011.5-4.6%2011.5-10.8%200-6.2-4.9-10.8-11.5-10.8zm-.3%2016h-2.6v-10.4h2.6c3.4%200%205.8%202%205.8%205.2%200%203.1-2.4%205.2-5.8%205.2z%22%2F%3E%3Cpath%20id%3D%22path80%22%20d%3D%22M879.5%20362.7v-5.3H864V379h15.5v-5.3h-9.6v-3.2h6.4V366h-6.4v-3.2l9.6-.1z%22%2F%3E%3Cpath%20id%3D%22path82%22%20d%3D%22M900.8%20379.1h6.5l-4.8-8.3c2.3-1.2%203.8-3.5%203.8-6.3%200-4-3.2-7-7.5-7h-10.5v21.6h5.8v-7.5h2.4l4.3%207.5zm-6.7-16.5h4.1c1.4%200%202.2%201%202.2%202s-.9%202-2.2%202h-4.1v-4z%22%2F%3E%3Cpath%20id%3D%22path84%22%20d%3D%22M931.2%20379.1h6l-9.1-21.6h-5.5l-9%2021.6h6.1l1.5-3.7h8.6l1.4%203.7zm-8-8.9%202.2-5.3%202.2%205.3h-4.4z%22%2F%3E%3Cpath%20id%3D%22path86%22%20d%3D%22M950.8%20373.5v-16.1h-6.1V379h15.2v-5.6h-9.1z%22%2F%3E%3C%2Fg%3E%3Cg%20id%3D%22g92%22%20transform%3D%22translate(-1982.62)%22%3E%3Cpath%20id%3D%22path90%22%20class%3D%22st2%22%20d%3D%22m3724.7%20996.3%20110.9%20185.1h-110.9V996.3z%22%2F%3E%3C%2Fg%3E%3Cg%20id%3D%22g128%22%20transform%3D%22translate(-1704.56%20-761.458)%20scale(4.10943)%22%3E%3Cpath%20id%3D%22path94%22%20class%3D%22st5%22%20d%3D%22M558.4%20528.9c1.2%200%202.2-.2%203-.7.8-.5%201.4-1.1%201.9-1.8s.8-1.6%201-2.6c.2-1%20.3-2%20.3-3v-11.5h3.6v11.5c0%201.5-.2%203-.5%204.4-.4%201.4-.9%202.6-1.7%203.6s-1.8%201.8-3%202.4c-1.2.6-2.7.9-4.5.9-1.8%200-3.3-.3-4.6-.9-1.2-.6-2.2-1.5-3-2.5-.8-1-1.3-2.3-1.7-3.6-.3-1.4-.5-2.8-.5-4.2v-11.5h3.6v11.5c0%201%20.1%202%20.3%203s.5%201.8%201%202.6%201.1%201.4%201.9%201.8c.8.4%201.7.6%202.9.6z%22%2F%3E%3Cpath%20id%3D%22path96%22%20class%3D%22st5%22%20d%3D%22M583.3%20516.1V532h-3.6v-22.6h2.8l12.9%2016.3v-16.3h3.6V532h-3l-12.7-15.9z%22%2F%3E%3Cpath%20id%3D%22rect98%22%20class%3D%22st5%22%20d%3D%22M610.9%20509.4h3.6V532h-3.6z%22%2F%3E%3Cpath%20id%3D%22path100%22%20class%3D%22st5%22%20d%3D%22M633%20509.4h3.1L645%20532h-3.8l-2.4-6.1h-8.7l-2.4%206.1H624l9-22.6zm5.1%2013.8-3.6-9.7-3.8%209.7h7.4zm-1.6-16.7c-.5%200-.9-.1-1.3-.2s-.7-.3-1-.5c-.3-.2-.6-.3-.9-.5-.3-.1-.6-.2-1-.2s-.6.1-.8.2-.4.3-.5.5c-.1.2-.2.4-.2.5v.3h-2c0-.2.1-.5.2-.9s.3-.8.6-1.2c.3-.4.6-.8%201-1.1.4-.3%201-.5%201.6-.5.5%200%20.9.1%201.2.2.4.1.7.3%201%20.5s.6.3.9.5c.3.1.7.2%201%20.2.4%200%20.7-.1.9-.2.2-.1.4-.3.5-.5.1-.2.2-.4.2-.5v-.3h2c0%20.1-.1.4-.2.8s-.3.8-.6%201.2c-.3.4-.6.8-1.1%201.1-.2.4-.8.6-1.5.6z%22%2F%3E%3Cpath%20id%3D%22path102%22%20class%3D%22st5%22%20d%3D%22M663.1%20532.1c-1.6%200-3.1-.3-4.4-1-1.3-.6-2.5-1.5-3.4-2.6-1-1.1-1.7-2.3-2.2-3.7-.5-1.4-.8-2.8-.8-4.2%200-1.5.3-2.9.8-4.3.6-1.4%201.3-2.6%202.3-3.7%201-1.1%202.1-1.9%203.4-2.5%201.3-.6%202.8-.9%204.3-.9%201.6%200%203.1.3%204.4%201%201.3.7%202.5%201.5%203.4%202.6.9%201.1%201.7%202.3%202.2%203.7.5%201.4.8%202.8.8%204.2%200%201.5-.3%202.9-.8%204.3s-1.3%202.6-2.3%203.6-2.1%201.9-3.5%202.5c-1.2.7-2.6%201-4.2%201zm-7.2-11.4c0%201.1.2%202.1.5%203.1s.8%201.9%201.4%202.6c.6.8%201.4%201.4%202.3%201.8.9.5%201.9.7%203%20.7s2.2-.2%203-.7%201.6-1.1%202.2-1.9%201.1-1.7%201.4-2.6c.3-1%20.5-2%20.5-3%200-1.1-.2-2.1-.5-3.1s-.8-1.9-1.4-2.6-1.4-1.4-2.3-1.8-1.9-.7-2.9-.7c-1.1%200-2.2.2-3.1.7s-1.6%201.1-2.3%201.9-1.1%201.6-1.4%202.6c-.2%201-.4%202-.4%203z%22%2F%3E%3Cpath%20id%3D%22path104%22%20class%3D%22st5%22%20d%3D%22M714.6%20528.8v3.1h-15.5v-22.6h15.2v3.1h-11.6v6.4h10.1v3h-10.1v6.9h11.9z%22%2F%3E%3Cpath%20id%3D%22path106%22%20class%3D%22st5%22%20d%3D%22M739.7%20532v-22.6h9.8c1%200%202%20.2%202.8.6.9.4%201.6%201%202.2%201.7.6.7%201.1%201.5%201.4%202.4s.5%201.8.5%202.7c0%20.8-.1%201.5-.3%202.2s-.5%201.3-.9%201.9c-.4.6-.8%201.1-1.4%201.5-.6.4-1.2.8-1.8%201l5.3%208.6h-4l-4.9-7.9h-5.2v7.9h-3.5zm3.5-11h6.2c.5%200%201-.1%201.4-.3.4-.2.8-.5%201.1-.9s.5-.8.7-1.4c.2-.5.3-1%20.3-1.6%200-.6-.1-1.1-.3-1.6s-.5-1-.8-1.3c-.3-.4-.7-.7-1.1-.9-.4-.2-.9-.3-1.4-.3h-6l-.1%208.3z%22%2F%3E%3Cpath%20id%3D%22path108%22%20class%3D%22st5%22%20d%3D%22M783%20528.8v3.1h-15.5v-22.6h15.2v3.1H771v6.4h10.1v3H771v6.9h12z%22%2F%3E%3Cpath%20id%3D%22path110%22%20class%3D%22st5%22%20d%3D%22M791.5%20520.5c0-1.4.2-2.7.7-4.1.5-1.3%201.2-2.6%202.1-3.6.9-1.1%202.1-1.9%203.5-2.6%201.4-.7%202.9-1%204.6-1%202.1%200%203.8.5%205.3%201.4%201.5.9%202.6%202.1%203.3%203.6l-2.8%201.9c-.3-.7-.7-1.3-1.1-1.7-.4-.5-.9-.8-1.5-1.1-.5-.3-1.1-.5-1.7-.6-.6-.1-1.1-.2-1.7-.2-1.2%200-2.2.2-3.1.7s-1.6%201.1-2.2%201.9c-.6.8-1.1%201.7-1.4%202.6-.3%201-.5%202-.5%202.9%200%201.1.2%202.2.5%203.1.4%201%20.9%201.9%201.5%202.6.6.8%201.4%201.4%202.3%201.8s1.9.7%202.9.7c.6%200%201.1-.1%201.7-.2.6-.1%201.1-.4%201.7-.7.5-.3%201-.7%201.5-1.2s.8-1%201.1-1.7l3%201.7c-.4.8-.9%201.6-1.5%202.2-.7.6-1.4%201.2-2.2%201.6s-1.7.8-2.6%201c-.9.2-1.8.3-2.7.3-1.6%200-3-.3-4.4-1-1.3-.7-2.4-1.6-3.4-2.7s-1.7-2.3-2.2-3.7c-.4-1-.7-2.4-.7-3.9z%22%2F%3E%3Cpath%20id%3D%22path112%22%20class%3D%22st5%22%20d%3D%22M830.7%20532.1c-1.6%200-3.1-.3-4.4-1-1.3-.6-2.5-1.5-3.4-2.6-1-1.1-1.7-2.3-2.2-3.7-.5-1.4-.8-2.8-.8-4.2%200-1.5.3-2.9.8-4.3.6-1.4%201.3-2.6%202.3-3.7%201-1.1%202.1-1.9%203.4-2.5%201.3-.6%202.8-.9%204.3-.9%201.6%200%203.1.3%204.4%201%201.3.7%202.5%201.5%203.4%202.6s1.7%202.3%202.2%203.7.8%202.8.8%204.2c0%201.5-.3%202.9-.8%204.3s-1.3%202.6-2.3%203.6-2.1%201.9-3.5%202.5c-1.2.7-2.7%201-4.2%201zm-7.2-11.4c0%201.1.2%202.1.5%203.1s.8%201.9%201.4%202.6c.6.8%201.4%201.4%202.3%201.8.9.5%201.9.7%203%20.7s2.2-.2%203-.7%201.6-1.1%202.2-1.9%201.1-1.7%201.4-2.6c.3-1%20.5-2%20.5-3%200-1.1-.2-2.1-.5-3.1s-.8-1.9-1.4-2.6-1.4-1.4-2.3-1.8-1.9-.7-2.9-.7c-1.1%200-2.2.2-3.1.7s-1.6%201.1-2.3%201.9-1.1%201.6-1.4%202.6c-.3%201-.4%202-.4%203z%22%2F%3E%3Cpath%20id%3D%22path114%22%20class%3D%22st5%22%20d%3D%22M855.5%20516.1V532H852v-22.6h2.8l12.9%2016.3v-16.3h3.6V532h-3l-12.8-15.9z%22%2F%3E%3Cpath%20id%3D%22path116%22%20class%3D%22st5%22%20d%3D%22M896.5%20514.7c-.2-.2-.5-.5-.9-.7-.4-.3-.9-.5-1.4-.7-.5-.2-1.1-.4-1.8-.6-.6-.1-1.3-.2-2-.2-1.5%200-2.6.3-3.3.8s-1.1%201.3-1.1%202.3c0%20.6.1%201%20.3%201.4.2.3.6.7%201%20.9.5.3%201%20.5%201.7.7.7.2%201.5.4%202.4.7%201.1.3%202.2.6%203.1.9.9.3%201.7.8%202.3%201.2.6.5%201.1%201.1%201.5%201.8.4.7.5%201.6.5%202.6%200%201.1-.2%202.1-.7%203s-1%201.5-1.8%202-1.6.9-2.6%201.1c-1%20.2-2.1.4-3.2.4-1.7%200-3.4-.3-5-.8s-3-1.3-4.3-2.3l1.6-3.1c.3.3.7.6%201.2.9.5.3%201.1.7%201.8.9.7.3%201.4.5%202.2.7.8.2%201.6.3%202.5.3%201.4%200%202.5-.2%203.2-.7.8-.5%201.1-1.2%201.1-2.2%200-.6-.1-1-.4-1.4-.3-.4-.7-.7-1.2-1-.5-.3-1.2-.5-1.9-.8-.8-.2-1.6-.5-2.6-.7-1.1-.3-2.1-.6-2.9-.9-.8-.3-1.5-.7-2.1-1.2s-1-1-1.3-1.6c-.3-.6-.4-1.4-.4-2.3%200-1.1.2-2.1.6-2.9.4-.9%201-1.6%201.7-2.2s1.6-1%202.6-1.3c1-.3%202.1-.4%203.2-.4%201.5%200%202.9.2%204.2.7%201.3.5%202.4%201.1%203.4%201.8l-1.2%202.9z%22%2F%3E%3Cpath%20id%3D%22path118%22%20class%3D%22st5%22%20d%3D%22M925.8%20512.5h-7.5V532h-3.6v-19.4h-7.5v-3.1h18.6v3z%22%2F%3E%3Cpath%20id%3D%22path120%22%20class%3D%22st5%22%20d%3D%22M935.6%20532v-22.6h9.8c1%200%202%20.2%202.8.6.9.4%201.6%201%202.2%201.7.6.7%201.1%201.5%201.4%202.4s.5%201.8.5%202.7c0%20.8-.1%201.5-.3%202.2s-.5%201.3-.9%201.9c-.4.6-.8%201.1-1.4%201.5-.6.4-1.2.8-1.8%201l5.3%208.6h-4l-4.9-7.9h-5.2v7.9h-3.5zm3.6-11h6.2c.5%200%201-.1%201.4-.3.4-.2.8-.5%201.1-.9.3-.4.5-.8.7-1.4.2-.5.3-1%20.3-1.6%200-.6-.1-1.1-.3-1.6s-.5-1-.8-1.3c-.3-.4-.7-.7-1.1-.9-.4-.2-.9-.3-1.4-.3h-6l-.1%208.3z%22%2F%3E%3Cpath%20id%3D%22path122%22%20class%3D%22st5%22%20d%3D%22M972.8%20528.9c1.2%200%202.2-.2%203-.7.8-.5%201.4-1.1%201.9-1.8s.8-1.6%201-2.6c.2-1%20.3-2%20.3-3v-11.5h3.6v11.5c0%201.5-.2%203-.5%204.4-.4%201.4-.9%202.6-1.7%203.6-.8%201-1.8%201.8-3%202.4-1.2.6-2.7.9-4.5.9-1.8%200-3.3-.3-4.6-.9-1.2-.6-2.2-1.5-3-2.5-.8-1-1.3-2.3-1.7-3.6-.3-1.4-.5-2.8-.5-4.2v-11.5h3.6v11.5c0%201%20.1%202%20.3%203s.5%201.8%201%202.6%201.1%201.4%201.9%201.8c.8.4%201.8.6%202.9.6z%22%2F%3E%3Cpath%20id%3D%22path124%22%20class%3D%22st5%22%20d%3D%22M1029%20509.4h3.1l8.9%2022.6h-3.8l-2.4-6.1h-8.7l-2.4%206.1h-3.8l9.1-22.6zm5.2%2013.8-3.6-9.7-3.8%209.7h7.4zm-1.7-16.7c-.5%200-.9-.1-1.3-.2s-.7-.3-1-.5c-.3-.2-.6-.3-.9-.5s-.6-.2-1-.2-.6.1-.8.2c-.2.1-.4.3-.5.5-.1.2-.2.4-.2.5v.3h-2c0-.2.1-.5.2-.9s.3-.8.6-1.2c.3-.4.6-.8%201-1.1.4-.3%201-.5%201.6-.5.5%200%20.9.1%201.2.2.3.1.7.3%201%20.5s.6.3.9.5c.3.1.7.2%201%20.2s.7-.1.9-.2c.2-.1.4-.3.5-.5.1-.2.2-.4.2-.5v-.3h2c0%20.1-.1.4-.2.8s-.3.8-.6%201.2c-.3.4-.6.8-1.1%201.1-.2.4-.8.6-1.5.6z%22%2F%3E%3Cpath%20id%3D%22path126%22%20class%3D%22st5%22%20d%3D%22M1059.1%20532.1c-1.6%200-3.1-.3-4.4-1s-2.5-1.5-3.4-2.6c-1-1.1-1.7-2.3-2.2-3.7-.5-1.4-.8-2.8-.8-4.2%200-1.5.3-2.9.8-4.3.6-1.4%201.3-2.6%202.3-3.7%201-1.1%202.1-1.9%203.4-2.5%201.3-.6%202.8-.9%204.3-.9%201.6%200%203.1.3%204.4%201%201.3.7%202.5%201.5%203.4%202.6s1.7%202.3%202.2%203.7.8%202.8.8%204.2c0%201.5-.3%202.9-.8%204.3s-1.3%202.6-2.3%203.6c-1%201-2.1%201.9-3.5%202.5-1.2.7-2.6%201-4.2%201zm-7.1-11.4c0%201.1.2%202.1.5%203.1s.8%201.9%201.4%202.6c.6.8%201.4%201.4%202.3%201.8.9.5%201.9.7%203%20.7s2.2-.2%203-.7c.9-.5%201.6-1.1%202.2-1.9s1.1-1.7%201.4-2.6c.3-1%20.5-2%20.5-3%200-1.1-.2-2.1-.5-3.1s-.8-1.9-1.4-2.6c-.6-.8-1.4-1.4-2.3-1.8-.9-.5-1.9-.7-2.9-.7-1.1%200-2.2.2-3.1.7s-1.6%201.1-2.3%201.9-1.1%201.6-1.4%202.6c-.3%201-.4%202-.4%203z%22%2F%3E%3C%2Fg%3E%3Cg%20id%3D%22g132%22%20transform%3D%22translate(-1982.62)%22%3E%3Cpath%20id%3D%22path130%22%20class%3D%22st5%22%20d%3D%22M4400.1%201425.4c-5.9-.2-11.3-1.6-16.3-4.2-5.4-2.8-10.1-6.4-14-10.9-3.9-4.5-6.9-9.6-9.1-15.3-2.2-5.7-3.3-11.5-3.3-17.5%200-5.6%201-11.1%203-16.7%202-5.5%205-10.5%208.8-14.9%203.9-4.4%208.6-8%2014.2-10.7%205.6-2.7%2011.9-4.1%2019-4.1%208.5%200%2015.7%201.9%2021.7%205.6%206%203.7%2010.6%208.6%2013.6%2014.6l-11.5%207.7c-1.3-2.8-2.9-5.1-4.7-7.1-1.8-1.9-3.8-3.4-6-4.6-2.2-1.1-4.4-1.9-6.8-2.4-2.4-.5-4.6-.7-6.8-.7-4.9%200-9.2%201-12.8%202.9-3.7%202-6.7%204.6-9.2%207.8-2.5%203.2-4.4%206.8-5.6%2010.9-1.3%204-1.9%208-1.9%2012%200%204.5.7%208.8%202.2%2012.9%201.5%204.1%203.6%207.7%206.2%2010.9%202.7%203.1%205.8%205.6%209.5%207.5%203.7%201.9%207.7%202.8%2012%202.8%202.3%200%204.6-.3%207-.8%202.4-.6%204.7-1.5%206.9-2.7%202.2-1.3%204.3-2.9%206.1-4.8%201.9-1.9%203.4-4.2%204.6-6.9l12.2%206.9c-1.5%203.5-3.6%206.6-6.3%209.2-2.7%202.7-5.8%204.9-9.1%206.7-3.4%201.8-7%203.2-10.8%204.2-2.1.5-4.3.9-6.4%201.2%204.2%205.7%2010.9%2011.9%206.9%2019.7-5.6%2011-22.9%205.3-28.3%202.9l3.6-8.2s9.8%207.2%2016.3%202.4c6.5-4.4-.1-9.8-4.9-16.3z%22%2F%3E%3C%2Fg%3E%3Cg%20id%3D%22g136%22%20transform%3D%22matrix(1%200%200%20.62835%200%20258.324)%22%3E%3Cpath%20id%3D%22rect134%22%20class%3D%22st0%22%20d%3D%22M330.8%20840.5H551v628.4H330.8z%22%2F%3E%3C%2Fg%3E%3Cg%20id%3D%22g140%22%20transform%3D%22matrix(1%200%200%20.40133%200%20273.834)%22%3E%3Cpath%20id%3D%22rect138%22%20class%3D%22st1%22%20d%3D%22M330.8%20692.8H551v628.4H330.8z%22%2F%3E%3C%2Fg%3E%3Cg%20id%3D%22g144%22%20transform%3D%22matrix(.64967%200%200%20.59934%2067.494%20183.368)%22%3E%3Cpath%20id%3D%22path142%22%20class%3D%22st0%22%20d%3D%22m1142%20614.8%20377.3%20629.5H1142V614.8z%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E")}</style><style>[vw] [vw-access-button]{display:none;flex-direction:row-reverse;width:40px;height:40px;cursor:pointer;overflow:hidden;position:absolute;border-radius:8px;transition:all 0.5s ease;right:0;left:auto}[vw] [vw-access-button] img{max-height:40px;transition:all 0.5s ease;border-radius:8px;opacity:1 !important;visibility:visible !important}[vw] [vw-access-button] .vp-access-button{width:40px;height:40px;z-index:1}[vw] [vw-access-button] .vp-pop-up{position:absolute;height:40px;min-width:150px;z-index:0;left:0;right:auto}[vw] [vw-access-button]:hover{width:200px}[vw] [vw-access-button].isLeft{flex-direction:row;left:0;right:auto}[vw] [vw-access-button].isLeft .vp-pop-up{left:auto;right:0}[vw] [vw-access-button].isTopOrBottom:hover{bottom:-20px;top:0;margin-right:-80px}[vw] [vw-access-button].active{display:flex}
+</style><style>[vw].left [vw-plugin-wrapper]{float:left}[vw] [vw-plugin-wrapper]{position:relative;display:none;width:300px;height:100%;float:right;background:white;-webkit-box-shadow:0px 0px 15px rgba(0,0,0,0.2);-moz-box-shadow:0px 0px 15px rgba(0,0,0,0.2);box-shadow:0px 0px 15px rgba(0,0,0,0.2);border-radius:12px;-moz-border-radius:12px;-webkit-border-radius:12px}[vw] [vw-plugin-wrapper].active{display:-webkit-flex;display:flex;flex-direction:column;-webkit-flex-direction:column;height:450px;max-width:100%;min-height:100%}
+</style><style>div[vw]{position:fixed;max-width:95vw;min-height:40px;min-width:40px;z-index:2147483645 !important;display:none;margin:10px !important}div[vw].enabled{display:block}div[vw].active{margin-top:-285px}div[vw].left{left:0;right:initial}
+</style></head>
+
+<body class="desktop-detected">
+    <a class="hide" id="topo" href="https://app.anm.gov.br/BoletosCfem/NaoDivida/Cfem#accessibility">Ir direto para menu de acessibilidade.</a>
+    <noscript>
+        <div class="error minor-font">
+            Seu navegador de internet está sem suporte à JavaScript. Por esse motivo algumas funcionalidades do site podem não estar acessíveis.
+        </div>
+    </noscript>
+    <!--[if lt IE 7]><center><strong>Atenção, a versão de seu navegador não é compatível com este sítio. Atualize seu navegador.</strong></center><![endif]-->
+    <!-- barra do governo -->
+    <div id="barra-brasil" class="hideWhenPrinting"><div class="conteudo-escondido"> <a accesskey="1" href="https://app.anm.gov.br/BoletosCfem/NaoDivida/Cfem#conteudo">Ir para o conteúdo</a> </div> <div class="conteudo-barra-brasil"> <a href="https://gov.br/" class="pic-gov" title="GovBR">GovBR</a> <nav id="menu-barra-brasil" onscroll="checkScrollBarra(this);"> <ul class="lista-barra-brasil"> <li class="espacador"></li> <li class="list-item"> <a href="http://www.gov.br/secom/pt-br/acesso-a-informacao/comunicabr" class="link-barra link-externo-barra">Comunica BR</a> </li> <li class="espacador"></li> <li class="list-item"> <a href="http://www.gov.br/acessoainformacao/" class="link-barra link-externo-barra">Acesso à informação</a> </li> <li class="espacador"></li> <li class="list-item"> <a href="https://www.gov.br/pt-br/participacao-social/" class="link-barra link-externo-barra">Participe</a> </li> <li class="espacador"></li> <li class="list-item"> <a href="http://www4.planalto.gov.br/legislacao/" class="link-barra link-externo-barra">Legislação</a> </li> <li class="espacador"></li> <li class="list-item"> <a href="http://www.gov.br/pt-br/orgaos-do-governo" class="link-barra link-externo-barra">Órgãos do Governo</a> </li> </ul> </nav> </div></div>
+    <!-- fim barra do governo -->
+    <div class="layout">
+
+
+<header class="header">
+    <div class="container">
+        <div id="header-logo">
+            <img alt="Logo" src="./CFEM ANM_files/anm315x65branco.png">
+            <div class="nome-sistema">Boletos<br>CFEM</div>
+        </div>
+    </div>
+
+        <div class="sobre submenu">
+            <div class="container">
+                <nav class="menu-servicos pull-left">
+                    <h2 class="hide">Menu</h2>
+                    <ul>
+                        <li class="portalservicos-item">
+                            <a title="CFEM" href="https://app.anm.gov.br/BoletosCfem/NaoDivida/CFEM">CFEM</a>
+                        </li>
+                        <li class="portalservicos-item">
+                            <a title="CFEM" href="https://app.anm.gov.br/BoletosCfem/NaoDivida/CFEMArrendatario">CFEM - Arrendatário</a>
+                        </li>
+                        <li class="portalservicos-item">
+                            <a title="CFEM" href="https://app.anm.gov.br/BoletosCfem/NaoDivida/CfemPLG">CFEM - Permissão Lavra Garimpeira</a>
+                        </li>
+                       
+                    </ul>
+                    <span class="hide">Fim do menu de serviços</span>
+                </nav>
+                <!-- fim #menu-servicos.pull-right -->
+            </div>
+            <!-- .container -->
+        </div>
+        <!-- fim .sobre -->
+
+    
+</header>
+
+        <main>
+            <div class="container">
+                
+                
+
+                <!-- fim .row-fluid -->
+                <div class="row">
+                    <!-- fim #navigation.span3 -->
+                    <div>
+                        <section id="content-section">
+                            <span class="hide">Início do conteúdo da página</span>
+                            <div class="cabecalho-form">
+
+                            </div>
+                            
+
+
+<style type="text/css">
+    img.brasaoPrintDNPM {
+        display: none;
+    }
+
+    .mensagemVermelho {
+        color: #A90329;
+        font-weight: bold;
+    }
+</style>
+
+
+<div class="row-fluid ">
+    <section id="em-destaque">
+        <!-- class="duas-linhas" -->
+
+        <ul class="col-lg-10 n5">
+            <li class="btn btn-info">
+<a href="https://app.anm.gov.br/BoletosCfem/NaoDivida/CfemArrendatario">CFEM - Arrendatário</a>            </li>
+            <li class="btn btn-info">
+                <a href="https://app.anm.gov.br/BoletosCfem/NaoDivida/CfemBalneario">CFEM - Balneário</a>
+            </li>
+            <li class="btn btn-info">
+                <a href="https://app.anm.gov.br/BoletosCfem/NaoDivida/Cfemplg">CFEM - PLG</a>
+            </li>
+            <li class="btn btn-info">
+                <a href="https://app.anm.gov.br/BoletosCfem/NaoDivida/Cfem#" onclick="exibirAvisoCfemParcManual()">CFEM - Parcelamento Manual</a>
+            </li>
+                 <li class="btn btn-info">
+                            <a title="CFEM" href="https://app.anm.gov.br/BoletosCfem/NaoDivida/CfemHastaPublica">CFEM - Hasta Pública</a>
+                        </li>
+        </ul>
+    </section>
+</div>
+
+<!-- widget grid -->
+<section id="widget-grid" class="ng-scope" ng-app="App" style="margin-left:-50px;">
+
+    <!-- START ROW -->
+    <div class="row ng-scope" ng-controller="CfemController as CFEM">
+
+        <article class="col-sm-12 col-md-12 col-lg-7 sortable-grid ui-sortable">
+
+            <!-- Widget ID (each widget will need unique ID)-->
+            <div class="jarviswidget" id="wid-id-7" data-widget-colorbutton="false" data-widget-custombutton="false" data-widget-togglebutton="false" data-widget-deletebutton="false" data-widget-fullscreenbutton="false" data-widget-sortable="false" data-widget-editbutton="false" role="widget">
+
+                <header role="heading">
+                    <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                    <h2>CFEM - Guia de recolhimento corrente</h2>
+                <span class="jarviswidget-loader"><i class="fa fa-refresh fa-spin"></i></span></header>
+
+                <!-- widget div-->
+                <div role="content">
+
+                    <!-- widget edit box -->
+                    <div class="jarviswidget-editbox">
+                        <!-- This area used as dropdown edit box -->
+
+                    </div>
+                    <!-- end widget edit box -->
+                    <!-- widget content -->
+                    <div class="widget-body no-padding">
+
+                        <form id="CFEMRecolhimento" name="CFEMRecolhimento" class="smart-form ng-invalid ng-invalid-unidade-medida ng-valid-mes-apuracao ng-valid-cnpj ng-valid-cpf ng-invalid-required ng-valid-maxlength ng-dirty ng-valid-parse" novalidate="" ng-submit="submitRecolhimento()" detectar-interacao-form="">
+                            <header class="ng-binding">
+                                Pesquisa 
+                            </header>
+
+                            <fieldset>
+                                <div class="row">
+                                    <section class="col col-7" hidden="">
+                                        <lable class="label">Tipo de Recolhedor</lable>
+                                        <div class="inline-group">
+                                            <label class="radio ">
+                                                <input ng-attr-type="radio" name="tipotitular" ng-model="recolhimentoTitular" ng-attr-value="true" class="ng-pristine ng-untouched ng-valid">
+                                                <i></i>Titular
+                                            </label>
+                                            <label class="radio ">
+                                                <input ng-attr-type="radio" name="tipotitular" ng-model="recolhimentoTitular" ng-attr-value="false" class="ng-pristine ng-untouched ng-valid">
+                                                <i></i>Arrendatário
+                                            </label>
+                                        </div>
+                                    </section>
+                                </div>
+                                <div class="row">
+                                    <section class="col col-6">
+                                        <label class="label">CPF ou CNPJ do requerente:</label>
+                                        <label class="input" ng-class="{&#39;state-error&#39;: CFEMRecolhimento.cpfCnpj.$invalid  &amp;&amp; !CFEMRecolhimento.cpfCnpj.$pristine, &#39;state-success&#39; :  CFEMRecolhimento.cpfCnpj.$valid &amp;&amp; !CFEMRecolhimento.cpfCnpj.$pristine}">
+                                            <i class="icon-append fa fa-edit"></i>
+                                            <input title="text" required="" class="form-control ng-pristine ng-untouched ng-valid-cnpj ng-valid-cpf ng-invalid ng-invalid-required" name="cpfCnpj" id="cpfCnpj" ng-model="cpfCnpj" ng-class="{&#39;state-error&#39;: CFEMRecolhimento.cpfCnpj.$invalid  &amp;&amp; !CFEMRecolhimento.cpfCnpj.$pristine, &#39;state-success&#39; :  CFEMRecolhimento.cpfCnpj.$valid &amp;&amp; !CFEMRecolhimento.cpfCnpj.$pristine}" ng-blur="buscaCpfCnpj()" ui-br-cpfcnpj-mask="">
+                                            <em for="numeroProcesso" ng-show="CFEMRecolhimento.cpfCnpj.$invalid  &amp;&amp; !CFEMRecolhimento.cpfCnpj.$pristine" class="invalid ng-hide">Por favor, informe o campo CPF/CNPJ!</em>
+                                        </label>
+                                    </section>
+
+                                    <section class="col col-6" ng-hide="digitarProcesso">
+                                        <label class="label">Processos:</label>
+                                        <label class="select">
+                                            <select id="cbProcesso" ng-required="!digitarProcesso" ng-model="cbProcesso" ng-options="prc.ProcessoFormatado for prc in processos" ng-change="buscaProcesso(cbProcesso.ProcessoFormatado,&#39;combo&#39;)" class="ng-pristine ng-untouched ng-invalid ng-invalid-required" required="required"><option value="?" selected="selected" label=""></option></select> <i></i>
+                                        </label>
+                                    </section>
+                                </div>
+
+
+                                <div class="row ng-hide" ng-hide="recolhimentoTitular">
+
+                                </div>
+                                <div class="row ng-hide" ng-show="digitarProcesso">
+                                    <section class="col">
+                                        <label class="label obrigatorio">Digite o Processo:</label>
+                                        <label class="input" ng-class="{&#39;state-error&#39;: CFEMRecolhimento.nproc.$invalid  &amp;&amp; !CFEMRecolhimento.nproc.$pristine}">
+                                            <i class="icon-append fa fa-edit"></i>
+                                            <input ng-attr-type="text" ng-required="digitarProcesso" class="maskProcesso form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength ng-valid-required" name="nproc" id="nproc" ng-model="numeroProcessoDigitado" ng-blur="buscaProcesso(numeroProcessoDigitado,&#39;processo&#39;)" data-mask="999.999/9999" data-mask-placeholder="*" ng-class="{&#39;state-error&#39;: CFEMRecolhimento.nproc.$invalid &amp;&amp; !CFEMRecolhimento.nproc.$pristine}" placeholder="ex: 999.999/9999" maxlength="12">
+                                            <em for="nproc" ng-show="CFEMRecolhimento.nproc.$invalid &amp;&amp; !CFEMRecolhimento.nproc.$pristine" class="invalid ng-hide">Informe um processo válido!</em>
+                                        </label>
+
+                                    </section>
+                                </div>
+                            </fieldset>
+
+                            <header>
+                                Dados para Emissão
+                            </header>
+
+                            <fieldset>
+                                <div class="row">
+                                    <section class="col col-6">
+                                        <label class="label obrigatorio">Substância:</label>
+                                        <label class="select" ng-class="{&#39;state-error&#39;: CFEMRecolhimento.cbSubstancia.$dirty}">
+                                            <select name="cbSubstancia" id="cbSubstancia" ng-click="verificaSubstancia(substancia)" ng-model="substancia" ng-options="subs.Nome for subs in processo.Substancias" ng-class="{&#39;state-error&#39;: CFEMRecolhimento.cbSubstancia.$dirty }" ng-change="validarAliqPersonalizada()" class="ng-pristine ng-untouched ng-valid"><option value="?" selected="selected" label=""></option></select> <i></i>
+                                            <span ng-show="CFEMRecolhimento.cbSubstancia.$dirty" class="invalid ng-hide">Informe uma susbstância!</span>
+                                        </label>
+                                    </section>
+                                    <section class="col col-6">
+                                        <label class="label obrigatorio">Unidade de medida:</label>
+                                        <label class="select state-error" ng-class="{&#39;state-error&#39;: !CFEMRecolhimento.cbUnidadeMedida.$valid }">
+                                            <select name="cbUnidadeMedida" id="cbUnidadeMedida" ng-model="unidadeMedida" ng-options="unidade for unidade in substancia.Unidades " ng-class="{&#39;state-error&#39;: CFEMRecolhimento.cbUnidadeMedida.$dirty }" class="ng-pristine ng-untouched ng-invalid ng-invalid-unidade-medida"><option value="?" selected="selected" label=""></option></select> <i></i>
+                                            <span ng-show="CFEMRecolhimento.unidadeMedida.$dirty" class="invalid ng-hide">Informe uma unidade de medida!</span>
+                                        </label>
+                                    </section>
+                                    <section class="col col-6">
+                                        <label class="label obrigatorio">Município:</label>
+                                        <label class="select" ng-class="{&#39;state-error&#39;: CFEMRecolhimento.cbMunicipio.$dirty }"></label>
+                                        <select name="cbMunicipio" id="cbMunicipio" required="" ng-model="municipio" ng-options="muni.MunicipioUF for muni in processo.Municipios" ng-class="{&#39;state-success&#39; :  !CFEMRecolhimento.cbMunicipio.$pristine &amp;&amp; CFEMRecolhimento.cbMunicipio.value != &#39;&#39;}" class="ng-pristine ng-untouched ng-valid ng-valid-required"><option value="?" selected="selected" label=""></option></select><i></i>
+                                        <span ng-show="CFEMRecolhimento.cbMunicipio.$dirty" class="invalid ng-hide">Informe o município!</span>
+                                    </section>
+                                </div>
+
+                                <div class="row">
+                                    <section class="col col-6" ng-show="declaracaoNF">
+                                        <label class="label obrigatorio">Mês de Apuração:</label>
+                                        <label class="input" ng-class="{&#39;state-error&#39;: CFEMRecolhimento.mesApuracao.$invalid &amp;&amp; !CFEMRecolhimento.mesApuracao.$pristine, &#39;state-success&#39; :  CFEMRecolhimento.mesApuracao.$valid &amp;&amp; !CFEMRecolhimento.mesApuracao.$pristine }">
+                                            <i class="icon-append fa fa-calendar"></i>
+                                            <input ng-attr-type="text" class="maskMesApuracao ng-pristine ng-untouched ng-valid ng-valid-mes-apuracao ng-valid-maxlength ng-valid-required" name="mesApuracao" id="mesApuracao" ng-model="mesApuracao" data-mask="99/9999" data-mask-placeholder="*" placeholder="ex: 99/9999" maxlength="7" ng-required="!declaracaoNF" ng-keyup="ajustarMesApuracao($event)" ng-click="ajustarCursor($event)" ng-class="{&#39;state-error&#39;: CFEMRecolhimento.mesApuracao.$invalid &amp;&amp; !CFEMRecolhimento.mesApuracao.$pristine, &#39;state-success&#39; :  CFEMRecolhimento.mesApuracao.$valid &amp;&amp; !CFEMRecolhimento.mesApuracao.$pristine}">
+                                        </label>
+                                        <em ng-show="CFEMRecolhimento.mesApuracao.$invalid  &amp;&amp; !CFEMRecolhimento.mesApuracao.$pristine" class="invalid ng-hide">Informe um mês de apuração valido dentro menor que o mês atual!</em>
+                                    </section>
+                                    <section class="col col-6 ng-hide" ng-show="tipoUsoLista">
+                                        <label class="label obrigatorio">A substância possui um tipo de uso específico?</label>
+                                        <div class="custom-control custom-radio custom-control-inline">
+                                            <input type="radio" id="customRadioInline1" name="customRadioInline1" class="custom-control-input ng-pristine ng-untouched ng-valid" ng-model="tipoUsoOpcao" value="tipoUsoNaoCheck" ng-checked="!tipoUso" ng-click="tipoUsoNao()" checked="checked">
+                                            <label class="custom-control-label" for="customRadioInline1">Não</label>
+                                            <input style="margin-left: 22px;" type="radio" id="customRadioInline2" name="customRadioInline1" class="custom-control-input ng-pristine ng-untouched ng-valid" ng-model="tipoUsoOpcao" value="tipoUsoSimCheck" ng-click="tipoUsoSim()">
+                                            <label class="custom-control-label" for="customRadioInline2">Sim</label>
+                                        </div>
+                                    </section>
+
+                                </div>
+                                <div class="row">
+                                    <section class="col col-6 ng-hide" ng-show="tipoUso">
+                                        <label class="label obrigatorio">Selecione o tipo de uso da substância:</label>
+                                        <label class="select">
+                                            <select name="cbTipoUso" id="cbTipoUso" ng-model="tipoUsoSelecionado" ng-change="selecionaTipoUso()" ng-options="tipoUsoItem.Nome for tipoUsoItem in tipoUsoLista" ng-class="{&#39;state-error&#39;: cbTipoUso.$dirty }" class="ng-pristine ng-untouched ng-valid"><option value="?" selected="selected" label=""></option></select><i></i>
+                                        </label>
+                                    </section>
+                                    <!-- Correção 2933 -->
+                                    <section class="col col-6 ng-hide" ng-show="aliqPersonalizada">
+                                        <label class="label obrigatorio">Trata-se de rejeitos ou estéreis de minerais associados utilizados em outras cadeias produtivas?</label>
+                                        <div class="custom-control custom-radio custom-control-inline">
+                                            <input type="radio" id="cR1" name="cR1" class="custom-control-input ng-pristine ng-untouched ng-valid" ng-model="aliqPersonalizadaOpcao" value="aliqPersNaoCheck" ng-checked="aliqPersonalizada" ng-click="aliqPersNao()">
+                                            <label class="custom-control-label" for="cR1">Não</label>
+                                            <input style="margin-left: 22px;" type="radio" id="cR2" name="cR1" class="custom-control-input ng-pristine ng-untouched ng-valid" ng-model="aliqPersonalizadaOpcao" value="aliqPersSimCheck" ng-click="aliqPersSim()">
+                                            <label class="custom-control-label" for="cR2">Sim</label>
+                                        </div>
+                                    </section>
+                                    <section class="col col-6 ng-hide" ng-show="gambetaFerro">
+                                        <label class="label obrigatorio">Alíquota do ferro:</label>
+                                        <label class="select">
+                                            <select name="cbAliquotaFerro" ng-init="aliquotaFerro=&#39;4.0&#39;;" ng-model="aliquotaFerro" id="cbAliquotaFerro" ng-change="atualizaAliquotaFerro()" class="ng-pristine ng-untouched ng-valid">
+                                                <option value="4.0">4,0% (quatro por cento)</option>
+                                                <option value="3.5">3,5% (três inteiros e cinco décimos por cento)</option>
+                                                <option value="3.0">3,0% (três por cento)</option>
+                                                <option value="2.5">2,5% (dois inteiros e cinco décimos por cento)</option>
+                                                <option value="2.0">2,0% (dois por cento)</option>
+                                            </select> <i></i>
+                                        </label>
+                                        <label>A alíquota deve seguir a Cotação Internacional em US$/Tonelada (segundo o Índice Platts Iron Ore Index - Iodex) Segundo a <a target="_blank" href="http://www.planalto.gov.br/ccivil_03/_ato2015-2018/2017/Mpv/mpv789.htm">MPV 789/2017</a> </label>
+                                    </section>
+                                </div>
+                            </fieldset>
+
+                            <header ng-show="tipoVenda==&#39;1&#39; || tipoVenda==&#39;2&#39;">
+                                Fatos geradores
+
+                                <button style="margin-left:215px;" type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModal" ng-click="carregarListaNCM()">
+                                    Códigos NCM
+                                </button>
+
+                            </header>
+
+                            <fieldset ng-show="tipoVenda==&#39;1&#39; || tipoVenda==&#39;2&#39;">
+                                <div class="row">
+                                    <section class="col col-3">
+                                        <label class="label">Saída por venda (mercado interno):</label>
+                                    </section>
+                                    <section class="col col-3" style="position:relative; top:7px; right:30px;">
+                                        <label class="label" style="position:absolute; top:-27px;">R$</label>
+                                        <label class="input" ng-class="{&#39;state-error&#39;: CFEMRecolhimento.valorVendaMercadoInterno.$invalid  &amp;&amp; !CFEMRecolhimento.valorVendaMercadoInterno.$pristine}">
+                                            <input ng-attr-type="text" name="valorVendaMercadoInterno" id="valorVendaMercadoInterno" class="form-control text-left ng-untouched ng-valid ng-dirty ng-valid-parse" ng-model="fatosGeradores.valorVendaMercadoInterno" ng-keyup="calcularPrecoMedioValorMinterno()" ui-number-mask="decimais" style="width:97px; height:27px;">
+                                        </label>
+                                    </section>
+                                    <section class="col col-3" style="position: relative; top:7px; right: 70px;">
+                                        <label class="label" style="position:absolute; top:-27px;">Quantidade</label>
+                                        <div class="input" ng-class="{&#39;state-error&#39;: fatosGeradores.valorVendaMercadoInterno &gt; 0 &amp;&amp; fatosGeradores.qtdVendaMercadoInterno &lt;= 0, &#39;state-success&#39; :  fatosGeradores.valorVendaMercadoInterno &gt; 0 &amp;&amp; fatosGeradores.qtdVendaMercadoInterno &gt; 0 }">
+                                            <i class="icon-append fa" style="margin-top:-2.7px; left:70px;"><strong class="ng-binding"></strong></i>
+                                            <input ng-attr-type="text" name="qtdVendaMercadoInterno" id="qtdVendaMercadoInterno" class="form-control text-left ng-untouched ng-valid ng-dirty ng-valid-parse" ng-model="fatosGeradores.qtdVendaMercadoInterno" ng-keyup="calcularPrecoMedioQuantidadeMinterno()" ui-number-mask="decimais" style="width:97px; height:27px;">
+                                        </div>
+                                        <em ng-show="fatosGeradores.valorVendaMercadoInterno &gt; 0  &amp;&amp; fatosGeradores.qtdVendaMercadoInterno &lt;= 0" class="invalid ng-hide">A quantidade deve ser maior que 0!</em>
+                                    </section>
+                                    <section class="col col-3" style="position: relative; top: 7px; right: 110px;">
+                                        <label class="label obrigatorio" style="position:absolute; top:-27px;">Código NCM</label>
+                                        <div class="input" ng-class="{&#39;state-error&#39;: CFEMRecolhimento.codigoNCMMinterno.$invalid &amp;&amp; !CFEMRecolhimento.codigoNCMMinterno.$pristine, &#39;state-success&#39; :  CFEMRecolhimento.codigoNCMMinterno.$valid &amp;&amp; !CFEMRecolhimento.codigoNCMMinterno.$pristine}">
+                                            <input ng-attr-type="text" name="codigoNCMMinterno" id="codigoNCMMinterno" class="form-control text-left ng-pristine ng-untouched ng-valid ng-valid-maxlength" ng-model="fatosGeradores.codigoNCMMinterno" ng-blur="validarTabelaNCM(&#39;1&#39;)" data-mask="9999.99.99" placeholder="ex: 9999.99.99" data-mask-placeholder="0" maxlength="10" style="width:97px; height:27px;" ng-class="{&#39;state-error&#39;: CFEMRecolhimento.codigoNCMMinterno.$invalid  &amp;&amp; !CFEMRecolhimento.codigoNCMMinterno.$pristine, &#39;state-success&#39; :  CFEMRecolhimento.codigoNCMMinterno.$valid &amp;&amp; !CFEMRecolhimento.codigoNCMMinterno.$pristine}">
+                                        </div>
+                                    </section>
+                                    <section class="col col-3" style="position: absolute; top: 32px; left: 440px; margin-top: 0px;">
+                                        <label class="label" style="position:absolute; top:-27px;">Preço médio</label>
+                                        <label class="input">
+                                            <i class="icon-append fa fa-usd" style="margin-right:17px; margin-top:-2.7px;"></i>
+                                            <input ng-attr-type="text" name="mediaVendaMercadoInterno" id="mediaVendaMercadoInterno" class="text-left ng-untouched ng-valid ng-dirty ng-valid-parse" ng-model="fatosGeradores.mediaVendaMercadoInterno" disabled="disabled" ui-number-mask="decimais" style="width:97px; height:27px;">
+                                        </label>
+                                    </section>
+                                    <section class="col col-3" style="position:absolute; left:545px; top:33px;">
+                                        <button id="adicionarFatosGeradores" type="button" ng-click="duplicarFatosGeradores(&#39;1&#39;)">&nbsp;+&nbsp;</button>
+                                    </section>
+                                </div>
+
+                                <div id="divMercadoInterno">
+                                    <!-- ngRepeat: mercInterno in mercInternos -->
+                                    <hr style="border-color:lightgray;">
+                                    <br>
+                                </div>
+
+                                <div class="row">
+                                    <section class="col col-3">
+                                        <label class="label">Saída por venda (exportação):</label>
+                                    </section>
+                                    <section class="col col-3" style="position:relative; right:30px;">
+                                        <label class="input">
+                                            <input ng-attr-type="text" name="valorVendaMercadoExportacao" id="valorVendaMercadoExportacao" class="form-control text-left ng-untouched ng-valid ng-dirty ng-valid-parse" ng-model="fatosGeradores.valorVendaMercadoExportacao" ng-keyup="calcularPrecoMedioValorExportacao()" ui-number-mask="decimais" style="width:97px; height:27px;">
+                                        </label>
+                                    </section>
+                                    <section class="col col-3" style="position:relative; right:70px;">
+                                        <div class="input" ng-class="{&#39;state-error&#39;: fatosGeradores.valorVendaMercadoExportacao &gt; 0 &amp;&amp; fatosGeradores.qtdVendaMercadoExportacao &lt;= 0, &#39;state-success&#39; :  fatosGeradores.valorVendaMercadoExportacao &gt; 0 &amp;&amp; fatosGeradores.qtdVendaMercadoExportacao &gt; 0 }">
+                                            <i class="icon-append fa" style="margin-top: -2.7px; left: 70px;"><strong class="ng-binding"></strong></i>
+                                            <input ng-attr-type="text" name="qtdVendaMercadoExportacao" id="qtdVendaMercadoExportacao" class="form-control text-left ng-untouched ng-valid ng-dirty ng-valid-parse" ng-model="fatosGeradores.qtdVendaMercadoExportacao" ng-keyup="calcularPrecoMedioQuantidadeExportacao()" ui-number-mask="decimais" style="width:97px; height:27px;">
+                                        </div>
+                                        <em ng-show="fatosGeradores.valorVendaMercadoExportacao &gt; 0  &amp;&amp; fatosGeradores.qtdVendaMercadoExportacao &lt;= 0" class="invalid ng-hide">A quantidade deve ser maior que 0!</em>
+                                    </section>
+                                    <section class="col col-3" style="position:relative; right:110px;">
+                                        <div class="input" ng-class="{&#39;state-error&#39;: CFEMRecolhimento.codigoNCMExportacao.$invalid &amp;&amp; !CFEMRecolhimento.codigoNCMExportacao.$pristine, &#39;state-success&#39; :  CFEMRecolhimento.codigoNCMExportacao.$valid &amp;&amp; !CFEMRecolhimento.codigoNCMExportacao.$pristine}">
+                                            <input ng-attr-type="text" name="codigoNCMExportacao" id="codigoNCMExportacao" class="form-control text-left ng-pristine ng-untouched ng-valid ng-valid-maxlength" ng-model="fatosGeradores.codigoNCMExportacao" ng-blur="validarTabelaNCM(&#39;2&#39;)" data-mask="9999.99.99" placeholder="ex: 9999.99.99" data-mask-placeholder="0" maxlength="10" style="width:97px; height:27px;" ng-class="{&#39;state-error&#39;: CFEMRecolhimento.codigoNCMExportacao.$invalid  &amp;&amp; !CFEMRecolhimento.codigoNCMExportacao.$pristine, &#39;state-success&#39; :  CFEMRecolhimento.codigoNCMExportacao.$valid &amp;&amp; !CFEMRecolhimento.codigoNCMExportacao.$pristine}">
+                                        </div>
+                                    </section>
+                                    <section class="col col-3" style="position:absolute; left:440px; margin-top:0px;">
+                                        <label class="input">
+                                            <i class="icon-append fa fa-usd" style="margin-right:17px; margin-top: -2.7px;"></i>
+                                            <input ng-attr-type="text" name="mediaVendaMercadoExportacao" id="mediaVendaMercadoExportacao" class="text-left ng-untouched ng-valid ng-dirty ng-valid-parse" ng-model="fatosGeradores.mediaVendaMercadoExportacao" disabled="disabled" ui-number-mask="decimais" style="width:97px; height:27px;">
+                                        </label>
+                                    </section>
+                                    <section class="col col-3" style="position:relative; left:395px; margin-top:-40px;">
+                                        <button id="adicionarFatosGeradores" type="button" ng-click="duplicarFatosGeradores(&#39;2&#39;)">&nbsp;+&nbsp;</button>
+                                    </section>
+                                </div>
+
+                                <div id="divExportacao">
+                                    <!-- ngRepeat: exportacao in exportacoes -->
+                                    <hr style="border-color:lightgray;">
+                                    <br>
+                                </div>
+
+                                <div class="row">
+                                    <section class="col col-3">
+                                        <label class="label">Consumo (Transformação):</label>
+                                    </section>
+                                    <section class="col col-3" style="position:relative; right:30px;">
+                                        <label class="input">
+                                            <input ng-attr-type="text" name="valorCustoIndustrializacao" id="valorCustoIndustrializacao" class="form-control text-left ng-untouched ng-valid ng-dirty ng-valid-parse" ng-model="fatosGeradores.valorCustoIndustrializacao" ng-keyup="calcularPrecoMedioValorTranformacao()" ui-number-mask="decimais" style="width:97px; height:27px;">
+                                        </label>
+                                    </section>
+                                    <section class="col col-3" style="position:relative; right:70px;">
+                                        <div class="input" ng-class="{&#39;state-error&#39;: fatosGeradores.valorCustoIndustrializacao &gt; 0 &amp;&amp; fatosGeradores.qtdCustoIndustrializacao &lt;= 0, &#39;state-success&#39; :  fatosGeradores.valorCustoIndustrializacao &gt; 0 &amp;&amp; fatosGeradores.qtdCustoIndustrializacao &gt; 0 }">
+                                            <i class="icon-append fa" style="margin-top: -2.7px; left: 70px;"><strong class="ng-binding"></strong></i>
+                                            <input ng-attr-type="text" name="qtdCustoIndustrializacao" id="qtdCustoIndustrializacao" class="form-control text-left ng-untouched ng-valid ng-dirty ng-valid-parse" ng-model="fatosGeradores.qtdCustoIndustrializacao" ng-keyup="calcularPrecoMedioQuantidadeTranformacao()" ui-number-mask="decimais" style="width:97px; height:27px;">
+                                        </div>
+                                        <em ng-show="fatosGeradores.valorCustoIndustrializacao &gt; 0  &amp;&amp; fatosGeradores.qtdCustoIndustrializacao &lt;= 0" class="invalid ng-hide">A quantidade deve ser maior que 0!</em>
+                                    </section>
+                                    <section class="col col-3" style="position:relative; right:110px;">
+                                        <div class="input" ng-class="{&#39;state-error&#39;: CFEMRecolhimento.codigoNCMTransformacao.$invalid &amp;&amp; !CFEMRecolhimento.codigoNCMTransformacao.$pristine, &#39;state-success&#39; :  CFEMRecolhimento.codigoNCMTransformacao.$valid &amp;&amp; !CFEMRecolhimento.codigoNCMTransformacao.$pristine}">
+                                            <input ng-attr-type="text" name="codigoNCMTransformacao" id="codigoNCMTransformacao" class="form-control text-left ng-pristine ng-untouched ng-valid ng-valid-maxlength" ng-model="fatosGeradores.codigoNCMTransformacao" ng-blur="validarTabelaNCM(&#39;3&#39;)" data-mask="9999.99.99" placeholder="ex: 9999.99.99" data-mask-placeholder="0" maxlength="10" style="width:97px; height:27px;" ng-class="{&#39;state-error&#39;: CFEMRecolhimento.codigoNCMTransformacao.$invalid  &amp;&amp; !CFEMRecolhimento.codigoNCMTransformacao.$pristine, &#39;state-success&#39; :  CFEMRecolhimento.codigoNCMTransformacao.$valid &amp;&amp; !CFEMRecolhimento.codigoNCMTransformacao.$pristine}">
+                                        </div>
+                                    </section>
+                                    <section class="col col-3" style="position:absolute; left:440px; margin-top:0px;">
+                                        <label class="input">
+                                            <i class="icon-append fa fa-usd" style="margin-right:17px; margin-top: -2.7px;"></i>
+                                            <input ng-attr-type="text" name="mediaCustoIndustrializacao" id="mediaCustoIndustrializacao" class="text-left ng-untouched ng-valid ng-dirty ng-valid-parse" ng-model="fatosGeradores.mediaCustoIndustrializacao" disabled="disabled" ui-number-mask="decimais" style="width:97px; height:27px;">
+                                        </label>
+                                    </section>
+                                    <section class="col col-3" style="position: relative; left: 395px; margin-top: -40px; ">
+                                        <button id="adicionarFatosGeradores" type="button" ng-click="duplicarFatosGeradores(&#39;3&#39;)">&nbsp;+&nbsp;</button>
+                                    </section>
+                                </div>
+
+                                <div id="divTransformacao">
+                                    <!-- ngRepeat: transformacao in transformacoes -->
+                                    <hr style="border-color:lightgray;">
+                                    <br>
+                                </div>
+
+                                <div class="row">
+                                    <section class="col col-3">
+                                        <label class="label">Consumo interno na mina:</label>
+                                    </section>
+                                    <section class="col col-3" style="position:relative; right:30px;">
+                                        <label class="input">
+                                            <input ng-attr-type="text" name="valorConsumoInterno" id="valorConsumoInterno" class="form-control text-left ng-untouched ng-valid ng-dirty ng-valid-parse" ng-model="fatosGeradores.valorConsumoInterno" ng-keyup="calcularPrecoMedioValorInternoMina()" ui-number-mask="decimais" style="width:97px; height:27px;">
+                                        </label>
+                                    </section>
+                                    <section class="col col-3" style="position:relative; right:70px;">
+                                        <div class="input" ng-class="{&#39;state-error&#39;: fatosGeradores.valorConsumoInterno &gt; 0 &amp;&amp; fatosGeradores.qtdConsumoInterno &lt;= 0, &#39;state-success&#39; :  fatosGeradores.valorConsumoInterno &gt; 0 &amp;&amp; fatosGeradores.qtdConsumoInterno &gt; 0 }">
+                                            <i class="icon-append fa" style="margin-top: -2.7px; left: 70px;"><strong class="ng-binding"></strong></i>
+                                            <input ng-attr-type="text" name="qtdConsumoInterno" id="qtdConsumoInterno" class="form-control text-left ng-untouched ng-valid ng-dirty ng-valid-parse" ng-model="fatosGeradores.qtdConsumoInterno" ng-keyup="calcularPrecoMedioQuantidadeInternoMina()" ui-number-mask="decimais" style="width:97px; height:27px;">
+                                        </div>
+                                        <em ng-show="fatosGeradores.valorConsumoInterno &gt; 0  &amp;&amp; fatosGeradores.qtdConsumoInterno &lt;= 0" class="invalid ng-hide">A quantidade deve ser maior que 0!</em>
+                                    </section>
+                                    <section class="col col-3" style="position:relative; right:110px;">
+                                        <div class="input" ng-class="{&#39;state-error&#39;: CFEMRecolhimento.codigoNCMConsumoInterno.$invalid &amp;&amp; !CFEMRecolhimento.codigoNCMConsumoInterno.$pristine, &#39;state-success&#39; :  CFEMRecolhimento.codigoNCMConsumoInterno.$valid &amp;&amp; !CFEMRecolhimento.codigoNCMConsumoInterno.$pristine}">
+                                            <input ng-attr-type="text" name="codigoNCMConsumoInterno" id="codigoNCMConsumoInterno" class="form-control text-left ng-pristine ng-untouched ng-valid ng-valid-maxlength" ng-model="fatosGeradores.codigoNCMConsumoInterno" ng-blur="validarTabelaNCM(&#39;4&#39;)" data-mask="9999.99.99" placeholder="ex: 9999.99.99" data-mask-placeholder="0" maxlength="10" style="width:97px; height:27px;" ng-class="{&#39;state-error&#39;: CFEMRecolhimento.codigoNCMConsumoInterno.$invalid  &amp;&amp; !CFEMRecolhimento.codigoNCMConsumoInterno.$pristine, &#39;state-success&#39; :  CFEMRecolhimento.codigoNCMConsumoInterno.$valid &amp;&amp; !CFEMRecolhimento.codigoNCMConsumoInterno.$pristine}">
+                                        </div>
+                                    </section>
+                                    <section class="col col-3" style="position:absolute; left:440px; margin-top:0px;">
+                                        <label class="input">
+                                            <i class="icon-append fa fa-usd" style="margin-right:17px; margin-top:-2.7px;"></i>
+                                            <input ng-attr-type="text" name="mediaConsumoInterno" id="mediaConsumoInterno" class="text-left ng-untouched ng-valid ng-dirty ng-valid-parse" ng-model="fatosGeradores.mediaConsumoInterno" disabled="disabled" ui-number-mask="decimais" style="width:97px; height:27px;">
+                                        </label>
+                                    </section>
+                                    <section class="col col-3" style="position: relative; left: 395px; margin-top: -40px;">
+                                        <button id="adicionarFatosGeradores" type="button" ng-click="duplicarFatosGeradores(&#39;4&#39;)">&nbsp;+&nbsp;</button>
+                                    </section>
+                                </div>
+
+                                <div id="divInternoMina">
+                                    <!-- ngRepeat: internoMina in internoMinas -->
+                                    <hr style="border-color:lightgray;">
+                                    <br>
+                                </div>
+
+                                <div class="row">
+                                    <section class="col col-3">
+                                        <label class="label">Valor de operação consolidado:</label>
+                                    </section>
+                                    <section class="col col-6">
+                                        <label class="input">
+                                            <i class="icon-append fa fa-usd"></i>
+                                            <input ng-attr-type="text" name="valorOperacaoConsolidado" id="valorOperacaoConsolidado" class="text-right ng-untouched ng-valid ng-dirty ng-valid-parse" ng-model="fatosGeradores.valorOperacaoConsolidado" disabled="disabled" ui-number-mask="decimais">
+                                        </label>
+                                    </section>
+                                </div>
+
+                            </fieldset>
+
+                            <header ng-show="tipoVenda==&#39;1&#39; || tipoVenda==&#39;2&#39;">
+                                Deduções
+                            </header>
+
+                            <fieldset ng-show="tipoVenda==&#39;1&#39; || tipoVenda==&#39;2&#39;">
+
+                                <div class="row">
+                                    <section class="col col-2" style="top: 25px;">
+                                        <label class=" label">
+                                            ICMS:
+                                        </label>
+                                    </section>
+                                    <section class="col col-4">
+                                        <label class="label">R$</label>
+                                        <label class="input">
+                                            <i class="icon-append fa fa-edit"></i>
+                                            <input ng-attr-type="text" name="icms" id="icms" class="text-left ng-untouched ng-valid ng-dirty ng-valid-parse" ng-model="recolhimento.icms" ui-number-mask="decimais">
+                                        </label>
+                                    </section>
+                                    <section class="col col-4">
+                                        <label class="label">% Valor de operação</label>
+                                        <label class="input">
+                                            <i class="icon-append fa"><strong>%</strong></i>
+                                            <input ng-attr-type="text" name="icms" id="icms" class="text-right ng-pristine ng-untouched ng-valid" ng-model="percentualICMS" disabled="disabled" ui-number-mask="decimais">
+                                        </label>
+                                    </section>
+                                </div>
+                                <div class="row">
+                                    <section class="col col-2 ng-hide" ng-show="substancia.Balneario">
+                                        <label class="label">ISS:</label>
+                                    </section>
+                                    <section class="col col-4 ng-hide" ng-show="substancia.Balneario">
+                                        <label class="input">
+                                            <i class="icon-append fa fa-edit"></i>
+                                            <input ng-attr-type="text" class="text-left ng-untouched ng-valid ng-dirty ng-valid-parse" name="iss" id="iss" ng-model="recolhimento.iss" ui-number-mask="decimais">
+                                        </label>
+                                    </section>
+                                    <section class="col col-4 ng-hide" ng-show="substancia.Balneario">
+                                        <label class="input">
+                                            <i class="icon-append fa"><strong>%</strong></i>
+                                            <input ng-attr-type="text" class="text-right ng-pristine ng-untouched ng-valid" name="iss" id="iss" ng-model="percentualISS" disabled="disabled" ui-number-mask="decimais">
+                                        </label>
+                                    </section>
+                                </div>
+
+                                <div class="row">
+                                    <section class="col col-2">
+                                        <label class="label">PIS:</label>
+                                    </section>
+                                    <section class="col col-4">
+                                        <label class="input">
+                                            <i class="icon-append fa fa-edit"></i>
+                                            <input ng-attr-type="text" name="pis" id="pis" class="text-left ng-untouched ng-valid ng-dirty ng-valid-parse" ng-model="recolhimento.pis" ui-number-mask="decimais">
+                                        </label>
+                                    </section>
+                                    <section class="col col-4">
+                                        <label class="input">
+                                            <i class="icon-append fa"><strong>%</strong></i>
+                                            <input ng-attr-type="text" name="pis" id="pis" class="text-right ng-pristine ng-untouched ng-valid" ng-model="percentualPIS" disabled="disabled" ui-number-mask="decimais">
+                                        </label>
+                                    </section>
+                                </div>
+
+                                <div class="row">
+                                    <section class="col col-2">
+                                        <label class="label">COFINS:</label>
+                                    </section>
+                                    <section class="col col-4">
+                                        <label class="input">
+                                            <i class="icon-append fa fa-edit"></i>
+                                            <input ng-attr-type="text" name="cofins" id="cofins" class="text-left ng-untouched ng-valid ng-dirty ng-valid-parse" ng-model="recolhimento.cofins" ui-number-mask="decimais">
+                                        </label>
+                                    </section>
+                                    <section class="col col-4">
+                                        <label class="input">
+                                            <i class="icon-append fa"><strong>%</strong></i>
+                                            <input ng-attr-type="text" name="cofins" id="cofins" class="text-right ng-pristine ng-untouched ng-valid" ng-model="percentualCOFINS" disabled="disabled" ui-number-mask="decimais">
+                                        </label>
+                                    </section>
+                                </div>
+
+                                <div class="row ng-hide" ng-show="showTfrm">
+                                    <section class="col col-2">
+                                        <label class="label">TFRM:</label>
+                                    </section>
+                                    <section class="col col-4">
+                                        <label class="input">
+                                            <i class="icon-append fa fa-edit"></i>
+                                            <input ng-attr-type="text" name="trfm" id="trfm" class="text-left ng-untouched ng-valid ng-dirty ng-valid-parse" ng-model="recolhimento.tfrm" ui-number-mask="decimais">
+                                        </label>
+                                    </section>
+                                    <section class="col col-4">
+                                        <label class="input">
+                                            <i class="icon-append fa"><strong>%</strong></i>
+                                            <input ng-attr-type="text" name="trfm" id="trfm" class="text-right ng-pristine ng-untouched ng-valid" ng-model="percentualTfrm" disabled="disabled" ui-number-mask="decimais">
+                                        </label>
+                                    </section>
+                                </div>
+
+                                <div class="row">
+                                    <section class="col col-2 ng-hide" ng-show="substancia.AtivoFinanceiro">
+                                        <label class="label">IOF:</label>
+                                    </section>
+                                    <section class="col col-4 ng-hide" ng-show="substancia.AtivoFinanceiro">
+                                        <label class="input">
+                                            <i class="icon-append fa fa-edit"></i>
+                                            <input ng-attr-type="text" class="text-left ng-untouched ng-valid ng-dirty ng-valid-parse" name="iof" id="iof" ng-model="recolhimento.iof" ui-number-mask="decimais">
+                                        </label>
+                                    </section>
+                                    <section class="col col-4 ng-hide" ng-show="substancia.AtivoFinanceiro">
+                                        <label class="input">
+                                            <i class="icon-append fa"><strong>%</strong></i>
+                                            <input ng-attr-type="text" class="text-right ng-pristine ng-untouched ng-valid" name="iof" id="iof" ng-model="percentualIOF" disabled="disabled" ui-number-mask="decimais">
+                                        </label>
+                                    </section>
+                                </div>
+
+                                <div class="row ng-hide" ng-show="ExibirFrete">
+
+                                    <section class="col col-2">
+                                        <label class="label">Frete:</label>
+                                    </section>
+                                    <section class="col col-4">
+                                        <label class="input">
+                                            <i class="icon-append fa fa-edit"></i>
+                                            <input ng-attr-type="text" class="text-left ng-untouched ng-valid ng-dirty ng-valid-parse" name="frete" id="frete" ng-model="recolhimento.frete" ui-number-mask="decimais">
+                                        </label>
+                                    </section>
+
+                                    <section class="col col-4">
+                                        <label class="input">
+                                            <i class="icon-append fa"><strong>%</strong></i>
+                                            <input ng-attr-type="text" class="text-right ng-pristine ng-untouched ng-valid" name="frete" id="frete" ng-model="percentualFrete" disabled="disabled" ui-number-mask="decimais">
+                                        </label>
+                                    </section>
+                                </div>
+
+                                <div class="row ng-hide" ng-show="ExibirSeguro">
+                                    <section class="col col-2">
+                                        <label class="label">Seguro:</label>
+                                    </section>
+                                    <section class="col col-4">
+                                        <label class="input">
+                                            <i class="icon-append fa fa-edit"></i>
+                                            <input ng-attr-type="text" class="text-left ng-untouched ng-valid ng-dirty ng-valid-parse" name="seguro" id="seguro" ng-model="recolhimento.seguro" ui-number-mask="decimais">
+                                        </label>
+                                    </section>
+                                    <section class="col col-4">
+                                        <label class="input">
+                                            <i class="icon-append fa"><strong>%</strong></i>
+                                            <input ng-attr-type="text" class="text-right ng-pristine ng-untouched ng-valid" name="seguro" id="seguro" ng-model="percentualSeguro" disabled="disabled" ui-number-mask="decimais">
+                                        </label>
+                                    </section>
+                                </div>
+                            </fieldset>
+
+                            <header ng-show="tipoVenda==&#39;1&#39; || tipoVenda==&#39;2&#39;">
+                                Base de Cálculo
+                            </header>
+
+                            <fieldset ng-show="tipoVenda==&#39;1&#39; || tipoVenda==&#39;2&#39;">
+
+                                <div class="row">
+                                    <section class="col col-2">
+                                        <label class="label">Total:</label>
+                                    </section>
+                                    <section class="col col-6">
+                                        <label class="input">
+                                            <i class="icon-append fa fa-usd"></i>
+                                            <input ng-attr-type="text" class="text-right ng-untouched ng-valid ng-dirty ng-valid-parse" name="baseCalculo" id="baseCalculo" ng-model="recolhimento.liquido" disabled="disabled" ui-number-mask=" decimais">
+                                        </label>
+                                    </section>
+                                </div>
+
+                            </fieldset>
+
+
+                            <footer>
+                                <p ng-show="recolhimento.valorCFEM&lt;=0" class="text-right ng-hide" style="color:red;">O Valor da CFEM tem que ser maior que 0,00</p>
+                                <p ng-show="!CFEMRecolhimento.$valid" class="text-right" style="color:red;">Preencha todos os campos com *. </p>
+                                <p ng-show="!validaNCM.$valid" class="text-right" style="color:red;">Os campos NCM devem ser preenchidos caso o valor referente a sua linha seja maior que R$ 0,00 </p>
+                                <button ng-attr-type="submit" class="btn btn-primary" ng-disabled="!CFEMRecolhimento.$valid || recolhimento.valorCFEM&lt;=0 " disabled="disabled">
+                                    <i class="fa fa-usd"></i>
+                                    Calcular Valor
+                                </button>
+                                <button type="button" ng-click="limpa()" class="btn btn-default">Limpar</button>
+
+                            </footer>
+                        </form>
+
+                    </div>
+                    <!-- end widget content -->
+
+                </div>
+                <!-- end widget div -->
+
+            </div>
+            <!-- end widget -->
+
+        </article>
+
+        <article class="col-sm-12 col-md-12 col-lg-5 sortable-grid ui-sortable">
+
+            <div ng-show="exibeInfoEmissao" class="jarviswidget ng-hide" id="wid-id-1" data-widget-colorbutton="false" data-widget-custombutton="false" data-widget-togglebutton="false" data-widget-deletebutton="false" data-widget-fullscreenbutton="false" data-widget-sortable="false" data-widget-editbutton="false" role="widget">
+
+                <header id="calculaValor" role="heading">
+                    <span class="widget-icon"> <i class="fa fa-barcode "></i> </span>
+                    <h2>Informações prestadas para a emissão</h2>
+                <span class="jarviswidget-loader"><i class="fa fa-refresh fa-spin"></i></span></header>
+
+                <div role="content">
+
+                    <div class="jarviswidget-editbox">
+                    </div>
+                    <!-- This area used as dropdown edit box -->
+                    <div id="printable" class="widget-body no-padding">
+                        <form name="checkout-form" id="checkout-form" class="smart-form ng-pristine ng-valid" novalidate="novalidate" method="post">
+                            <img src="./CFEM ANM_files/logotipo_novo.gif" class="brasaoPrintDNPM">
+                            <table class="table table-bordered">
+                                <tbody><tr>
+                                    <th class="text-right">Nome:</th>
+                                    <td colspan="2" class="ng-binding">
+                                        <br>
+                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="text-right">Processo:</th>
+                                    <td colspan="2" class="ng-binding">
+                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="text-right">Substância:</th>
+                                    <td colspan="2" class="ng-binding">
+                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="text-right">Alíquota</th>
+                                    <td colspan="2" class="ng-binding">
+                                        %
+                                    </td>
+                                </tr>
+                                <tr ng-show="declaracaoNF">
+                                    <th class="text-right">Mês de apuração:</th>
+                                    <td colspan="2" class="ng-binding">
+                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="text-right">Município:</th>
+                                    <td colspan="2" class="ng-binding">
+                                        
+                                    </td>
+                                </tr>
+                                <tr hidden="">
+                                    <th class="text-right">Valor de Operação:</th>
+                                    <td colspan="2" class="ng-binding">
+                                        0  x 0 = <span class="ng-binding">0,00</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th rowspan="4" class="text-right">Valor de Operação:</th>
+                                    <th class="text-right">Saída Venda (Mercado Int.) </th>
+                                    <td>
+                                        <span class="ng-binding">0,00</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="text-right">Saída Venda (Mercado Exp.) </th>
+                                    <td>
+                                        <span class="ng-binding">0,00</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="text-right">Consumo (Transformação) </th>
+                                    <td>
+                                        <span class="ng-binding">0,00</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="text-right">Consumo interno na mina </th>
+                                    <td>
+                                        <span class="ng-binding">0,00</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th rowspan="6" class="text-right">Tributos:</th>
+                                    <th class="text-right">ICMS</th>
+                                    <td class="ng-binding">
+                                        0,00
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="text-right">PIS</th>
+                                    <td class="ng-binding">
+                                        0,00
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="text-right">COFINS</th>
+                                    <td class="ng-binding">
+                                        0,00
+                                    </td>
+                                </tr>
+                                <tr ng-show="showTfrm" class="ng-hide">
+                                    <th class="text-right">TFRM</th>
+                                    <td class="ng-binding">
+                                        0,00
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="text-right">IOF</th>
+                                    <td class="ng-binding">
+                                        0,00
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <th class="text-right">ISS</th>
+                                    <td class="ng-binding">
+                                        0,00
+                                    </td>
+                                </tr>
+                                <tr hidden="">
+                                    <th>Impostos</th>
+                                    <td class="ng-binding">
+                                        0,00
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="text-right">Frete:</th>
+                                    <td colspan="2" class="ng-binding">
+                                        0,00
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="text-right">Seguro:</th>
+                                    <td colspan="2" class="ng-binding">
+                                        0,00
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="text-right">Base de cálculo:</th>
+                                    <td colspan="2" class="ng-binding">
+                                        0,00
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="text-right">
+                                        CFEM devida no período de apuração:<br>
+                                    </th>
+
+                                    <td colspan="2" class="ng-binding">
+                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="text-right">
+                                        Correção monetária:<br>
+                                    </th>
+                                    <td colspan="2" class="ng-binding">
+                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="text-right">
+                                        Data de divulgação do IPCA-15:<br>
+                                    </th>
+                                    <td colspan="2">
+                                        <a href="https://www.ibge.gov.br/calendario-indicadores-novoportal.html">Calendário de divulgação, acessar IBGE</a>
+                                    </td>
+                                </tr>
+                                <tr ng-show="correcao.Mora1&gt;0" class="ng-hide">
+                                    <th class="text-right">
+                                        Juros:<br>
+                                    </th>
+                                    <td colspan="2" class="ng-binding">
+                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="text-right">
+                                        Juros:<br>
+                                    </th>
+                                    <td colspan="2" class="ng-binding">
+                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="text-right">
+                                        Multa:<br>
+                                    </th>
+                                    <td colspan="2" class="ng-binding">
+                                        
+
+                                    </td>
+                                </tr>
+                                <tr ng-show="compensacao.ValorCompensacao&gt;0" class="ng-hide">
+                                    <th class="text-right">
+                                        Valor da Compensação:<br>
+                                    </th>
+                                    <td colspan="2" class="ng-binding">
+                                        
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="text-right">
+                                        CFEM devida até último dia do
+                                        mês atual:<br>
+                                    </th>
+                                    <td colspan="2" class="ng-binding">
+                                        
+
+                                    </td>
+                                </tr>
+                            </tbody></table>
+
+
+                            <footer>
+                                <button ng-attr-type="button" class="btn btn-primary" ng-disabled="!habilitaBoleto" ng-click="printDiv(&#39;printable&#39;);" disabled="disabled">
+                                    <i class="fa fa fa-save"></i>&nbsp;
+                                    Salvar Informações
+                                </button>
+                                <a class="btn btn-primary" ng-disabled="!habilitaBoleto" ng-click="GeraBoleto()" disabled="disabled">
+                                    <i class="fa fa-barcode"></i>&nbsp;
+                                    Emitir guia de recolhimento
+                                </a>
+                            </footer>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </article>
+
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Códigos Nomenclatura Comum do Mercosul</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="break-line ng-binding" style="white-space: pre-wrap;">[]</div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+<script type="text/javascript">
+
+    // DO NOT REMOVE : GLOBAL FUNCTIONS!
+
+    // VerificaNavegadorUsuarioIE();
+
+    (function () {
+
+        //['ui.utils.masks']
+        var app = angular.module('App', ['ui.utils.masks']);
+
+        app.directive('detectarInteracaoForm', function () {
+            return {
+                restrict: 'A',
+                link: function (scope, element) {
+                    function onFocus() {
+                        if (scope.exibeInfoEmissao) {
+                            scope.exibeInfoEmissao = false;
+                            scope.$apply();
+                        }
+                    }
+
+                    element[0].addEventListener('focusin', onFocus);
+                }
+            };
+        });
+
+        app.controller('CfemController', ['$http', '$scope', function ($http, $scope) {
+
+            // Limpa todos os campos
+            $scope.limpa = function () {
+                $scope.recolhimentoTitular = JSON.parse("true");
+                $scope.cpfCnpj = '';
+                $scope.numeroProcesso = '';
+                $scope.habilitaBoleto = false;
+                $scope.titular = {};
+                $scope.declaracaoNF = true;
+                $scope.tipoVenda = '1';
+                $scope.textoUnitario = 'Preço Unitário';
+                $scope.mesApuracao = '';
+                $scope.dataInicioVigencia = '';
+                $scope.dataFimVigencia = '';
+                $scope.processo = {};
+                $scope.processos = [];
+                $scope.substancia = {};
+                $scope.municipio = {};
+                $scope.notaFiscal = '';
+                $scope.dataEmissao = '';
+                $scope.boletos = [];
+                $scope.todos = '';
+                $scope.total = 0;
+                $scope.correcao = {};
+                $scope.compensacao = {};
+                $scope.CfemLiminar = {};
+                $scope.recolhimento = {
+                    valorUnitario: 0,
+                    quantidade: 0,
+                    valorOperacao: 0,
+                    frete: 0,
+                    seguro: 0,
+                    icms: 0,
+                    iss: 0,
+                    pis: 0,
+                    cofins: 0,
+                    iof: 0,
+                    impostos: 0,
+                    liquido: 0,
+                    valorCFEM: 0,
+                    baseCalculo: 0,
+                    tfrm: 0
+                };
+                $scope.showTfrm = false;
+                $scope.fatosGeradores = {
+                    valorVendaMercadoInterno: 0,
+                    qtdVendaMercadoInterno: 0,
+                    codigoNCMMInterno: 0,
+                    mediaVendaMercadoInterno: 0,
+                    valorVendaMercadoExportacao: 0,
+                    qtdVendaMercadoExportacao: 0,
+                    mediaVendaMercadoExportacao: 0,
+                    valorCustoIndustrializacao: 0,
+                    qtdCustoIndustrializacao: 0,
+                    mediaCustoIndustrializacao: 0,
+                    valorConsumoInterno: 0,
+                    qtdConsumoInterno: 0,
+                    mediaConsumoInterno: 0,
+                    valorOperacaoConsolidado: 0,
+                };
+                angular.forEach($scope.mercInternos, function (linha) {
+                    linha.fatosGeradores.valorVendaMercadoInterno = 0;
+                    linha.fatosGeradores.qtdVendaMercadoInterno = 0;
+                    linha.fatosGeradores.codigoNCM = 0;
+                    linha.fatosGeradores.mediaVendaMercadoInterno = 0;
+                });
+                angular.forEach($scope.exportacoes, function (linha) {
+                    linha.fatosGeradores.valorVendaMercadoExportacao = 0;
+                    linha.fatosGeradores.qtdVendaMercadoExportacao = 0;
+                    linha.fatosGeradores.codigoNCM = 0;
+                    linha.fatosGeradores.mediaVendaMercadoExportacao = 0;
+                });
+                angular.forEach($scope.transformacoes, function (linha) {
+                    linha.fatosGeradores.valorCustoIndustrializacao = 0;
+                    linha.fatosGeradores.qtdCustoIndustrializacao = 0;
+                    linha.fatosGeradores.codigoNCM = 0;
+                    linha.fatosGeradores.mediaCustoIndustrializacao = 0;
+                });
+                angular.forEach($scope.internoMinas, function (linha) {
+                    linha.fatosGeradores.valorConsumoInterno = 0;
+                    linha.fatosGeradores.qtdConsumoInterno = 0;
+                    linha.fatosGeradores.codigoNCM = 0;
+                    linha.fatosGeradores.mediaConsumoInterno = 0;
+                });
+            }
+
+            $scope.limpa();
+
+            // Busca os processos de um dado cpf ou cnpj
+            $scope.buscaCpfCnpj = function () {
+                if ($.trim($scope.cpfCnpj) != '') {
+                    $scope.mesApuracao = '';
+                    $('#processing-modal').show();
+
+                    $http.get(window.pathApi + '/busca?tipo=pessoacpfcnpj&id=' + $scope.cpfCnpj).success(function (data) {
+                        if (data != null) {
+                            $scope.titular = data;
+                            $scope.cpfCnpj = somenteNumero($scope.titular.CpfCnpjFormatado);
+                            
+
+                            $scope.ProcessosTitular($scope.titular);
+                        }
+                        else {
+                            $scope.titular = {};
+                            $scope.cpfCnpj = '';
+                            alert('Não achou o titular.');
+                            $('#processing-modal').hide();
+                        }
+
+                    }).error(function (data, status, headers, config) {
+                        $('#processing-modal').hide();
+                        alert('Não foi possível realizar a operação, tente novamente mais tarde!');
+                    });
+                }
+
+            };
+
+            $scope.atualizaAliquotaFerro = function () {
+                if (!$scope.tipoUso) {
+                    $scope.substancia.Aliquota = $scope.aliquotaFerro;
+                    $scope.calculaCFEMSimples();
+                }
+
+            }
+
+            $scope.ajustarMesApuracao = function (event) {
+                const input = event.target;
+                let valor = $scope.mesApuracao.replace(/\D/g, '');
+                const posicaoCursor = input.selectionStart;
+
+                if (valor.length > 6) {
+                    valor = valor.slice(0, 6);
+                }
+
+                if (valor.length >= 3) {
+                    $scope.mesApuracao = valor.slice(0, 2) + '/' + valor.slice(2, 6);
+                } else {
+                    $scope.mesApuracao = valor;
+                }
+
+                const mes = valor.slice(-6, -4) || '__';
+                const ano = valor.slice(-4) || '____';
+
+                $scope.mesApuracao = `${mes}/${ano}`;
+
+                let novaPosicao = posicaoCursor;
+                if (novaPosicao >= $scope.mesApuracao.length) {
+                    novaPosicao = $scope.mesApuracao.length;
+                }
+                if (novaPosicao === 2) {
+                    novaPosicao++;
+                }
+
+                setTimeout(() => {
+                    input.selectionStart = input.selectionEnd = novaPosicao;
+                }, 0);
+            };
+
+            $scope.ajustarCursor = function (event) {
+                const input = event.target;
+                if (input.selectionStart >= $scope.mesApuracao.length) {
+                    setTimeout(() => {
+                        input.selectionStart = input.selectionEnd = $scope.mesApuracao.length;
+                    }, 0);
+                }
+            };
+
+            //além de buscar os dados do processo, também pesquisa os dados do titular do processo
+            $scope.buscaProcesso = function (valor, origem) {
+                if (valor.indexOf('*') == -1) {
+
+                    $('#processing-modal').show();
+
+                    $http.get(window.pathApi + '/busca?tipo=processo&id=' + encodeURIComponent(valor)).success(function (data) {
+                        if (data != null) {
+
+                            $scope.cpfCnpj = somenteNumero($scope.titular.CpfCnpjFormatado);
+
+                            $scope.processo = data;
+
+                            //pega o incio da vigencia e o fim
+                            $scope.dataInicioVigencia = $scope.processo.DataInicioVigencia;
+                            $scope.dataFimVigencia = $scope.processo.DataFimVigencia;
+
+                            if ($scope.processo.Municipios.length == 1) {
+                                $scope.municipio = $scope.processo.Municipios[0];
+                            }
+
+                            if ($scope.processo.Substancias.length == 1) {
+                                $scope.substancia = $scope.processo.Substancias[0];
+                                $scope.mesApuracao = "";
+                            }
+
+
+                            $scope.numeroProcesso = data.ProcessoFormatado;
+                            if (origem == 'processo') {
+                                $scope.buscaCpfCnpj();
+                            }
+
+                            var utilizamTfrm = [8822];
+                            $scope.showTfrm = false;
+                            if (utilizamTfrm.includes($scope.processo.Titular.Sequencial)) {
+                                $scope.showTfrm = true;
+                            }
+
+                           
+                            if ($scope.processo.Arrendatario != undefined && $scope.processo.Arrendatario != null) {
+                                if ($scope.processo.Arrendatario.Sequencial > 0
+                                    && utilizamTfrm.includes($scope.processo.Arrendatario.Sequencial)) {
+                                    $scope.showTfrm = true;
+                                }
+                            }
+
+                            $http.get(window.pathApi + '/cfem/GetCfemLiminar?cnpjCpf=' + $scope.cpfCnpj + '&processo=' + encodeURIComponent(valor)).success(function (data) {
+                                if (data.CDTipoLiminar != null) {
+                                    $scope.CfemLiminar = data;
+                                }
+                                else {
+                                    $scope.CfemLiminar = null;
+                                }
+                            });
+                        }
+                        else {
+                            $scope.titular = {};
+                            $scope.cpfCnpj = '';
+                            $scope.processo = {};
+                            $scope.numeroProcesso = '';
+                            console.log('O Processo não foi localizado');
+                        }
+
+                        $('#processing-modal').hide();
+
+                    }).error(function (data, status, headers, config) {
+                        $('#processing-modal').hide();
+                        console.log('entrou no erro buscaProcesso');
+                    });
+                }
+            };
+
+            // Traz todos os processos do titular
+            $scope.ProcessosTitular = function (titular) {
+
+                if ($scope.recolhimentoTitular) {
+                    var strapi = window.pathApi + '/listas?tipo=pessoaprocessos&id=' + titular.Sequencial;
+                }
+                else {
+                    strapi = window.pathApi + '/listas?tipo=arrendatarioprocessos&id=' + titular.Sequencial;
+                }
+
+                $http.get(strapi).success(function (data) {
+
+                    $scope.processos = [];
+                    $scope.substancia = "";
+                    angular.forEach(data, function (item) {
+                        $scope.processos.push(item);
+                    });
+
+                    if (data.length <= 0) {
+                        $scope.titular = {};
+                        $scope.cpfCnpj = '';
+                        alert('CPF ou CNPJ não possui processo vinculado.');
+                    }
+                });
+                $('#processing-modal').hide();
+            }
+
+            //CFEMcalc
+            // Aplica todos os descontos
+            $scope.calculaCFEMSimples = function () {
+
+                angular.forEach($scope.mercInternos, function (linha) {
+                    $scope.vlrVendaMercInterno += linha.fatosGeradores.valorVendaMercadoInterno;
+                    $scope.qtdVendaMercInterno += linha.fatosGeradores.qtdVendaMercadoInterno;
+                    $scope.mediaVendaMercInterno += linha.fatosGeradores.mediaVendaMercadoInterno;
+                });
+
+                angular.forEach($scope.exportacoes, function (linha) {
+                    $scope.vlrVendaExportacao += linha.fatosGeradores.valorVendaMercadoExportacao;
+                    $scope.qtdVendaExportacao += linha.fatosGeradores.qtdVendaMercadoExportacao;
+                    $scope.mediaVendaExportacao += linha.fatosGeradores.mediaVendaMercadoExportacao;
+                });
+
+                angular.forEach($scope.transformacoes, function (linha) {
+                    $scope.vlrVendaTransformacao += linha.fatosGeradores.valorCustoIndustrializacao;
+                    $scope.qtdVendaTransformacao += linha.fatosGeradores.qtdCustoIndustrializacao;
+                    $scope.mediaVendaTransformacao += linha.fatosGeradores.mediaCustoIndustrializacao;
+                });
+
+                angular.forEach($scope.internoMinas, function (linha) {
+                    $scope.vlrVendaInternoMina += linha.fatosGeradores.valorConsumoInterno;
+                    $scope.qtdVendaInternoMina += linha.fatosGeradores.qtdConsumoInterno;
+                    $scope.mediaVendaInternoMina += linha.fatosGeradores.mediaConsumoInterno;
+                });
+
+                $scope.habilitaBoleto = false;
+
+                $scope.recolhimento.quantidade = parseFloat($scope.fatosGeradores.qtdVendaMercadoInterno) + parseFloat($scope.fatosGeradores.qtdVendaMercadoExportacao) + parseFloat($scope.fatosGeradores.qtdCustoIndustrializacao) + parseFloat($scope.fatosGeradores.qtdConsumoInterno)
+                /*$scope.recolhimento.valorOperacao = parseFloat($scope.fatosGeradores.valorVendaMercadoInterno) + parseFloat($scope.vlrVendaMercInterno) + parseFloat($scope.fatosGeradores.valorVendaMercadoExportacao) + parseFloat($scope.vlrVendaExportacao) + parseFloat($scope.fatosGeradores.valorCustoIndustrializacao) + parseFloat($scope.vlrVendaTransformacao) + parseFloat($scope.fatosGeradores.valorConsumoInterno) + parseFloat($scope.vlrVendaInternoMina)*/
+                $scope.recolhimento.valorOperacao = Number($scope.fatosGeradores.valorVendaMercadoInterno) + Number($scope.vlrVendaMercInterno) + Number($scope.fatosGeradores.valorVendaMercadoExportacao) + Number($scope.vlrVendaExportacao) + Number($scope.fatosGeradores.valorCustoIndustrializacao) + Number($scope.vlrVendaTransformacao) + Number($scope.fatosGeradores.valorConsumoInterno) + Number($scope.vlrVendaInternoMina)
+
+                $scope.recolhimento.impostos = parseFloat($scope.recolhimento.icms) + parseFloat($scope.recolhimento.pis) + parseFloat($scope.recolhimento.cofins) + parseFloat($scope.recolhimento.iof) + parseFloat($scope.recolhimento.iss);
+
+                //Validar TFRM para empresa
+                if ($scope.showTfrm) {                    
+                    $scope.recolhimento.impostos = parseFloat($scope.recolhimento.tfrm) + parseFloat($scope.recolhimento.icms) + parseFloat($scope.recolhimento.pis) + parseFloat($scope.recolhimento.cofins) + parseFloat($scope.recolhimento.iof) + parseFloat($scope.recolhimento.iss);
+                }
+
+                if (!angular.isNumber($scope.recolhimento.impostos)) {
+                    $scope.recolhimento.impostos = 0;
+                }
+
+                if ((!angular.isNumber($scope.qtdVendaMercInterno)) && (!angular.isNumber($scope.mediaVendaMercInterno))){
+                    $scope.qtdVendaMercInterno = 0;
+                    $scope.mediaVendaMercInterno = 0;
+                }
+                if ((!angular.isNumber($scope.qtdVendaExportacao)) && (!angular.isNumber($scope.mediaVendaExportacao))) {
+                    $scope.qtdVendaExportacao = 0;
+                    $scope.mediaVendaExportacao = 0;
+                }
+                if ((!angular.isNumber($scope.qtdVendaTransformacao)) && (!angular.isNumber($scope.mediaVendaTransformacao))) {
+                    $scope.qtdVendaTransformacao = 0;
+                    $scope.mediaVendaTransformacao = 0;
+                }
+                if ((!angular.isNumber($scope.qtdVendaInternoMina)) && (!angular.isNumber($scope.mediaVendaInternoMina))) {
+                    $scope.qtdVendaInternoMina = 0;
+                    $scope.mediaVendaInternoMina = 0;
+                }
+
+                $scope.vlrTotalVendaMercadoInt = parseFloat($scope.fatosGeradores.valorVendaMercadoInterno) + parseFloat($scope.vlrVendaMercInterno)
+                $scope.vlrTotalVendaExportacao = parseFloat($scope.fatosGeradores.valorVendaMercadoExportacao) + parseFloat($scope.vlrVendaExportacao)
+                $scope.vlrTotalVendaTransformacao = parseFloat($scope.fatosGeradores.valorCustoIndustrializacao) + parseFloat($scope.vlrVendaTransformacao)
+                $scope.vlrTotalVendaInternoMina = parseFloat($scope.fatosGeradores.valorConsumoInterno) + parseFloat($scope.vlrVendaInternoMina)
+
+                //$scope.recolhimento.liquido = parseFloat($scope.recolhimento.valorOperacao) - parseFloat($scope.recolhimento.frete) - parseFloat($scope.recolhimento.seguro) - $scope.recolhimento.impostos;
+                $scope.recolhimento.liquido = Number($scope.recolhimento.valorOperacao) - Number($scope.recolhimento.frete) - Number($scope.recolhimento.seguro) - $scope.recolhimento.impostos;
+
+                if ((!angular.isNumber($scope.recolhimento.liquido))) {
+
+                }
+                if ($scope.gambetaFerro) {
+                    preencheCodigoAliquotaFerro();
+                }
+                
+                $scope.correcao = {};
+                $scope.correcaomonetaria = {};
+                $scope.recolhimento.valorCFEM = $scope.recolhimento.liquido * ($scope.substancia.Aliquota / 100);
+
+                $scope.fatosGeradores.valorOperacaoConsolidado = parseFloat($scope.fatosGeradores.valorVendaMercadoInterno) + parseFloat($scope.vlrVendaMercInterno) + parseFloat($scope.fatosGeradores.valorVendaMercadoExportacao) + parseFloat($scope.vlrVendaExportacao) + parseFloat($scope.fatosGeradores.valorCustoIndustrializacao) + parseFloat($scope.vlrVendaTransformacao) + parseFloat($scope.fatosGeradores.valorConsumoInterno) + parseFloat($scope.vlrVendaInternoMina)
+
+                $scope.vlrVendaMercInterno = 0;
+                $scope.vlrVendaExportacao = 0;
+                $scope.vlrVendaTransformacao = 0;
+                $scope.vlrVendaInternoMina = 0;
+
+                }
+
+            function preencheCodigoAliquotaFerro() {
+                switch ($scope.aliquotaFerro) {
+                    case "2.0": $scope.substancia.CodGrupoAliquota = 2; break;
+                    case "2.5": $scope.substancia.CodGrupoAliquota = 6; break;
+                    case "3.0": $scope.substancia.CodGrupoAliquota = 1; break;
+                    case "3.5": $scope.substancia.CodGrupoAliquota = 7; break;
+                    case "4.0": $scope.substancia.CodGrupoAliquota = 8; break;
+                }
+            }
+
+            $scope.CorrecaoMonetaria = function () {
+
+                var url = window.pathApi + '/cfem/get?NotaFiscal=';
+
+
+                $('#processing-modal').show();
+
+                if ($scope.declaracaoNF)
+                    url += 'true&MesReferencia=' + encodeURIComponent($scope.mesApuracao);
+
+                if (!isNaN($scope.recolhimento.valorCFEM)) {
+                    url += '&Valor=' + $scope.recolhimento.valorCFEM.toString();
+                    if ($scope.gambetaFerro) {
+                        preencheCodigoAliquotaFerro();
+                    }
+                    url += '&CodGrupoAliquota=' + $scope.substancia.Aliquota;
+                    url += '&ValorLiquido=' + $scope.recolhimento.liquido.toString();
+                    url += '&SequencialSubstancia=' + $scope.substancia.Sequencial.toString();
+                    url += '&codigoTipoUsoSubstancia=' + $scope.substancia.IDTipoUsoProcesso.toString();
+                    $http.get(url).success(function (data) {
+
+                        $scope.correcao = data;
+
+                        $scope.correcaomonetaria = $scope.correcao.ValorCorrigido - $scope.recolhimento.valorCFEM;
+
+                        $scope.habilitaBoleto = true;
+
+                        var url = window.pathApi + '/cfem/consultaCompensacao?cpfCnpj=' + $scope.cpfCnpj + '&municipio=' + $scope.municipio.Sequencial
+
+                        $http.get(url).success(function (data) {
+
+                            if (data.idtCompensacao) {
+                                if (data.ValorCompensacao < $scope.correcao.ValorFinal && $scope.correcao.ValorFinal - data.ValorCompensacao > 50) {
+                                    var r = confirm("Você possuí o valor de R$ " + data.ValorCompensacao + " para compensação, deseja utilizar para abater no valor final do boleto?");
+                                    if (r == true) {
+                                        $scope.compensacao = data;
+                                        $scope.correcao.ValorFinal = $scope.correcao.ValorFinal - $scope.compensacao.ValorCompensacao;
+                                    }
+                                }
+                            }
+
+                            $('#processing-modal').hide();
+
+                        }).error(function () {
+                            $('#processing-modal').hide();
+                        });
+
+                    }).error(function (data, status, headers, config) {
+                        $('#processing-modal').hide();
+                        alert('Não foi possível realizar a operação, tente novamente mais tarde!');
+                    });
+
+                    $('#processing-modal').show();
+
+                }
+
+            };
+
+            $scope.alertarCMDesatualizado = function (recolhimentoTitular) {
+                if (recolhimentoTitular) {
+                    alert("Se o PROCESSO não está na lista, procure a ANM para regularizar o ARRENDAMENTO.");
+                    $scope.buscaProcesso($scope.numeroProcessoDigitado, 'processo');
+                }
+                else {
+                    $scope.buscaProcesso($scope.cbProcesso.ProcessoFormatado, 'combo');
+                }
+
+            }
+
+            function exibirSelecaoFerro() {
+                $scope.gambetaFerro = true;
+                $scope.substancia.Aliquota = '4.0'
+            }
+
+            function exibeTipoUso(tipoUso) {
+                $scope.vldAliqPersonalizada = true;
+                $scope.tipoUsoLista = tipoUso;
+                $scope.tipoUsoNao();
+                $scope.aliqPersonalizada = true;
+            }
+
+            function exibeAliqPersonalizada() {
+                $scope.validarAliqPersonalizada();
+            }
+
+            $scope.tipoUsoSim = function () {
+                $scope.tipoUso = true;
+                $scope.validarAliqPersonalizada();
+                $scope.tipoUsoSelecionado = $scope.tipoUsoLista[0];
+                $scope.gambetaFerro = false;
+                $scope.aliqPersonalizadaOpcao = 'aliqPersNaoCheck';
+                $scope.selecionaTipoUso();
+            }
+
+            $scope.tipoUsoNao = function () {
+                //$scope.tipoUso = false;
+                $scope.substancia.Aliquota = $scope.aliquotaSubstanciaOriginal;
+                $scope.substancia.IDTipoUsoProcesso = 0;
+                $scope.aliqPersonalizadaOpcao = 'aliqPersNaoCheck';
+                $scope.calculaCFEMSimples();
+            }
+
+            $scope.selecionaTipoUso = function () {
+                $scope.substancia.Aliquota = $scope.tipoUsoSelecionado.Aliquota;
+                $scope.substancia.IDTipoUsoProcesso = $scope.tipoUsoSelecionado.Codigo;
+                $scope.aliqPersonalizadaOpcao = 'aliqPersNaoCheck';
+                $scope.calculaCFEMSimples();
+            }
+
+            $scope.aliqPersSim = function () {
+                var confirmacao = confirm("Constituem infrações administrativas puníveis com multa a ser aplicada pela entidade reguladora o fornecimento de declarações ou informações inverídicas.");
+                if (confirmacao) {
+                    $scope.substancia.Aliquota = $scope.aliquotaSubstanciaOriginal / 2;
+                    //$scope.substancia.Aliquota = ($scope.tipoUsoSelecionado.Aliquota * 50) / 100;
+                }
+                $scope.gambetaFerro = false;
+                $scope.calculaCFEMSimples();
+                //$scope.recolhimento.valorCFEM = $scope.recolhimento.liquido * ($scope.substancia.Aliquota / 100);
+            }
+
+            $scope.aliqPersNao = function () {
+                //$scope.tipoUso = false;
+                $scope.substancia.Aliquota = $scope.aliquotaSubstanciaOriginal;
+                $scope.calculaCFEMSimples();
+            }
+
+            $scope.obterAliquota = function () {
+                //debugger;
+                if (isNaN($scope.substancia.Sequencial)) {
+                    return false;
+                }
+
+                var sequencialSubstancia = $scope.substancia.Sequencial;
+                var mesApuracao = $scope.mesApuracao;
+                var dataApuracao = moment('01/' + $scope.mesApuracao, "DD/MM/YYYY");
+
+                if ($scope.CfemLiminar != null) {
+
+                    if ($scope.CfemLiminar.BTAliquotaAntiga) {
+                        dataApuracao = moment('31/07/2017', "DD/MM/YYYY");
+                    }
+                    else {
+                        dataApuracao = moment('01/' + new Date().getMonth().toString() + '/' + new Date().getFullYear().toString(), "DD/MMM/YYYY");
+                    }
+                }
+
+
+                var idTipoUsoSubstancia = $scope.substancia.IDTipoUsoProcesso;
+                //debugger;
+                dataApuracaoFormatada = dataApuracao.format("YYYY-MM-DD");
+                var url = window.pathApi + '/Substancia/ObterSubstanciaComAliquotaNaData?sequencialSubstancia=' + sequencialSubstancia + '&data=' + dataApuracaoFormatada;
+
+                $http.get(url).success(function (data) {
+                    url = window.pathApi + '/TipoUso/Listar?Data=' + moment('01/' + $scope.mesApuracao, "DD/MM/YYYY").format("YYYY-MM-DD");
+                    $http.get(url).success(function (tipoUsoLista) {
+                        if (tipoUsoLista != undefined && tipoUsoLista.length > 0 && dataApuracao >= new moment('01/11/2017', "DD/MM/YYYY")) {
+                            exibeTipoUso(tipoUsoLista);
+                            if ($scope.vldAliqPersonalizada) {
+                                exibeAliqPersonalizada();
+                            }
+                        }
+                        else {
+                            $scope.tipoUsoLista = false;
+                        }
+                        // Gambeta de um mês pra ferro: Quando for fato gerador novembro, a aliquota do ferro deve ser escolhida pelo minerador
+                        // Cod substancia agrupadora: 950840	MINÉRIO DE FERRO
+                        if (data == 950840) {
+                            exibirSelecaoFerro();
+                        }
+                        else {
+                            $scope.gambetaFerro = false;
+                            $scope.substancia.Aliquota = data.Aliquota;
+
+                            $scope.aliquotaSubstanciaOriginal = $scope.substancia.Aliquota;
+
+                            $scope.substancia.CodGrupoAliquota = data.CodGrupoAliquota;
+                            $scope.calculaCFEMSimples();
+                        }
+
+                    });
+
+
+                });
+            }
+
+            $scope.$watch('recolhimento.frete', function () {
+                $scope.percentualFrete = ($scope.recolhimento.frete / $scope.fatosGeradores.valorOperacaoConsolidado) * 100;
+                $scope.calculaCFEMSimples();
+            });
+
+            $scope.$watch('recolhimento.seguro', function () {
+                $scope.percentualSeguro = ($scope.recolhimento.seguro / $scope.fatosGeradores.valorOperacaoConsolidado) * 100;
+                $scope.calculaCFEMSimples();
+            });
+
+            $scope.$watch('recolhimento.icms', function () {
+                $scope.percentualICMS = ($scope.recolhimento.icms / $scope.fatosGeradores.valorOperacaoConsolidado) * 100;
+                $scope.calculaCFEMSimples();
+            });
+
+            $scope.$watch('recolhimento.iss', function () {
+                $scope.percetualISS = ($scope.recolhimento.iss / $scope.fatosGeradores.valorOperacaoConsolidado) * 100;
+                $scope.calculaCFEMSimples();
+            });
+
+            $scope.$watch('recolhimento.pis', function () {
+                $scope.percentualPIS = ($scope.recolhimento.pis / $scope.fatosGeradores.valorOperacaoConsolidado) * 100
+                $scope.calculaCFEMSimples();
+            });
+
+            $scope.$watch('recolhimento.cofins', function () {
+                $scope.percentualCOFINS = ($scope.recolhimento.cofins / $scope.fatosGeradores.valorOperacaoConsolidado) * 100
+                $scope.calculaCFEMSimples();
+            });
+
+            $scope.$watch('recolhimento.tfrm', function () {
+                $scope.percentualTfrm = ($scope.recolhimento.tfrm / $scope.fatosGeradores.valorOperacaoConsolidado) * 100;
+                $scope.calculaCFEMSimples();
+            });
+
+            $scope.$watch('recolhimento.iof', function () {
+                $scope.percentualIOF = ($scope.recolhimento.iof / $scope.fatosGeradores.valorOperacaoConsolidado) * 100
+                $scope.calculaCFEMSimples();
+            });
+
+            $scope.$watch('recolhimento.quantidade', function () {
+                if (angular.isNumber($scope.recolhimento.quantidade)) {
+                    $scope.CFEMRecolhimento.quantidade.$setValidity("quantidade", true);
+                    if (($scope.recolhimento.quantidade > 0) && ($scope.recolhimento.valorOperacao > 0)) {
+                        $scope.recolhimento.valorUnitario = $scope.recolhimento.valorOperacao / $scope.recolhimento.quantidade;
+
+                    } else { $scope.recolhimento.valorUnitario = 0 }
+                } else { $scope.recolhimento.valorUnitario = 0 }
+                $scope.calculaCFEMSimples();
+            });
+
+            $scope.$watch('recolhimento.valorOperacao', function () {
+                if (angular.isNumber($scope.recolhimento.valorOperacao)) {
+                    $scope.CFEMRecolhimento.valorOperacao.$setValidity("valorOperacao", true);
+                    if (($scope.recolhimento.quantidade > 0) && ($scope.recolhimento.valorOperacao > 0)) {
+                        $scope.recolhimento.valorUnitario = $scope.recolhimento.valorOperacao / $scope.recolhimento.quantidade;
+                    } else { $scope.recolhimento.valorUnitario = 0 }
+                } else { $scope.recolhimento.valorUnitario = 0 }
+                $scope.calculaCFEMSimples();
+            });
+
+            //---------------------------------------------------------------------------------------------------------------//
+            //Valor Mercado Interno
+            $scope.calcularPrecoMedioValorMinterno = function () {
+                if (angular.isNumber($scope.fatosGeradores.valorVendaMercadoInterno)) {
+                    if (($scope.fatosGeradores.qtdVendaMercadoInterno > 0) && ($scope.fatosGeradores.valorVendaMercadoInterno > 0)) {
+                        $scope.fatosGeradores.mediaVendaMercadoInterno = $scope.fatosGeradores.valorVendaMercadoInterno / $scope.fatosGeradores.qtdVendaMercadoInterno;
+                    } else { $scope.fatosGeradores.mediaVendaMercadoInterno = 0 }
+                } else { $scope.fatosGeradores.mediaVendaMercadoInterno = 0 }
+                $scope.calculaCFEMSimples();
+            };
+
+            $scope.calcularPrecoMedioValorNSubMinterno = function (index) {
+                if (angular.isNumber($scope.mercInternos[index].fatosGeradores.valorVendaMercadoInterno)) {
+                    $scope.CFEMRecolhimento.valorVendaMercadoInterno.$setValidity("valorVendaMercadoInterno", true);
+                    if (($scope.mercInternos[index].fatosGeradores.qtdVendaMercadoInterno > 0) && ($scope.mercInternos[index].fatosGeradores.valorVendaMercadoInterno > 0)) {
+                        $scope.mercInternos[index].fatosGeradores.mediaVendaMercadoInterno = $scope.mercInternos[index].fatosGeradores.valorVendaMercadoInterno / $scope.mercInternos[index].fatosGeradores.qtdVendaMercadoInterno;
+                    } else { $scope.mercInternos[index].fatosGeradores.mediaVendaMercadoInterno = 0 }
+                } else { $scope.mercInternos[index].fatosGeradores.mediaVendaMercadoInterno = 0 }
+                $scope.calculaCFEMSimples();
+            };
+
+            //Quantidade Mercado Interno
+            $scope.calcularPrecoMedioQuantidadeMinterno = function () {
+                if (angular.isNumber($scope.fatosGeradores.qtdVendaMercadoInterno)) {
+                    $scope.CFEMRecolhimento.qtdVendaMercadoInterno.$setValidity("qtdVendaMercadoInterno", true);
+                    if (($scope.fatosGeradores.qtdVendaMercadoInterno > 0) && ($scope.fatosGeradores.valorVendaMercadoInterno > 0)) {
+                        $scope.fatosGeradores.mediaVendaMercadoInterno = $scope.fatosGeradores.valorVendaMercadoInterno / $scope.fatosGeradores.qtdVendaMercadoInterno;
+
+                    } else { $scope.recolhimento.valorVendaMercadoInterno = 0 }
+                } else { $scope.recolhimento.valorVendaMercadoInterno = 0 }
+                $scope.calculaCFEMSimples();
+            };
+
+            $scope.calcularPrecoMedioQuantidadeNSubMinterno = function (index) {
+                if (angular.isNumber($scope.mercInternos[index].fatosGeradores.qtdVendaMercadoInterno)) {
+                    $scope.CFEMRecolhimento.qtdVendaMercadoInterno.$setValidity("qtdVendaMercadoInterno", true);
+                    if (($scope.mercInternos[index].fatosGeradores.qtdVendaMercadoInterno > 0) && ($scope.mercInternos[index].fatosGeradores.valorVendaMercadoInterno > 0)) {
+                        $scope.mercInternos[index].fatosGeradores.mediaVendaMercadoInterno = $scope.mercInternos[index].fatosGeradores.valorVendaMercadoInterno / $scope.mercInternos[index].fatosGeradores.qtdVendaMercadoInterno;
+
+                    } else { $scope.recolhimento.valorVendaMercadoInterno = 0 }
+                } else { $scope.recolhimento.valorVendaMercadoInterno = 0 }
+                $scope.calculaCFEMSimples();
+            };
+
+            //---------------------------------------------------------------------------------------------------------------//
+            //Valor Exportacao
+            $scope.calcularPrecoMedioValorExportacao = function () {
+                if (angular.isNumber($scope.fatosGeradores.valorVendaMercadoExportacao)) {
+                    if (($scope.fatosGeradores.qtdVendaMercadoExportacao > 0) && ($scope.fatosGeradores.valorVendaMercadoExportacao > 0)) {
+                        $scope.fatosGeradores.mediaVendaMercadoExportacao = $scope.fatosGeradores.valorVendaMercadoExportacao / $scope.fatosGeradores.qtdVendaMercadoExportacao;
+                    } else { $scope.fatosGeradores.mediaVendaMercadoExportacao = 0 }
+                } else { $scope.fatosGeradores.mediaVendaMercadoExportacao = 0 }
+                $scope.calculaCFEMSimples();
+            };
+
+            $scope.calcularPrecoMedioValorNSubExportacao = function (index) {
+                if (angular.isNumber($scope.exportacoes[index].fatosGeradores.valorVendaMercadoExportacao)) {
+                    $scope.CFEMRecolhimento.valorVendaMercadoExportacao.$setValidity("valorVendaMercadoExportacao", true);
+                    if (($scope.exportacoes[index].fatosGeradores.qtdVendaMercadoExportacao > 0) && ($scope.exportacoes[index].fatosGeradores.valorVendaMercadoExportacao > 0)) {
+                        $scope.exportacoes[index].fatosGeradores.mediaVendaMercadoExportacao = $scope.exportacoes[index].fatosGeradores.valorVendaMercadoExportacao / $scope.exportacoes[index].fatosGeradores.qtdVendaMercadoExportacao;
+                    } else { $scope.exportacoes[index].fatosGeradores.mediaVendaMercadoExportacao = 0 }
+                } else { $scope.exportacoes[index].fatosGeradores.mediaVendaMercadoExportacao = 0 }
+                $scope.calculaCFEMSimples();
+            };
+
+            //Quantidade Exportacao
+            $scope.calcularPrecoMedioQuantidadeExportacao = function () {
+                if (angular.isNumber($scope.fatosGeradores.qtdVendaMercadoExportacao)) {
+                    $scope.CFEMRecolhimento.qtdVendaMercadoExportacao.$setValidity("qtdVendaMercadoExportacao", true);
+                    if (($scope.fatosGeradores.qtdVendaMercadoExportacao > 0) && ($scope.fatosGeradores.valorVendaMercadoExportacao > 0)) {
+                        $scope.fatosGeradores.mediaVendaMercadoExportacao = $scope.fatosGeradores.valorVendaMercadoExportacao / $scope.fatosGeradores.qtdVendaMercadoExportacao;
+
+                    } else { $scope.recolhimento.valorVendaMercadoExportacao = 0 }
+                } else { $scope.recolhimento.valorVendaMercadoExportacao = 0 }
+                $scope.calculaCFEMSimples();
+            };
+
+            $scope.calcularPrecoMedioQuantidadeNSubExportacao = function (index) {
+                if (angular.isNumber($scope.exportacoes[index].fatosGeradores.valorVendaMercadoExportacao)) {
+                    $scope.CFEMRecolhimento.valorVendaMercadoExportacao.$setValidity("valorVendaMercadoExportacao", true);
+                    if (($scope.exportacoes[index].fatosGeradores.qtdVendaMercadoExportacao > 0) && ($scope.exportacoes[index].fatosGeradores.valorVendaMercadoExportacao > 0)) {
+                        $scope.exportacoes[index].fatosGeradores.mediaVendaMercadoExportacao = $scope.exportacoes[index].fatosGeradores.valorVendaMercadoExportacao / $scope.exportacoes[index].fatosGeradores.qtdVendaMercadoExportacao;
+                    } else { $scope.exportacoes[index].fatosGeradores.mediaVendaMercadoExportacao = 0 }
+                } else { $scope.exportacoes[index].fatosGeradores.mediaVendaMercadoExportacao = 0 }
+                $scope.calculaCFEMSimples();
+            };
+
+            //---------------------------------------------------------------------------------------------------------------//
+            //Valor Transformacao
+            $scope.calcularPrecoMedioValorTranformacao = function () {
+                if (angular.isNumber($scope.fatosGeradores.valorCustoIndustrializacao)) {
+                    if (($scope.fatosGeradores.qtdCustoIndustrializacao > 0) && ($scope.fatosGeradores.valorCustoIndustrializacao > 0)) {
+                        $scope.fatosGeradores.mediaCustoIndustrializacao = $scope.fatosGeradores.valorCustoIndustrializacao / $scope.fatosGeradores.qtdCustoIndustrializacao;
+                    } else { $scope.fatosGeradores.mediaCustoIndustrializacao = 0 }
+                } else { $scope.fatosGeradores.mediaCustoIndustrializacao = 0 }
+                $scope.calculaCFEMSimples();
+            };
+
+            $scope.calcularPrecoMedioValorNSubTransformacao = function (index) {
+                if (angular.isNumber($scope.transformacoes[index].fatosGeradores.valorCustoIndustrializacao)) {
+                    $scope.CFEMRecolhimento.valorCustoIndustrializacao.$setValidity("valorCustoIndustrializacao", true);
+                    if (($scope.transformacoes[index].fatosGeradores.qtdCustoIndustrializacao > 0) && ($scope.transformacoes[index].fatosGeradores.valorCustoIndustrializacao > 0)) {
+                        $scope.transformacoes[index].fatosGeradores.mediaCustoIndustrializacao = $scope.transformacoes[index].fatosGeradores.valorCustoIndustrializacao / $scope.transformacoes[index].fatosGeradores.qtdCustoIndustrializacao;
+                    } else { $scope.transformacoes[index].fatosGeradores.mediaCustoIndustrializacao = 0 }
+                } else { $scope.transformacoes[index].fatosGeradores.mediaCustoIndustrializacao = 0 }
+                $scope.calculaCFEMSimples();
+            };
+
+            //Quantidade Transformacao
+            $scope.calcularPrecoMedioQuantidadeTranformacao = function () {
+                if (angular.isNumber($scope.fatosGeradores.qtdCustoIndustrializacao)) {
+                    $scope.CFEMRecolhimento.qtdCustoIndustrializacao.$setValidity("qtdCustoIndustrializacao", true);
+                    if (($scope.fatosGeradores.qtdCustoIndustrializacao > 0) && ($scope.fatosGeradores.valorCustoIndustrializacao > 0)) {
+                        $scope.fatosGeradores.mediaCustoIndustrializacao = $scope.fatosGeradores.valorCustoIndustrializacao / $scope.fatosGeradores.qtdCustoIndustrializacao;
+
+                    } else { $scope.recolhimento.valorCustoIndustrializacao = 0 }
+                } else { $scope.recolhimento.valorCustoIndustrializacao = 0 }
+                $scope.calculaCFEMSimples();
+            };
+
+            $scope.calcularPrecoMedioQuantidadeNSubTranformacao = function (index) {
+                if (angular.isNumber($scope.transformacoes[index].fatosGeradores.valorCustoIndustrializacao)) {
+                    $scope.CFEMRecolhimento.valorCustoIndustrializacao.$setValidity("valorCustoIndustrializacao", true);
+                    if (($scope.transformacoes[index].fatosGeradores.qtdCustoIndustrializacao > 0) && ($scope.transformacoes[index].fatosGeradores.valorCustoIndustrializacao > 0)) {
+                        $scope.transformacoes[index].fatosGeradores.mediaCustoIndustrializacao = $scope.transformacoes[index].fatosGeradores.valorCustoIndustrializacao / $scope.transformacoes[index].fatosGeradores.qtdCustoIndustrializacao;
+                    } else { $scope.transformacoes[index].fatosGeradores.mediaCustoIndustrializacao = 0 }
+                } else { $scope.transformacoes[index].fatosGeradores.mediaCustoIndustrializacao = 0 }
+                $scope.calculaCFEMSimples();
+            };
+
+            //---------------------------------------------------------------------------------------------------------------//
+            //Valor Interno Mina
+            $scope.calcularPrecoMedioValorInternoMina = function () {
+                if (angular.isNumber($scope.fatosGeradores.valorConsumoInterno)) {
+                    if (($scope.fatosGeradores.qtdConsumoInterno > 0) && ($scope.fatosGeradores.valorConsumoInterno > 0)) {
+                        $scope.fatosGeradores.mediaConsumoInterno = $scope.fatosGeradores.valorConsumoInterno / $scope.fatosGeradores.qtdConsumoInterno;
+                    } else { $scope.fatosGeradores.mediaConsumoInterno = 0 }
+                } else { $scope.fatosGeradores.mediaConsumoInterno = 0 }
+                $scope.calculaCFEMSimples();
+            };
+
+            $scope.calcularPrecoMedioValorNSubInternoMina = function (index) {
+                if (angular.isNumber($scope.internoMinas[index].fatosGeradores.valorConsumoInterno)) {
+                    $scope.CFEMRecolhimento.valorConsumoInterno.$setValidity("valorConsumoInterno", true);
+                    if (($scope.internoMinas[index].fatosGeradores.qtdConsumoInterno > 0) && ($scope.internoMinas[index].fatosGeradores.valorConsumoInterno > 0)) {
+                        $scope.internoMinas[index].fatosGeradores.mediaConsumoInterno = $scope.internoMinas[index].fatosGeradores.valorConsumoInterno / $scope.internoMinas[index].fatosGeradores.qtdConsumoInterno;
+                    } else { $scope.internoMinas[index].fatosGeradores.mediaConsumoInterno = 0 }
+                } else { $scope.internoMinas[index].fatosGeradores.mediaConsumoInterno = 0 }
+                $scope.calculaCFEMSimples();
+            };
+
+            //Quantidade Interno Mina
+            $scope.calcularPrecoMedioQuantidadeInternoMina = function () {
+                if (angular.isNumber($scope.fatosGeradores.qtdConsumoInterno)) {
+                    $scope.CFEMRecolhimento.qtdConsumoInterno.$setValidity("qtdConsumoInterno", true);
+                    if (($scope.fatosGeradores.qtdConsumoInterno > 0) && ($scope.fatosGeradores.valorConsumoInterno > 0)) {
+                        $scope.fatosGeradores.mediaConsumoInterno = $scope.fatosGeradores.valorConsumoInterno / $scope.fatosGeradores.qtdConsumoInterno;
+
+                    } else { $scope.recolhimento.valorConsumoInterno = 0 }
+                } else { $scope.recolhimento.valorConsumoInterno = 0 }
+                $scope.calculaCFEMSimples();
+            };
+
+            $scope.calcularPrecoMedioQuantidadeNSubInternoMina = function (index) {
+                if (angular.isNumber($scope.internoMinas[index].fatosGeradores.valorConsumoInterno)) {
+                    $scope.CFEMRecolhimento.valorConsumoInterno.$setValidity("valorConsumoInterno", true);
+                    if (($scope.internoMinas[index].fatosGeradores.qtdConsumoInterno > 0) && ($scope.internoMinas[index].fatosGeradores.valorConsumoInterno > 0)) {
+                        $scope.internoMinas[index].fatosGeradores.mediaConsumoInterno = $scope.internoMinas[index].fatosGeradores.valorConsumoInterno / $scope.internoMinas[index].fatosGeradores.qtdConsumoInterno;
+                    } else { $scope.internoMinas[index].fatosGeradores.mediaConsumoInterno = 0 }
+                } else { $scope.internoMinas[index].fatosGeradores.mediaConsumoInterno = 0 }
+                $scope.calculaCFEMSimples();
+            };
+
+            $scope.$watch('substancia', function () {
+
+                // Limpa as deducoes especiais IOF, e ISS
+                $scope.CFEMRecolhimento.cbSubstancia.$setPristine();
+                if ($scope.substancia.AtivoFinanceiro) {
+                    $scope.recolhimento.iss = 0;
+                }
+                if ($scope.substancia.Balneario) {
+                    $scope.recolhimento.iof = 0;
+                }
+
+                if ((!$scope.substancia.Balneario) & (!$scope.substancia.AtivoFinanceiro)) {
+                    $scope.recolhimento.iss = 0;
+                    $scope.recolhimento.iof = 0;
+                }
+                $scope.calculaCFEMSimples();
+
+                $scope.mesApuracao = "";
+                $scope.unidadeMedida = "";
+                $scope.CFEMRecolhimento.cbUnidadeMedida.$setValidity("unidadeMedida", false);
+            });
+
+            $scope.$watch('unidadeMedida', function () {
+
+                if ($scope.unidadeMedida.trim() == "") {
+                    $scope.CFEMRecolhimento.cbUnidadeMedida.$setValidity("unidadeMedida", false);
+                    $scope.CFEMRecolhimento.cbUnidadeMedida.$setPristine();
+                } else {
+                    $scope.CFEMRecolhimento.cbUnidadeMedida.$setValidity("unidadeMedida", true);
+                }
+            });
+
+            $scope.$watch('municipio', function () {
+                $scope.CFEMRecolhimento.cbMunicipio.$setPristine();
+            });
+
+            $scope.$watch('tipoVenda', function () {
+                switch ($scope.tipoVenda) {
+                    case '1':
+                    case '2':
+                        $scope.textoUnitario = 'Preço Unitário';
+                        break;
+                    case '3':
+                        $scope.textoUnitario = 'Valor Unitário';
+                        break;
+                }
+            });
+
+            $scope.$watch('dataEmissao', function () {
+                $scope.CFEMRecolhimento.dtEmissao.$setPristine();
+            });
+
+            $scope.$watch('mesApuracao', function () {
+
+                var dataMesesAtras = moment().subtract(123, 'months').format("DD/MM/YYYY");
+                const mesApuracaoAGO = new Date(moment(dataMesesAtras, "DD/MM/YYYY"));
+                const mesApuracaoCurr = new Date(moment('01/' + $scope.mesApuracao, "DD/MM/YYYY"));
+
+                if (($scope.mesApuracao != '' && $scope.mesApuracao != '**/****') & mesApuracaoCurr <= mesApuracaoAGO)
+                {
+                    alert("Só é possível recolher CFEM para os últimos 122 meses!");
+                    $scope.mesApuracao = '';
+                    return;
+                }
+
+                $scope.tipoUsoOpcao = 'tipoUsoNaoCheck';
+                $scope.tipoUso = false;
+                
+                $scope.CFEMRecolhimento.mesApuracao.$setPristine();
+                $scope.CFEMRecolhimento.mesApuracao.$setValidity("mesApuracao", true);
+
+                //Para declarações apartir de agosto de 2017 não exibir frete e seguro.
+
+                if ($scope.mesApuracao.replace('_', '').trim().length == 7) {
+
+                    if ($scope.CfemLiminar != null) {
+                        $scope.ExibirFrete = $scope.CfemLiminar.Frete;
+                        $scope.ExibirSeguro = $scope.CfemLiminar.Seguro;
+
+                    }
+                    else {
+                        $scope.ExibirFrete = moment('01/' + $scope.mesApuracao, "DD/MM/YYYY") < moment('01/08/2017', "DD/MM/YYYY");
+                        $scope.ExibirSeguro = $scope.ExibirFrete;
+                    }
+                    $scope.obterAliquota()
+                }
+
+            });
+
+            $scope.$watch('tipoVenda', function () {
+                if ($scope.tipoVenda == "3") {
+                    $scope.recolhimento.icms = 0;
+                    $scope.recolhimento.pis = 0;
+                    $scope.recolhimento.cofins = 0;
+                    $scope.recolhimento.iof = 0;
+                    $scope.recolhimento.iss = 0;
+                    $scope.recolhimento.iss = 0;
+
+                    $scope.recolhimento.frete = 0;
+                    $scope.recolhimento.seguro = 0;
+
+                    $scope.recolhimento.tfrm = 0;
+                }
+                $scope.calculaCFEMSimples();
+            });
+
+            $scope.printDiv = function (divName) {
+                var printContents = document.getElementById(divName).innerHTML;
+                var popupWin = window.open('', '_blank', 'width=900,height=900');
+                popupWin.document.open();
+
+                var stylesheet = '<link href="/BoletosCfem/Content/css/style_printDiv.css                " rel="stylesheet" />';
+                stylesheet += '<link href="/BoletosCfem/Content/bootstrap.min.css                " rel="stylesheet" />';
+                var stringHtml = '<html><head> ' + stylesheet + ' </head><body onload="window.print()">' + printContents + '</body></html>';
+
+                popupWin.document.write(stringHtml);
+                popupWin.document.close();
+            }
+
+            $scope.GeraBoleto = function () {
+                var item = {};
+
+                $scope.linhasMercadoInterno = [];
+                $scope.linhasExportacao = [];
+                $scope.linhasTransformacao = [];
+                $scope.linhasConsumoInterno = [];
+
+                item.seqTitular = $scope.titular.Sequencial;
+                item.ProcessoMineracao = $scope.numeroProcesso;
+                item.RecolhimentoTitular = $scope.recolhimentoTitular;
+                item.Substancia = $scope.substancia;
+                item.Unidade = $scope.unidadeMedida;
+                item.Municipio = $scope.municipio;
+
+                if ($scope.declaracaoNF) {
+                    item.DataApuracao = $scope.mesApuracao;
+                    item.DeclaracaoNF = true;
+                }
+
+                item.CDTipoVendaCfem = $scope.tipoVenda;
+                item.Quantidade = $scope.recolhimento.quantidade;
+                item.PrecoUnitario = $scope.recolhimento.valorUnitario;
+                item.ValorOperacao = $scope.recolhimento.valorOperacao;
+
+                item.ValorVendaMercadoInterno = $scope.fatosGeradores.valorVendaMercadoInterno;
+                item.QtdVendaMercadoInterno = $scope.fatosGeradores.qtdVendaMercadoInterno;
+                item.CodigoNCMMercadoInterno = $scope.fatosGeradores.codigoNCMMinterno;
+
+                angular.forEach($scope.mercInternos, function (linha) {
+                    $scope.linhasMercadoInterno.push(linha.fatosGeradores);
+                });
+
+                item.linhasMercadoInterno = $scope.linhasMercadoInterno;
+
+                item.ValorVendaMercadoExportacao = $scope.fatosGeradores.valorVendaMercadoExportacao;
+                item.QtdVendaMercadoExportacao = $scope.fatosGeradores.qtdVendaMercadoExportacao;
+                item.CodigoNCMExportacao = $scope.fatosGeradores.codigoNCMExportacao;
+
+                angular.forEach($scope.exportacoes, function (linha) {
+                    $scope.linhasExportacao.push(linha.fatosGeradores);
+                });
+
+                item.linhasExportacao = $scope.linhasExportacao;
+
+                item.ValorCustoIndustrializacao = $scope.fatosGeradores.valorCustoIndustrializacao;
+                item.QtdCustoIndustrializacao = $scope.fatosGeradores.qtdCustoIndustrializacao;
+                item.CodigoNCMTransformacao = $scope.fatosGeradores.codigoNCMTransformacao;
+
+                angular.forEach($scope.transformacoes, function (linha) {
+                    $scope.linhasTransformacao.push(linha.fatosGeradores);
+                });
+
+                item.linhasTransformacao = $scope.linhasTransformacao;
+
+                item.ValorConsumoInterno = $scope.fatosGeradores.valorConsumoInterno;
+                item.QtdConsumoInterno = $scope.fatosGeradores.qtdConsumoInterno;
+                item.CodigoNCMConsumoInterno = $scope.fatosGeradores.codigoNCMConsumoInterno;
+
+                angular.forEach($scope.internoMinas, function (linha) {
+                    $scope.linhasConsumoInterno.push(linha.fatosGeradores);
+                });
+
+                item.linhasConsumoInterno = $scope.linhasConsumoInterno;
+
+                /*------------------------------------------------------------------------------------------*/
+                item.ICMS = $scope.recolhimento.icms;
+                item.PIS = $scope.recolhimento.pis;
+                item.COFINS = $scope.recolhimento.cofins;
+                item.ISS = $scope.recolhimento.iss;
+                item.IOF = $scope.recolhimento.iof;
+                item.Frete = $scope.recolhimento.frete;
+                item.Seguro = $scope.recolhimento.seguro;
+                item.ValorLiquido = $scope.recolhimento.ValorLiquido;
+                item.ValorCfem = $scope.recolhimento.valorCFEM;
+                item.Titular = $scope.titular;
+                item.GambetaFerro = $scope.gambetaFerro;
+
+                item.tfrm = $scope.recolhimento.tfrm;
+
+                if ($scope.compensacao)
+                    item.Compensacao = $scope.compensacao;
+
+                $('#processing-modal').show();
+                $http.post(window.pathApi + '/cfem', item).success(function (data, status, headers, config) {
+                    $scope.boletos.push(data);
+
+                    $scope.todos = '';
+                    $scope.total = 0;
+                    angular.forEach($scope.boletos, function (item) {
+                        $scope.total += item.ValorFinal;
+                        $scope.todos += item.Sequencial + ',';
+                    });
+
+                    var url = '/BoletosCfem/GeraBoleto/Boleto' + '/' + $scope.boletos[$scope.boletos.length - 1].Sequencial;
+                    var win = window.open(url, '_blank');
+
+                    $('#processing-modal').hide();
+
+                    $scope.habilitaBoleto = false;
+
+                }).error(function (data, status, headers, config) {
+                    $('#processing-modal').hide();
+                    alert('Não foi possível realizar a operação, tente novamente mais tarde!');
+                    $scope.habilitaBoleto = false;
+                });
+
+            };
+
+            $scope.submitRecolhimento = function () {
+                var ok = true;
+
+                if ($scope.CFEMRecolhimento.$valid) {
+
+                    // Valida se o município foi informado
+                    if (!angular.isNumber($scope.municipio.Sequencial)) {
+                        $scope.CFEMRecolhimento.cbMunicipio.$setDirty();
+                        ok = false;
+                    }
+
+                    // Verifica se a substancia foi informada
+                    if (!angular.isNumber($scope.substancia.Sequencial)) {
+                        $scope.CFEMRecolhimento.cbSubstancia.$setValidity("cbSubstancia", false);
+                        ok = false;
+                    }
+
+                    var strdata = '';
+
+                    // Verifica se a data de emissão é válida e menor que hoje
+                    if ($scope.declaracaoNF) {
+
+                        var mesApuracao = moment('01/' + $scope.mesApuracao, "DD/MM/YYYY");
+                        var hoje = new Date();
+                        hoje = new Date(hoje.getFullYear(), hoje.getMonth(), 1);
+                        var mesLimite = moment(hoje);
+                        mesLimite = mesLimite.subtract(1, 'M');
+                        if (mesApuracao.isAfter(mesLimite)) {
+                            $scope.CFEMRecolhimento.mesApuracao.$setDirty();
+                            $scope.CFEMRecolhimento.mesApuracao.$setValidity("mesApuracao", false);
+                            ok = false;
+                        }
+                    }
+
+                    // Verifica valorOperacao
+                    if (!angular.isNumber($scope.recolhimento.valorOperacao)) {
+                        $scope.CFEMRecolhimento.valorOperacao.$setValidity("valorOperacao", false);
+                        ok = false;
+                    } else {
+                        if (parseFloat($scope.recolhimento.valorOperacao) <= 0) {
+                            $scope.CFEMRecolhimento.valorOperacao.$setValidity("valorOperacao", false);
+                            ok = false;
+                        }
+                    }
+
+                    // Verifica valorOperacaoConsolidado
+                    if (!angular.isNumber($scope.fatosGeradores.valorOperacaoConsolidado)) {
+                        $scope.CFEMRecolhimento.valorOperacaoConsolidado.$setValidity("valorOperacaoConsolidado", false);
+                        ok = false;
+                    } else {
+                        if (parseFloat($scope.fatosGeradores.valorOperacao) <= 0) {
+                            $scope.CFEMRecolhimento.valorOperacaoConsolidado.$setValidity("valorOperacaoConsolidado", false);
+                            ok = false;
+                        }
+                    }
+
+                    // Verifica a quantidade venda (mercado interno)
+                    if (!angular.isNumber($scope.fatosGeradores.qtdVendaMercadoInterno)) {
+                        $scope.CFEMRecolhimento.qtdVendaMercadoInterno.$setValidity("qtdVendaMercadoInterno", false);
+                        ok = false;
+                    } else {
+                        if (parseFloat($scope.fatosGeradores.qtdVendaMercadoInterno) <= 0 && parseFloat($scope.fatosGeradores.valorVendaMercadoInterno) > 0) {
+                            $scope.CFEMRecolhimento.qtdVendaMercadoInterno.$setValidity("qtdVendaMercadoInterno", false);
+                            ok = false;
+                        }
+                    }
+
+                    //Verifica o código NCM (mercado interno)
+                    if (parseFloat($scope.fatosGeradores.valorVendaMercadoInterno) > 0) {
+                        if (typeof $scope.fatosGeradores.codigoNCMMinterno === "undefined" || $scope.fatosGeradores.codigoNCMMinterno == 0) {
+                            $scope.CFEMRecolhimento.codigoNCMMinterno.$setValidity("codigoNCMMinterno", false);
+                            ok = false;
+                        }
+                    }
+                    angular.forEach($scope.mercInternos, function (linha) {
+                        if (parseFloat(linha.fatosGeradores.valorVendaMercadoInterno) > 0) {
+                            if (linha.fatosGeradores.codigoNCMMinterno == '' || linha.fatosGeradores.codigoNCMMinterno == 0) {
+                                $scope.validaNCM.$setValidity("validaNCM", false);
+                                ok = false;
+                            }
+                        }
+                    });
+
+                    //Verifica o código NCM (exportação)
+                    if (parseFloat($scope.fatosGeradores.valorVendaMercadoExportacao) > 0) {
+                        if (typeof $scope.fatosGeradores.codigoNCMExportacao === "undefined" || $scope.fatosGeradores.codigoNCMExportacao == 0) {
+                            $scope.CFEMRecolhimento.codigoNCMExportacao.$setValidity("codigoNCMExportacao", false);
+                            ok = false;
+                        }
+                    }
+                    angular.forEach($scope.exportacoes, function (linha) {
+                        if (parseFloat(linha.fatosGeradores.valorVendaMercadoExportacao) > 0) {
+                            if (linha.fatosGeradores.codigoNCMExportacao == '' || linha.fatosGeradores.codigoNCMExportacao == 0) {
+                                $scope.validaNCM.$setValidity("validaNCM", false);
+                                ok = false;
+                            }
+                        }
+                    });
+
+                    //Verifica o código NCM (transforamação)
+                    if (parseFloat($scope.fatosGeradores.valorCustoIndustrializacao) > 0) {
+                        if (typeof $scope.fatosGeradores.codigoNCMTransformacao === "undefined" || $scope.fatosGeradores.codigoNCMTransformacao == 0) {
+                            $scope.CFEMRecolhimento.codigoNCMTransformacao.$setValidity("codigoNCMTransformacao", false);
+                            ok = false;
+                        }
+                    }
+                    angular.forEach($scope.transformacoes, function (linha) {
+                        if (parseFloat(linha.fatosGeradores.valorCustoIndustrializacao) > 0) {
+                            if (linha.fatosGeradores.codigoNCMTransformacao == '' || linha.fatosGeradores.codigoNCMTransformacao == 0) {
+                                $scope.validaNCM.$setValidity("validaNCM", false);
+                                ok = false;
+                            }
+                        }
+                    });
+
+                    //Verifica o código NCM (consumo interno)
+                    if (parseFloat($scope.fatosGeradores.valorConsumoInterno) > 0) {
+                        if (typeof $scope.fatosGeradores.codigoNCMConsumoInterno === "undefined" || $scope.fatosGeradores.codigoNCMConsumoInterno == 0) {
+                            $scope.CFEMRecolhimento.codigoNCMConsumoInterno.$setValidity("codigoNCMConsumoInterno", false);
+                            ok = false;
+                        }
+                    }
+                    angular.forEach($scope.internoMinas, function (linha) {
+                        if (parseFloat(linha.fatosGeradores.valorConsumoInterno) > 0) {
+                            if (linha.fatosGeradores.codigoNCMConsumoInterno == '' || linha.fatosGeradores.codigoNCMConsumoInterno == 0) {
+                                $scope.validaNCM.$setValidity("validaNCM", false);
+                                ok = false;
+                            }
+                        }
+                    });
+                }
+
+                if (ok) {
+                    $scope.exibeInfoEmissao = true;
+                    $scope.CorrecaoMonetaria();
+                }
+            };
+
+            $scope.mercInternos = [];
+            $scope.exportacoes = [];
+            $scope.transformacoes = [];
+            $scope.internoMinas = [];
+            $scope.listaCodigosNCM = [];
+            $scope.subAliqPerson = [];
+
+            $scope.subAliqPerson.push({ nome: 'ALUMÍNIO' });
+            $scope.subAliqPerson.push({ nome: 'BAUXITA' });
+
+            $scope.validarAliqPersonalizada = function () {
+                angular.forEach($scope.tipoUsoLista, function (item) {
+                    if (item.Codigo == 4) {
+                        $scope.tipoUsoLista.splice($scope.tipoUsoLista.indexOf(item), 1);
+                    }
+                });
+                angular.forEach($scope.subAliqPerson, function (item) {
+                    if ($scope.substancia.Nome.includes(item.nome)) {
+                        $scope.tipoUsoLista.push({ Codigo: 4, Aliquota: 2, Nome: "Bauxita uso não metalúrgico" });
+                    }
+                });
+
+                //if ($scope.vldAliqPersonalizada && $scope.cnpjPermitido) {
+                //    $scope.aliqPersonalizada = true;
+                //}
+                //else {
+                //    $scope.aliqPersonalizada = false;
+                //    }
+                }
+
+            $scope.duplicarFatosGeradores = function (fg) {
+                if (fg == 1) {
+                    $scope.mercInternos.push({ fatosGeradores: { valorVendaMercadoInterno: '', qtdVendaMercadoInterno: '', codigoNCMMinterno: '', mediaVendaMercadoInterno: '' } });
+                }
+                else if (fg == 2) {
+                    $scope.exportacoes.push({ fatosGeradores: { valorVendaMercadoExportacao: '', qtdVendaMercadoExportacao: '', codigoNCMExportacao: '', mediaVendaMercadoExportacao: '' } });
+                }
+                else if (fg == 3) {
+                    $scope.transformacoes.push({ fatosGeradores: { valorCustoIndustrializacao: '', qtdCustoIndustrializacao: '', codigoNCMTransformacao: '', mediaCustoIndustrializacao: '' } });
+                }
+                else if (fg == 4) {
+                    $scope.internoMinas.push({ fatosGeradores: { valorConsumoInterno: '', qtdConsumoInterno: '', codigoNCMConsumoInterno: '', mediaConsumoInterno: '' } });
+                }
+            }
+
+            $scope.excluirFatosGeradores = function (fg, index) {
+                if (fg == 1) {
+                    $scope.mercInternos.splice(index, 1);
+                    $scope.mercInternos = $scope.mercInternos.slice();
+                }
+                else if (fg == 2) {
+                    $scope.exportacoes.splice(index, 1);
+                    $scope.exportacoes = $scope.exportacoes.slice();
+                }
+                else if (fg == 3) {
+                    $scope.transformacoes.splice(index, 1);
+                    $scope.transformacoes = $scope.transformacoes.slice();
+                }
+                else if (fg == 4) {
+                    $scope.internoMinas.splice(index, 1);
+                    $scope.internoMinas = $scope.internoMinas.slice();
+                }
+
+                $scope.calculaCFEMSimples();
+             }
+
+            $scope.formatarCodigoNCMNsub = function (fg, index) {
+                if (fg == 1)
+                {
+                    $scope.mercInternos[index].fatosGeradores.codigoNCM = $scope.mercInternos[index].fatosGeradores.codigoNCMMinterno.replace(/[^\d]/g, '');
+
+                    if ($scope.mercInternos[index].fatosGeradores.codigoNCMMinterno.length == 8) {
+                        $scope.codigoNCMsemletra = $scope.mercInternos[index].fatosGeradores.codigoNCMMinterno.replace(/[^\d]/g, '');
+                        $scope.codigoNCMformat = $scope.codigoNCMsemletra[0] + $scope.codigoNCMsemletra[1] + $scope.codigoNCMsemletra[2] + $scope.codigoNCMsemletra[3] + '.' + $scope.codigoNCMsemletra[4] + $scope.codigoNCMsemletra[5] + '.' + $scope.codigoNCMsemletra[6] + $scope.codigoNCMsemletra[7];
+
+                        $scope.mercInternos[index].fatosGeradores.codigoNCMMinterno = $scope.codigoNCMformat;
+                    }
+                }
+                else if (fg == 2)
+                {
+                    $scope.exportacoes[index].fatosGeradores.codigoNCMExportacao = $scope.exportacoes[index].fatosGeradores.codigoNCMExportacao.replace(/[^\d]/g, '');
+
+                    if ($scope.exportacoes[index].fatosGeradores.codigoNCMExportacao.length == 8) {
+                        $scope.codigoNCMsemletra = $scope.exportacoes[index].fatosGeradores.codigoNCMExportacao.replace(/[^\d]/g, '');
+                        $scope.codigoNCMformat = $scope.codigoNCMsemletra[0] + $scope.codigoNCMsemletra[1] + $scope.codigoNCMsemletra[2] + $scope.codigoNCMsemletra[3] + '.' + $scope.codigoNCMsemletra[4] + $scope.codigoNCMsemletra[5] + '.' + $scope.codigoNCMsemletra[6] + $scope.codigoNCMsemletra[7];
+
+                        $scope.exportacoes[index].fatosGeradores.codigoNCMExportacao = $scope.codigoNCMformat;
+                    }
+                }
+                else if (fg == 3)
+                {
+                    $scope.transformacoes[index].fatosGeradores.codigoNCMTransformacao = $scope.transformacoes[index].fatosGeradores.codigoNCMTransformacao.replace(/[^\d]/g, '');
+
+                    if ($scope.transformacoes[index].fatosGeradores.codigoNCMTransformacao.length == 8) {
+                        $scope.codigoNCMsemletra = $scope.transformacoes[index].fatosGeradores.codigoNCMTransformacao.replace(/[^\d]/g, '');
+                        $scope.codigoNCMformat = $scope.codigoNCMsemletra[0] + $scope.codigoNCMsemletra[1] + $scope.codigoNCMsemletra[2] + $scope.codigoNCMsemletra[3] + '.' + $scope.codigoNCMsemletra[4] + $scope.codigoNCMsemletra[5] + '.' + $scope.codigoNCMsemletra[6] + $scope.codigoNCMsemletra[7];
+
+                        $scope.transformacoes[index].fatosGeradores.codigoNCMTransformacao = $scope.codigoNCMformat;
+                    }
+                }
+                else if (fg == 4)
+                {
+                    $scope.internoMinas[index].fatosGeradores.codigoNCMConsumoInterno = $scope.internoMinas[index].fatosGeradores.codigoNCMConsumoInterno.replace(/[^\d]/g, '');
+
+                    if ($scope.internoMinas[index].fatosGeradores.codigoNCMConsumoInterno.length == 8) {
+                        $scope.codigoNCMsemletra = $scope.internoMinas[index].fatosGeradores.codigoNCMConsumoInterno.replace(/[^\d]/g, '');
+                        $scope.codigoNCMformat = $scope.codigoNCMsemletra[0] + $scope.codigoNCMsemletra[1] + $scope.codigoNCMsemletra[2] + $scope.codigoNCMsemletra[3] + '.' + $scope.codigoNCMsemletra[4] + $scope.codigoNCMsemletra[5] + '.' + $scope.codigoNCMsemletra[6] + $scope.codigoNCMsemletra[7];
+
+                        $scope.internoMinas[index].fatosGeradores.codigoNCMConsumoInterno = $scope.codigoNCMformat;
+                    }
+                }
+            };
+
+            $scope.validarTabelaNCM = function (fg) {
+                $scope.NCMencontrado = false;
+                $scope.tipBoleto = 'decarr';
+                var tabelaJson = window.pathApi + '/cfem/GetJsonData?tipBoleto=' + $scope.tipBoleto
+                $http.get(tabelaJson)
+                    .then(function (response)
+                    {
+                        $scope.NCM = response.data.NCM;
+
+                        angular.forEach($scope.NCM, function (item)
+                        {
+                            if (fg == 1)
+                            {
+                                if (item.Codigo.toLowerCase() == $scope.fatosGeradores.codigoNCMMinterno.replace(/\./g, '').trim()) {
+                                    var confirmacao = confirm("Você digitou o Código NCM: " + item.Codigo + " - " + item.Descricao + ". " + "Deseja manter? ");
+                                    if (!confirmacao) {
+                                        $scope.fatosGeradores.codigoNCMMinterno = 0;
+                                    }
+                                    $scope.NCMencontrado = true;
+                                    $scope.CFEMRecolhimento.codigoNCMMinterno.$setValidity("codigoNCMMinterno", true);
+                                }
+                            }
+                            else if (fg == 2)
+                            {
+                                if (item.Codigo.toLowerCase() == $scope.fatosGeradores.codigoNCMExportacao.replace(/\./g, '').trim()) {
+                                    var confirmacao = confirm("Você digitou o Código NCM: " + item.Codigo + " - " + item.Descricao + ". " + "Deseja manter? ");
+                                    if (!confirmacao) {
+                                        $scope.fatosGeradores.codigoNCMExportacao = 0;
+                                    }
+                                    $scope.NCMencontrado = true;
+                                    $scope.CFEMRecolhimento.codigoNCMExportacao.$setValidity("codigoNCMExportacao", true);
+                                }
+                            }
+                            else if (fg == 3)
+                            {
+                                if (item.Codigo.toLowerCase() == $scope.fatosGeradores.codigoNCMTransformacao.replace(/\./g, '').trim()) {
+                                    var confirmacao = confirm("Você digitou o Código NCM: " + item.Codigo + " - " + item.Descricao + ". " + "Deseja manter? ");
+                                    if (!confirmacao) {
+                                        $scope.fatosGeradores.codigoNCMTransformacao = 0;
+                                    }
+                                    $scope.NCMencontrado = true;
+                                    $scope.CFEMRecolhimento.codigoNCMTransformacao.$setValidity("codigoNCMTransformacao", true);
+                                }
+                            }
+                            else if (fg == 4)
+                            {
+                                if (item.Codigo.toLowerCase() == $scope.fatosGeradores.codigoNCMConsumoInterno.replace(/\./g, '').trim()) {
+                                    var confirmacao = confirm("Você digitou o Código NCM: " + item.Codigo + " - " + item.Descricao + ". " + "Deseja manter? ");
+                                    if (!confirmacao) {
+                                        $scope.fatosGeradores.codigoNCMConsumoInterno = 0;
+                                    }
+                                    $scope.NCMencontrado = true;
+                                    $scope.CFEMRecolhimento.codigoNCMConsumoInterno.$setValidity("codigoNCMConsumoInterno", true);
+                                }
+                            }
+                        });
+                            if (!$scope.NCMencontrado)
+                            {
+                                alert('Código NCM é inválido por estar fora da cadeia de produção da indústria mineral.');
+                                if (fg == 1)
+                                {
+                                    $scope.fatosGeradores.codigoNCMMinterno = 0;
+                                }
+                                else if (fg == 2)
+                                {
+                                    $scope.fatosGeradores.codigoNCMExportacao = 0;
+                                }
+                                else if (fg == 3)
+                                {
+                                    $scope.fatosGeradores.codigoNCMTransformacao = 0;
+                                }
+                                else if (fg == 4)
+                                {
+                                    $scope.fatosGeradores.codigoNCMConsumoInterno = 0;
+                                }
+                                $scope.NCMencontrado = false;
+                            }
+                     })
+                    .catch(function (error)
+                    {
+                        console.error('Erro ao carregar o JSON: ', error);
+                    });
+            }
+
+            $scope.validarTabelaNCMNsub = function (fg, index) {
+                $scope.NCMNsubEncontrado = false;
+                $scope.tipBoleto = 'decarr';
+                var tabelaJson = window.pathApi + '/cfem/GetJsonData?tipBoleto=' + $scope.tipBoleto
+                $http.get(tabelaJson)
+                    .then(function (response)
+                    {
+                        $scope.NCM = response.data.NCM;
+
+                        angular.forEach($scope.NCM, function (item)
+                        {
+                            if (fg == 1)
+                            {
+                                if (item.Codigo.toLowerCase() == $scope.mercInternos[index].fatosGeradores.codigoNCMMinterno.replace(/\./g, '').trim()) {
+                                    var confirmacao = confirm("Você digitou o Código NCM: " + item.Codigo + " - " + item.Descricao + ". " + "Deseja manter? ");
+                                    if (!confirmacao) {
+                                        $scope.mercInternos[index].fatosGeradores.codigoNCMMinterno = 0;
+                                    }
+                                    $scope.NCMNsubEncontrado = true;
+                                    $scope.CFEMRecolhimento.codigoNCMMinterno.$setValidity("codigoNCMMinterno", true);
+                                }
+                            }
+                            else if (fg == 2)
+                            {
+                                if (item.Codigo.toLowerCase() == $scope.exportacoes[index].fatosGeradores.codigoNCMExportacao.replace(/\./g, '').trim()) {
+                                    var confirmacao = confirm("Você digitou o Código NCM: " + item.Codigo + " - " + item.Descricao + ". " + "Deseja manter? ");
+                                    if (!confirmacao) {
+                                        $scope.exportacoes[index].fatosGeradores.codigoNCMExportacao = 0;
+                                    }
+                                    $scope.NCMNsubEncontrado = true;
+                                    $scope.CFEMRecolhimento.codigoNCMExportacao.$setValidity("codigoNCMExportacao", true);
+                                }
+                            }
+                            else if (fg == 3)
+                            {
+                                if (item.Codigo.toLowerCase() == $scope.transformacoes[index].fatosGeradores.codigoNCMTransformacao.replace(/\./g, '').trim()) {
+                                    var confirmacao = confirm("Você digitou o Código NCM: " + item.Codigo + " - " + item.Descricao + ". " + "Deseja manter? ");
+                                    if (!confirmacao) {
+                                        $scope.transformacoes[index].fatosGeradores.codigoNCMTransformacao = 0;
+                                    }
+                                    $scope.NCMNsubEncontrado = true;
+                                    $scope.CFEMRecolhimento.codigoNCMTransformacao.$setValidity("codigoNCMTransformacao", true);
+                                }
+                            }
+                            else if (fg == 4)
+                            {
+                                if (item.Codigo.toLowerCase() == $scope.internoMinas[index].fatosGeradores.codigoNCMConsumoInterno.replace(/\./g, '').trim()) {
+                                    var confirmacao = confirm("Você digitou o Código NCM: " + item.Codigo + " - " + item.Descricao + ". " + "Deseja manter? ");
+                                    if (!confirmacao) {
+                                        $scope.internoMinas[index].fatosGeradores.codigoNCMConsumoInterno = 0;
+                                    }
+                                    $scope.NCMNsubEncontrado = true;
+                                    $scope.CFEMRecolhimento.codigoNCMConsumoInterno.$setValidity("codigoNCMConsumoInterno", true);
+                                }
+                            }
+                        });
+                        if (!$scope.NCMNsubEncontrado)
+                        {
+                            alert('Código NCM é inválido pois está fora dos grupos de minerais.');
+                            if (fg == 1)
+                            {
+                                $scope.mercInternos[index].fatosGeradores.codigoNCMMinterno = 0;
+                            }
+                            else if (fg == 2)
+                            {
+                                $scope.exportacoes[index].fatosGeradores.codigoNCMExportacao = 0;
+                            }
+                            else if (fg == 3)
+                            {
+                                $scope.transformacoes[index].fatosGeradores.codigoNCMTransformacao = 0;
+                            }
+                            else if (fg == 4) {
+                                $scope.internoMinas[index].fatosGeradores.codigoNCMConsumoInterno = 0;
+                            }
+                            $scope.NCMNsubEncontrado = false;
+                        }
+                    })
+                    .catch(function (error)
+                    {
+                        console.error('Erro ao carregar o JSON: ', error);
+                    });
+            }
+
+            $scope.carregarListaNCM = function () {
+                $scope.tipBoleto = 'decarr';
+                var tabelaJson = window.pathApi + '/cfem/GetJsonData?tipBoleto=' + $scope.tipBoleto
+                $http.get(tabelaJson)
+                    .then(function (response) {
+                        $scope.NCM = response.data.NCM;
+
+                        angular.forEach($scope.NCM, function (item) {
+                            $scope.listaCodigosNCM += (item.Codigo + " - " + item.Descricao + ". ") + "\n";
+                         });
+                    })
+                    .catch(function (error) {
+                        console.error('Erro ao carregar o JSON: ', error);
+                    });
+                $scope.listaCodigosNCM = [];
+            }
+        }]);
+    })();
+</script>
+                            <span class="hide">Fim do conteúdo da página</span>
+                        </section>
+                    </div>
+                    <!-- fim #content.span9 -->
+                </div>
+                <!-- fim .row-fluid -->
+            </div>
+            <!-- fim .container -->
+        </main>
+    
+
+
+<footer class="footer-geral">
+	<div class="container container-menus">
+		<div id="footer" class="row footer-menus">
+			<span class="hide">Início da navegação de rodapé</span>
+
+			<div class="col-lg-3">
+				<nav class="row assuntos nav">
+					<h2>Assuntos</h2>
+					<ul>
+						<li><a href="http://www.dnpm.gov.br/assuntos/ao-minerador" title="Ao Minerador">Ao Minerador</a></li>
+						<li><a href="http://www.dnpm.gov.br/assuntos/ao-publico" title="Ao Público">Ao Público</a></li>
+						<li><a href="http://www.dnpm.gov.br/assuntos/ao-servidor" title="Ao Servidor">Ao Servidor</a></li>
+					</ul>
+				</nav>
+			</div>
+			<div class="col-lg-3">
+				<nav class="row servicos nav">
+					<h2>Serviços</h2>
+					<ul>
+						<li class="portalservicos-item">
+							<a title="Perguntas frequentes" href="http://www.dnpm.gov.br/dnpm/paginas/perguntas-frequentes">Perguntas frequentes</a>
+						</li>
+						<li class="portalservicos-item">
+							<a title="Ouvidoria" href="http://www.dnpm.gov.br/servicos/ouvidoria">Ouvidoria</a>
+						</li>
+						<li class="portalservicos-item">
+							<a title="Acesso a sistemas" href="http://www.dnpm.gov.br/servicos/ouvidoria">Acesso a sistemas</a>
+						</li>
+					</ul>
+				</nav>
+			</div>
+			<div class="col-lg-3">
+				<nav class="row redes-sociais nav">
+					<h2>Redes Sociais</h2>
+					<ul>
+						<li class="portalredes-item">
+							<a title="Twitter" href="https://twitter.com/dnpmoficial">
+								Twitter
+							</a>
+						</li>
+					</ul>
+				</nav>
+			</div>
+			<div class="col-lg-3">
+				<nav class="row rss nav">
+					<h2>RSS</h2>
+					<ul>
+						<li><a href="http://www.dnpm.gov.br/rss/o-que-e" title="O que é?">O que é?</a></li>
+					</ul>
+				</nav>
+			</div>
+			<span class="hide">Fim da navegação de rodapé</span>
+		</div>
+		<!-- fim .row -->
+	</div>
+	<!-- fim .container -->
+	<div class="footer-ferramenta">
+        <div class="footer">
+            <img id="footer-logo-left" src="./CFEM ANM_files/anm315x65branco.png" alt="ANM - Agência Nacional de Mineração">
+            <div id="footer-conteudo">
+                <!-- Footer Links -->
+                
+        <div id="footer-links">
+            <span><a href="http://www.dnpm.gov.br/mapadosite">Mapa do Site</a></span>
+            <span><a href="http://www.dnpm.gov.br/acessibilidade">Acessibilidade</a></span>
+            <span><a href="http://www.acessoainformacao.gov.br/">Acesso a Informação</a></span>
+            <span><a href="http://www.brasil.gov.br/">Governo Federal</a></span>
+        </div>
+       
+                <!-- Footer Links -->
+                <div>© Todos os Direitos Reservados - 2025 </div>
+                <div style="display:none">23-04-2025 fix host </div>
+            </div>
+        </div>
+	</div>
+</footer>
+    </div>
+
+    <div class="modal modal-static" id="processing-modal" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="text-center">
+                        <img src="./CFEM ANM_files/712.gif" class="icon">
+                        <h4>Processando... <button ng-attr-type="button" class="close" ng-style="float: none;" data-dismiss="modal" aria-hidden="true">×</button></h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal modal-static" id="sdc-modal" role="dialog" aria-hidden="true" style="margin-top=10%">
+        <div class="modal-dialog" style="margin-top: 10% !important;">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="text-center" id="CorpoModalSDC">
+                        <h4><button id="fechaModal" ng-attr-type="button" class="close" hidden="" style="color: red !important; opacity: initial !important;" ng-style="float: none;" data-dismiss="modal" aria-hidden="true">×</button></h4>
+                        <h3>Prezado usuário, tendo em vista a RESOLUÇÃO ANM Nº 103, DE 20 DE ABRIL DE 2022 , a aquisição de bem mineral sem sua prévia inclusão no Cadastro Nacional do Primeiro Adquirente de bem mineral sujeita-lhe às sanções de multa e cancelamento de título previstas no § 1º do art. 9º, da Lei nº 7.805, de 18 de 1989, e nos incisos II, III do art. 52, do Decreto nº 9.406, de 2018.  </h3>
+                        <h5>Faça seu cadastramento clicando aqui. <a href="https://app.anm.gov.br/SDC" target="_blank" class="btn btn-primary">CADASTRAR </a> </h5>
+
+                    </div>
+                    <div>
+                        <h5>Continuar sem cadastro. <a href="https://app.anm.gov.br/BoletosCfem/NaoDivida/Cfem#" id="btnSemCadastroSDC" class="btn btn-danger">Sair </a> </h5>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+<script src="./CFEM ANM_files/apoio.js.download"></script>
+<!-- IMPORTANT: SmartAdmin Core -->
+<script src="./CFEM ANM_files/smartadmin"></script>
+
+
+<script src="./CFEM ANM_files/moment-with-locales.min.js.download"></script>
+<script src="./CFEM ANM_files/apoio.js.download"></script>
+
+<!-- maskedinput : plugin -->
+<script src="./CFEM ANM_files/jquery.maskedinput.min.js.download"></script>
+
+<script src="./CFEM ANM_files/masks.js.download"></script>
+
+<!-- maskMoney : plugin -->
+
+
+<!-- SmartChat UI : plugin -->
+
+
+<!-- DataTables : plugin -->
+<script src="./CFEM ANM_files/datatables"></script>
+
+
+<!-- jQGrid : plugin -->
+
+
+<!-- Forms : plugin -->
+<script src="./CFEM ANM_files/forms"></script>
+
+
+<!-- Flot Chart Plugin: Flot Engine, Flot Resizer, Flot Tooltip, Morris, Sparkline, EasyPie -->
+
+
+<!-- Vector Maps Plugin: Vectormap engine, Vectormap language -->
+
+
+<!-- Full Calendar -->
+
+
+<!-- AutoNumeric -->
+
+
+<script src="./CFEM ANM_files/datepicker-pt-BR.js.download"></script>
+
+
+<!-- DO NOT REMOVE : GLOBAL FUNCTIONS! -->
+<script>
+	
+
+	$(document).ready(function () {
+		//pageSetUp();
+		//drawBreadCrumb();
+	});
+</script>
+
+
+    <!-- fim div#wrapper -->
+    <!-- Script do portal Brasil deve ficar preferencialmente no rodape para nao atrasar o carregamento da pagina principal -->
+    <script defer="defer" src="./CFEM ANM_files/barra_2.0.js.download" type="text/javascript"></script>
+
+
+<div><div vw="" class="enabled" style="left: initial; right: 0px; top: 50%; bottom: initial; transform: translateY(calc(-50% - 10px));"><div vw-access-button="" class="active" style=""><img class="vp-access-button" data-src="assets/access_icon.svg" alt="Conteúdo acessível em Libras usando o VLibras Widget com opções dos Avatares Ícaro, Hosana ou Guga." src="./CFEM ANM_files/access_icon.svg">
+<img class="vp-pop-up" data-src="assets/access_popup.jpg" alt="Conteúdo acessível em Libras usando o VLibras Widget com opções dos Avatares Ícaro, Hosana ou Guga." src="./CFEM ANM_files/access_popup.jpg">
+</div><div vw-plugin-wrapper=""><div vp="">
+  <div vp-box=""></div>
+  <div vp-message-box=""></div>
+  <div vp-settings=""></div>
+  <div vp-dictionary=""></div>
+  <div vp-settings-btn=""></div>
+  <div vp-info-screen=""></div>
+  <div vp-suggestion-screen=""></div>
+  <div vp-translator-screen=""></div>
+  <div vp-more-options-screen=""></div>
+  <div vp-emotions-tooltip=""></div>
+  <div vp-main-guide-screen=""></div>
+  <div vp-suggestion-button=""></div>
+  <div vp-rate-box=""></div>
+  <div vp-change-avatar=""></div>
+  <div vp-aux-controls=""></div>
+  <div vp-controls=""></div>
+  <span vp-click-blocker=""></span>
+</div>
+</div></div></div><script src="./CFEM ANM_files/vlibras-plugin.js.download" type="text/javascript"></script><div id="divSmallBoxes"></div><div id="divMiniIcons"></div><div id="divbigBoxes"></div></body></html>

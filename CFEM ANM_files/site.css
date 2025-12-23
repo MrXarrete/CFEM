@@ -1,0 +1,133 @@
+﻿.obrigatorio::before {
+    content: "* ";
+    color: red;
+    font-weight: bold
+}
+main{
+    padding-bottom:250px;
+}
+
+/* Header */
+
+header img {
+    margin:10px 0 20px 0;
+}
+.nome-sistema {
+    font-family: "Open Sans", Helvetica, Arial, sans-serif;
+    margin: 30px 100px 0 0;
+    display: block;
+    font-size: 18px;
+    color: #fff;
+    float:right;
+}
+.header, .submenu {
+    background-color: #304b66 !important;
+    background-image: none;
+    border-bottom: none !important;
+}
+
+
+header div.sobre li {
+    border-right: 1px solid #fff;
+    padding: 0 10px;
+    line-height: 1em;
+}
+
+    header div.sobre li a:active {
+        background: #1b52ac !important;
+    } 
+
+/* Header */
+
+/* Footer */
+
+.footer-geral {
+    background: #004081 !important;
+    bottom: 0;
+    position: absolute;
+    width: 100%;
+}
+
+footer .container-menus {
+    padding: 25px 0 15px 80px;
+
+}
+
+.footer {
+    color: #fff;
+    width: 100%;
+    min-height: 30px;
+    display: flex;
+    align-items: center;
+    background: #003367;
+    justify-content: center;
+    box-shadow: 0 0 6px rgba(0,0,0,.05);
+}
+
+.footer-ferramenta{
+    padding:0 !important;
+}
+
+.footer img {
+    height: 34px;
+}
+
+#footer-logo-left {
+    left: 15px;
+    position: absolute;
+}
+
+#footer-conteudo {
+    width: 100%;
+    font-size: 13px;
+}
+
+    #footer-conteudo div {
+        padding: 5px 0;
+        text-align: center;
+    }
+
+#footer-links a {
+    color: #FFFFFF;
+    text-decoration: none;
+}
+
+    #footer-links a:hover {
+        text-decoration: underline;
+    }
+
+#footer-links span + span:before {
+    content: " | ";
+    padding: 0 10px;
+}
+
+@media only screen and (max-width: 768px) {
+    #footer-logo-left {
+        display: none;
+    }
+
+    #footer-logo-center {
+        display: block;
+    }
+    
+}
+
+@media only screen and (min-width: 768px) {
+    #footer-logo-left {
+        display: block;
+    }
+
+    #footer-logo-center {
+        display: none;
+    }
+    
+}
+
+@media only screen and (max-width: 1200px) {
+    main {
+        padding-bottom: 500px;
+    }
+}
+
+
+    /* Footer */

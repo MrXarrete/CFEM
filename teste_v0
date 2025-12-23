@@ -1,0 +1,224 @@
+import pandas as pd
+import time
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import Select, WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import NoSuchElementException, TimeoutException
+
+def digitar_lentamente(elemento, texto):
+    """
+    Digita o texto caractere por caractere para simular um humano
+    e permitir que o JavaScript do site processe a máscara.
+    """
+    for caractere in str(texto):
+        elemento.send_keys(caractere)
+        time.sleep(0.2) # Pausa de 0.2 segundos entre cada tecla
+
+def preencher_formulario_cfem(caminho_csv):
+    try:
+        # Lê o CSV usando ponto e vírgula como separador
+        df = pd.read_csv(caminho_csv, encoding='utf-8', dtype=str, sep=';')
+        
+        df = df.apply(lambda x: x.str.strip() if x.dtype == "object" else x)
+        df.fillna('', inplace=True)
+
+        colunas_necessarias = ['cpf_cnpj', 'numero_processo', 'substancia', 'mes_apuracao']
+        colunas_faltando = [col for col in colunas_necessarias if col not in df.columns]
+        if colunas_faltando:
+            print(f"Erro Crítico: Faltam colunas no CSV: {colunas_faltando}")
+            return
+            
+    except FileNotFoundError:
+        print(f"Erro: O arquivo '{caminho_csv}' não foi encontrado.")
+        return
+    except Exception as e:
+        print(f"Erro ao ler o arquivo CSV: {e}")
+        return
+
+    options = webdriver.ChromeOptions()
+    options.add_argument("--start-maximized")
+    driver = webdriver.Chrome(options=options)
+    wait = WebDriverWait(driver, 20)
+    short_wait = WebDriverWait(driver, 5)
+
+    url = "https://app.anm.gov.br/BoletosCfem/NaoDivida/Cfem"
+
+    for index, row in df.iterrows():
+        print(f"\n--- Processando Linha {index + 1}: CNPJ {row.get('cpf_cnpj')} ---")
+        try:
+            driver.get(url)
+
+            # --- ETAPA 1: DADOS INICIAIS ---
+            print("1. Preenchendo dados cadastrais...")
+            
+            # CPF/CNPJ
+            cpf_cnpj_input = wait.until(EC.presence_of_element_located((By.ID, "cpfCnpj")))
+            cpf_cnpj_input.clear()
+            digitar_lentamente(cpf_cnpj_input, row['cpf_cnpj']) # Usa digitação lenta aqui também por segurança
+            
+            driver.find_element(By.TAG_NAME, 'header').click()
+            
+            # Processo
+            print(f"   Selecionando Processo: {row['numero_processo']}")
+            wait.until(EC.presence_of_element_located((By.XPATH, f"//select[@id='cbProcesso']/option[contains(text(), \"{row['numero_processo']}\")]")))
+            Select(driver.find_element(By.ID, "cbProcesso")).select_by_visible_text(row['numero_processo'])
+            
+            # Substância
+            print(f"   Selecionando Substância: {row['substancia']}")
+            wait.until(EC.presence_of_element_located((By.XPATH, f"//select[@id='cbSubstancia']/option[contains(text(), \"{row['substancia']}\")]")))
+            Select(driver.find_element(By.ID, "cbSubstancia")).select_by_visible_text(row['substancia'])
+
+            # Unidade de Medida
+            print(f"   Selecionando Unidade: {row['unidade_medida']}")
+            wait.until(EC.presence_of_element_located((By.XPATH, f"//select[@id='cbUnidadeMedida']/option[contains(text(), \"{row['unidade_medida']}\")]")))
+            Select(driver.find_element(By.ID, "cbUnidadeMedida")).select_by_visible_text(row['unidade_medida'])
+
+            # Município
+            print(f"   Selecionando Município: {row['municipio']}")
+            wait.until(EC.presence_of_element_located((By.XPATH, f"//select[@id='cbMunicipio']/option[contains(text(), \"{row['municipio']}\")]")))
+            Select(driver.find_element(By.ID, "cbMunicipio")).select_by_visible_text(row['municipio'])
+
+            # Mês de apuração
+            print(f"Preenchendo Mês de Apuração '{row['mes_apuracao']}'...")
+            mes_apuracao_input = wait.until(EC.presence_of_element_located((By.ID, "mesApuracao")))
+            driver.execute_script(
+                "arguments[0].value = arguments[1]; arguments[0].dispatchEvent(new Event('input'));",
+                mes_apuracao_input, row['mes_apuracao']
+            )
+            driver.find_element(By.TAG_NAME, 'header').click()
+            print("Mês de Apuração preenchido.")
+
+            # --- ETAPA 2: FATOS GERADORES ---
+            print("2. Preenchendo Fatos Geradores...")
+
+            def preencher_se_existe(id_valor, id_qtd, id_ncm, valor_csv, qtd_csv, ncm_csv):
+                if valor_csv and valor_csv != '0' and valor_csv != '0,00':
+                    try:
+                        # Preenche Valor (R$)
+                        elem_valor = short_wait.until(EC.visibility_of_element_located((By.ID, id_valor)))
+                        elem_valor.clear()
+                        elem_valor.send_keys(valor_csv)
+
+                        # Preenche Quantidade
+                        elem_qtd = driver.find_element(By.ID, id_qtd)
+                        elem_qtd.clear()
+                        elem_qtd.send_keys(qtd_csv)
+
+                        # Preenche NCM (LENTAMENTE)
+                        if ncm_csv:
+                            elem_ncm = driver.find_element(By.ID, id_ncm)
+                            elem_ncm.clear()
+                            elem_ncm.click() # Foca no campo antes de digitar
+                            
+                            # Remove pontos para evitar conflito com a máscara e digita devagar
+                            ncm_limpo = ncm_csv.replace('.', '').strip()
+                            digitar_lentamente(elem_ncm, ncm_limpo)
+                        
+                        # Dispara evento de blur
+                        driver.find_element(By.TAG_NAME, 'header').click()
+                        time.sleep(1) # Pausa para o site validar o NCM
+                        
+                        try:
+                            # Espera até 3 segundos para ver se aparece um alerta
+                            WebDriverWait(driver, 3).until(EC.alert_is_present())
+                            alert = driver.switch_to.alert
+                            print(f"   Alerta detectado: {alert.text}")
+                            alert.accept() # Clica no "OK"
+                            print("   Alerta aceito.")
+                            time.sleep(2) # Pausa para o site processar o aceite
+                        except TimeoutException:
+                            # Se não aparecer alerta em 3 segundos, segue a vida
+                            pass
+
+                    except (NoSuchElementException, TimeoutException):
+                        print(f"   Aviso: Campo {id_valor} não encontrado ou indisponível.")
+
+            # A. Mercado Interno
+            preencher_se_existe(
+                "valorVendaMercadoInterno", 
+                "qtdVendaMercadoInterno", 
+                "codigoNCMMinterno", 
+                row.get('valor_venda_interno'), 
+                row.get('qtd_venda_interno'), 
+                row.get('ncm_interno')
+            )
+
+            # B. Exportação
+            preencher_se_existe(
+                "valorVendaMercadoExportacao", 
+                "qtdVendaMercadoExportacao", 
+                "codigoNCMExportacao", 
+                row.get('valor_exportacao'), 
+                row.get('qtd_exportacao'), 
+                row.get('ncm_exportacao')
+            )
+
+            # C. Transformação
+            preencher_se_existe(
+                "valorCustoIndustrializacao", 
+                "qtdCustoIndustrializacao", 
+                "codigoNCMTransformacao", 
+                row.get('valor_transformacao'), 
+                row.get('qtd_transformacao'), 
+                row.get('ncm_transformacao')
+            )
+
+            # D. Consumo Interno Mina
+            preencher_se_existe(
+                "valorConsumoInterno", 
+                "qtdConsumoInterno", 
+                "codigoNCMConsumoInterno", 
+                row.get('valor_consumo_mina'), 
+                row.get('qtd_consumo_mina'), 
+                row.get('ncm_consumo_mina')
+            )
+
+            # --- ETAPA 3: DEDUÇÕES ---
+            print("3. Preenchendo Deduções...")
+            campos_deducao = {
+                'icms': 'icms',
+                'pis': 'pis',
+                'cofins': 'cofins',
+                'frete': 'frete',
+                'seguro': 'seguro'
+            }
+            
+            for col_csv, id_html in campos_deducao.items():
+                valor = row.get(col_csv)
+                if valor and valor != '0' and valor != '0,00':
+                    try:
+                        elem = driver.find_element(By.ID, id_html)
+                        elem.clear()
+                        elem.send_keys(valor)
+                    except NoSuchElementException:
+                        pass
+
+            # --- ETAPA 4: CALCULAR E EMITIR ---
+            print("4. Finalizando...")
+            
+            calcular_btn = wait.until(EC.element_to_be_clickable((By.XPATH, "//button[contains(., 'Calcular Valor')]")))
+            driver.execute_script("arguments[0].scrollIntoView();", calcular_btn)
+            time.sleep(1)
+            driver.execute_script("arguments[0].click();", calcular_btn)
+            
+            print("   Aguardando processamento...")
+            emitir_btn = wait.until(EC.element_to_be_clickable((By.XPATH, "//a[contains(., 'Emitir guia de recolhimento')]")))
+            
+            # ATENÇÃO: A linha abaixo gera o boleto.
+            # driver.execute_script("arguments[0].click();", emitir_btn)
+            
+            print(f"   Sucesso na linha {index + 1}!")
+            time.sleep(10) 
+
+        except TimeoutException:
+            print(f"   ERRO: Tempo excedido na linha {index + 1}.")
+        except Exception as e:
+            print(f"   ERRO INESPERADO NA LINHA {index + 1}: {e}")
+
+    print("\n--- Processamento finalizado ---")
+    # driver.quit()
+
+if __name__ == "__main__":
+    caminho_do_arquivo_csv = "teste.csv"
+    preencher_formulario_cfem(caminho_do_arquivo_csv)
