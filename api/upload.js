@@ -2,62 +2,66 @@ const { google } = require('googleapis');
 const stream = require('stream');
 
 export default async function handler(req, res) {
-    // 1. Validação de Método
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Method not allowed' });
     }
 
     try {
-        // 2. Debug: Verificar se as variáveis existem (sem revelar o valor por segurança)
-        if (!process.env.GOOGLE_CLIENT_EMAIL) {
-            throw new Error('ERRO DE CONFIGURAÇÃO: A variável GOOGLE_CLIENT_EMAIL está faltando na Vercel.');
-        }
-        if (!process.env.GOOGLE_PRIVATE_KEY) {
-            throw new Error('ERRO DE CONFIGURAÇÃO: A variável GOOGLE_PRIVATE_KEY está faltando na Vercel.');
-        }
-        if (!process.env.GOOGLE_DRIVE_FOLDER_ID) {
-            throw new Error('ERRO DE CONFIGURAÇÃO: A variável GOOGLE_DRIVE_FOLDER_ID está faltando na Vercel.');
+        // 1. Limpeza e Validação das Variáveis
+        // O .trim() remove espaços vazios acidentais no início ou fim
+        const clientEmail = process.env.GOOGLE_CLIENT_EMAIL ? process.env.GOOGLE_CLIENT_EMAIL.trim() : null;
+        const privateKey = process.env.GOOGLE_PRIVATE_KEY ? process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n').trim() : null;
+        const folderId = process.env.GOOGLE_DRIVE_FOLDER_ID ? process.env.GOOGLE_DRIVE_FOLDER_ID.trim() : null;
+
+        if (!clientEmail || !privateKey || !folderId) {
+            throw new Error('CONFIGURAÇÃO INCOMPLETA: Verifique as variáveis de ambiente na Vercel.');
         }
 
         const { csvContent, fileName } = req.body;
 
-        // 3. Tratamento da Chave Privada
-        // Isso resolve o problema tanto se a chave tiver quebras de linha reais quanto literais (\n)
-        const privateKey = process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n');
-
-        // 4. Autenticação Google
+        // 2. Autenticação
         const auth = new google.auth.GoogleAuth({
             credentials: {
-                client_email: process.env.GOOGLE_CLIENT_EMAIL,
+                client_email: clientEmail,
                 private_key: privateKey,
             },
-            scopes: ['https://www.googleapis.com/auth/drive.file'],
+            scopes: ['https://www.googleapis.com/auth/drive'], // Escopo mais amplo para evitar erros de permissão
         });
 
         const drive = google.drive({ version: 'v3', auth });
 
-        // 5. Preparar o Arquivo
+        // 3. Preparar Stream
         const bufferStream = new stream.PassThrough();
         bufferStream.end(csvContent);
 
-        // 6. Upload
+        // 4. Upload com parâmetros de segurança
         const response = await drive.files.create({
             requestBody: {
                 name: fileName,
-                parents: [process.env.GOOGLE_DRIVE_FOLDER_ID],
+                parents: [folderId], // Obrigatório: ID da pasta destino
                 mimeType: 'text/csv',
             },
             media: {
                 mimeType: 'text/csv',
                 body: bufferStream,
             },
+            fields: 'id', // Retorna apenas o ID para economizar dados
+            supportsAllDrives: true, // Importante: Permite salvar em Drives Compartilhados se necessário
         });
 
         return res.status(200).json({ success: true, fileId: response.data.id });
 
     } catch (error) {
         console.error('Erro detalhado:', error);
-        // Retorna a mensagem de erro exata para o frontend (navegador) para facilitar o debug
+        
+        // Mensagem amigável para o erro de Quota
+        if (error.message && error.message.includes('Service Accounts do not have storage quota')) {
+            return res.status(403).json({ 
+                error: 'Erro de Permissão ou ID', 
+                details: 'O Robô não encontrou a pasta. Verifique se o ID da pasta na Vercel está correto e se o email do robô é EDITOR dessa pasta.' 
+            });
+        }
+
         return res.status(500).json({ 
             error: 'Falha no servidor', 
             details: error.message 
