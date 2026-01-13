@@ -3,19 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerador de CSV - Mineração (Otimizado)</title>
+    <title>Gerador de CSV - Mineração (Final)</title>
     <style>
         body { font-family: Segoe UI, sans-serif; background-color: #f4f4f9; padding: 20px; }
         .container { max-width: 95%; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
         h2 { text-align: center; color: #333; margin-top: 0; }
         h3 { grid-column: 1 / -1; color: #007bff; border-bottom: 2px solid #eee; padding-bottom: 5px; margin-top: 20px; font-size: 1.1em; }
         
-        /* Formulário */
+        /* Grid Layout */
         form { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-bottom: 30px; padding-bottom: 20px; }
         .full-width { grid-column: 1 / -1; }
         
-        /* Estilo para as seções condicionais */
-        .section-toggle { 
+        /* Inputs e Labels */
+        label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 0.85em; color: #555; }
+        input, select { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        
+        /* Estilo para as perguntas de Sim/Não */
+        .section-question { 
             grid-column: 1 / -1; 
             background-color: #e9ecef; 
             padding: 10px; 
@@ -25,22 +29,29 @@
             gap: 15px;
             font-weight: bold;
         }
-        .section-toggle select { width: auto; min-width: 100px; border-color: #007bff; }
-        .hidden-section { display: contents; } /* Garante que o grid funcione dentro da div quando visível */
+        .section-question select { width: auto; min-width: 100px; border-color: #007bff; }
         
-        label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 0.85em; color: #555; }
-        input, select { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        /* Container para os campos condicionais */
+        .conditional-fields {
+            display: none; /* Começa oculto */
+            grid-column: 1 / -1; /* Ocupa a largura toda */
+            
+            /* Cria um sub-grid interno para alinhar os campos */
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            width: 100%;
+        }
         
-        /* Destaques */
-        input[name="numero_processo"], input[name="mes_apuracao"] { border-color: #007bff; background-color: #fcfcfc; }
-        .money-mask { text-align: right; }
+        /* Classe auxiliar para mostrar o grid */
+        .conditional-fields.active {
+            display: grid; 
+        }
 
         /* Botões */
         .btn-add { background-color: #007bff; color: white; padding: 12px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; grid-column: 1 / -1; margin-top: 20px; }
         .btn-add:hover { background-color: #0056b3; }
         
         .btn-download { background-color: #28a745; color: white; padding: 15px 30px; border: none; border-radius: 4px; cursor: pointer; font-size: 18px; display: block; margin: 20px auto 0; }
-        .btn-download:hover { background-color: #218838; }
         .btn-download:disabled { background-color: #ccc; cursor: not-allowed; }
 
         /* Tabela */
@@ -48,25 +59,23 @@
         table { width: 100%; border-collapse: collapse; font-size: 0.85em; min-width: 1500px; }
         th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; white-space: nowrap; }
         th { background-color: #f8f9fa; position: sticky; top: 0; font-weight: bold; }
-        td { text-align: right; }
-        td:nth-child(1), td:nth-child(2), td:nth-child(3), td:nth-child(4), td:nth-child(5), td:nth-child(6), td:nth-child(7), td:nth-child(10), td:nth-child(13), td:nth-child(15), td:nth-child(21), td:nth-child(22), td:nth-child(23) { text-align: left; }
-        tr:hover { background-color: #f1f1f1; }
-        
         .btn-delete { background-color: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; }
-        .btn-delete:hover { background-color: #c82333; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>1. Preencher Dados de Mineração</h2>
+    <h2>1. Preencher Dados</h2>
     <form id="miningForm">
         
         <h3>Dados Gerais</h3>
-        <div><label>CPF/CNPJ</label><input type="text" name="cpf_cnpj" required></div>
         <div>
-            <label>Nº Processo (000.000/0000)</label>
-            <input type="text" name="numero_processo" id="numero_processo" placeholder="000.000/0000" maxlength="12" required>
+            <label>CPF/CNPJ (Apenas números)</label>
+            <input type="text" name="cpf_cnpj" id="cpf_cnpj" placeholder="Digite apenas números" maxlength="14" required>
+        </div>
+        <div>
+            <label>Nº Processo (Apenas números)</label>
+            <input type="text" name="numero_processo" id="numero_processo" placeholder="0000000000" required>
         </div>
         <div><label>Substância</label><input type="text" name="substancia" required></div>
         <div>
@@ -75,9 +84,9 @@
                 <option value="">Selecione...</option>
                 <option value="t">t</option>
                 <option value="kg">kg</option>
-<!--                <option value="m3">m³</option>
+                <option value="m3">m³</option>
                 <option value="g">g</option>
-                <option value="quilates">quilates</option> -->
+                <option value="quilates">quilates</option>
             </select>
         </div>
         <div><label>Município</label><input type="text" name="municipio"></div>
@@ -87,69 +96,63 @@
             <input type="text" name="mes_apuracao" id="mes_apuracao" placeholder="Ex: 01/2024" maxlength="7" required>
         </div>
 
-        <div class="section-toggle">
+        <div class="section-question">
             <label>Houve Venda Interna?</label>
-            <select id="toggle_venda_interna" onchange="toggleSection('group_venda_interna', this.value)">
+            <select id="toggle_venda_interna">
+                <option value="SIM">Sim</option>
                 <option value="NAO">Não</option>
-                <option value="SIM" selected>Sim</option>
             </select>
         </div>
-        <div id="group_venda_interna" class="hidden-section">
+        <div id="group_venda_interna" class="conditional-fields active">
             <div><label>Valor Venda Interno (R$)</label><input type="text" class="money-mask" name="valor_venda_interno" placeholder="0,00"></div>
-            <div><label>Quantidade Venda Interno</label><input type="text" class="money-mask" name="qtd_venda_interno" placeholder="0,00"></div>
+            <div><label>Qtd Venda Interno</label><input type="text" class="money-mask" name="qtd_venda_interno" placeholder="0,00"></div>
             <div class="full-width">
                 <label>NCM Interno</label>
-                <select name="ncm_interno" class="ncm-selector">
-                    <option value="">Selecione o NCM...</option>
-                </select>
+                <select name="ncm_interno" class="ncm-selector"><option value="">Selecione...</option></select>
             </div>
         </div>
 
-        <div class="section-toggle">
+        <div class="section-question">
             <label>Houve Exportação?</label>
-            <select id="toggle_exportacao" onchange="toggleSection('group_exportacao', this.value)">
+            <select id="toggle_exportacao">
                 <option value="NAO" selected>Não</option>
                 <option value="SIM">Sim</option>
             </select>
         </div>
-        <div id="group_exportacao" class="hidden-section" style="display: none;">
+        <div id="group_exportacao" class="conditional-fields">
             <div><label>Valor Exportação (R$)</label><input type="text" class="money-mask" name="valor_exportacao" placeholder="0,00"></div>
-            <div><label>Quantidade Exportação</label><input type="text" class="money-mask" name="qtd_exportacao" placeholder="0,00"></div>
+            <div><label>Qtd Exportação</label><input type="text" class="money-mask" name="qtd_exportacao" placeholder="0,00"></div>
             <div class="full-width">
                 <label>NCM Exportação</label>
-                <select name="ncm_exportacao" class="ncm-selector">
-                    <option value="">Selecione o NCM...</option>
-                </select>
+                <select name="ncm_exportacao" class="ncm-selector"><option value="">Selecione...</option></select>
             </div>
         </div>
 
-        <div class="section-toggle">
+        <div class="section-question">
             <label>Houve Transformação?</label>
-            <select id="toggle_transformacao" onchange="toggleSection('group_transformacao', this.value)">
+            <select id="toggle_transformacao">
                 <option value="NAO" selected>Não</option>
                 <option value="SIM">Sim</option>
             </select>
         </div>
-        <div id="group_transformacao" class="hidden-section" style="display: none;">
-            <div><label>Quantidade Transformação</label><input type="text" class="money-mask" name="qtd_transformacao" placeholder="0,00"></div>
-            <div class="full-width" style="grid-column: 1 / -1;">
+        <div id="group_transformacao" class="conditional-fields">
+            <div><label>Qtd Transformação</label><input type="text" class="money-mask" name="qtd_transformacao" placeholder="0,00"></div>
+            <div class="full-width">
                 <label>NCM Transformação</label>
-                <select name="ncm_transformacao" class="ncm-selector">
-                    <option value="">Selecione o NCM...</option>
-                </select>
+                <select name="ncm_transformacao" class="ncm-selector"><option value="">Selecione...</option></select>
             </div>
         </div>
 
-        <div class="section-toggle">
+        <div class="section-question">
             <label>Houve Consumo na Mina?</label>
-            <select id="toggle_consumo" onchange="toggleSection('group_consumo', this.value)">
+            <select id="toggle_consumo">
                 <option value="NAO" selected>Não</option>
                 <option value="SIM">Sim</option>
             </select>
         </div>
-        <div id="group_consumo" class="hidden-section" style="display: none;">
+        <div id="group_consumo" class="conditional-fields">
             <div><label>Valor Consumo Mina (R$)</label><input type="text" class="money-mask" name="valor_consumo_mina" placeholder="0,00"></div>
-            <div><label>Quantidade Consumo Mina</label><input type="text" class="money-mask" name="qtd_consumo_mina" placeholder="0,00"></div>
+            <div><label>Qtd Consumo Mina</label><input type="text" class="money-mask" name="qtd_consumo_mina" placeholder="0,00"></div>
         </div>
 
         <h3>Tributos e Detalhes</h3>
@@ -173,7 +176,7 @@
             </select>
         </div>
         
-        <div id="div_tipo_uso_especifico" style="display: none;">
+        <div id="div_tipo_uso_especifico" style="display: none; grid-column: 1 / -1;">
             <label>Tipo Uso Esp.</label>
             <select name="tipo_uso_especifico">
                 <option value="">Selecione...</option>
@@ -197,11 +200,11 @@
         </table>
     </div>
 
-    <button id="btnDownload" class="btn-download" disabled>Enviar dados de CFEM</button>
+    <button id="btnDownload" class="btn-download" disabled>Enviar para Drive</button>
 </div>
 
 <script>
-    // === LISTA DE NCMs ===
+    // === 1. LISTA DE NCMs ===
     const ncmList = [
         "22011000 - Águas minerais e águas gaseificadas",
         "25010019 - Outros tipos de sal a granel",
@@ -217,24 +220,107 @@
         "26011100 - Minérios de ferro",
         "26060011 - Bauxita",
         "68022300 - Granito serrado",
-        "68029390 - Granito trabalhado",
-        // Adicionei apenas alguns principais para o exemplo, a lista completa do código anterior pode ser mantida aqui
+        "68029390 - Granito trabalhado"
     ];
 
-    // === POPULAR OS SELECTS DE NCM ===
+    // === 2. INICIALIZAÇÃO AO CARREGAR A PÁGINA ===
+    document.addEventListener('DOMContentLoaded', function() {
+        populateNCMSelects();
+        initTable();
+        setupInputRestrictions();
+        setupToggles();
+    });
+
+    // Função para preencher os selects de NCM
     function populateNCMSelects() {
         const selectors = document.querySelectorAll('.ncm-selector');
         selectors.forEach(selectElement => {
+            // Limpa opções antigas (exceto a primeira)
+            while (selectElement.options.length > 1) {
+                selectElement.remove(1);
+            }
+            // Adiciona novas
             ncmList.forEach(ncmItem => {
-                const ncmCode = ncmItem.split(' - ')[0]; 
+                const ncmCode = ncmItem.split(' - ')[0];
                 const option = document.createElement('option');
-                option.value = ncmCode; 
-                option.textContent = ncmItem; 
+                option.value = ncmCode;
+                option.textContent = ncmItem;
                 selectElement.appendChild(option);
             });
         });
     }
 
+    // Função para configurar restrições de input (Só números)
+    function setupInputRestrictions() {
+        // CPF/CNPJ: Apenas números
+        document.getElementById('cpf_cnpj').addEventListener('input', function(e) {
+            e.target.value = e.target.value.replace(/\D/g, ''); // Remove tudo que não é dígito
+        });
+
+        // Nº Processo: Apenas números
+        document.getElementById('numero_processo').addEventListener('input', function(e) {
+            e.target.value = e.target.value.replace(/\D/g, ''); 
+        });
+
+        // Máscara de Moeda/Quantidade (0,00)
+        document.querySelectorAll('.money-mask').forEach(input => {
+            input.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, "");
+                if (value === "") { e.target.value = ""; return; }
+                let number = parseInt(value) / 100;
+                e.target.value = number.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            });
+        });
+
+        // Máscara Mês (MM/AAAA)
+        const inputMes = document.getElementById('mes_apuracao');
+        inputMes.addEventListener('input', function(e) {
+            let v = e.target.value.replace(/\D/g, "");
+            if (v.length > 6) v = v.slice(0, 6); 
+            if (v.length > 2) v = v.replace(/^(\d{2})(\d)/, "$1/$2");
+            e.target.value = v;
+        });
+    }
+
+    // Função para configurar os Toggles (Sim/Não)
+    function setupToggles() {
+        // Mapa dos IDs dos selects e das divs que eles controlam
+        const toggleMap = {
+            'toggle_venda_interna': 'group_venda_interna',
+            'toggle_exportacao': 'group_exportacao',
+            'toggle_transformacao': 'group_transformacao',
+            'toggle_consumo': 'group_consumo'
+        };
+
+        for (const [selectId, groupId] of Object.entries(toggleMap)) {
+            const select = document.getElementById(selectId);
+            const group = document.getElementById(groupId);
+            
+            select.addEventListener('change', function() {
+                if (this.value === 'SIM') {
+                    group.classList.add('active');
+                } else {
+                    group.classList.remove('active');
+                    // Limpar inputs quando ocultar
+                    group.querySelectorAll('input, select').forEach(i => i.value = "");
+                }
+            });
+        }
+
+        // Lógica Específica para Uso Específico
+        const selectUso = document.getElementById('possui_uso_especifico');
+        const divUso = document.getElementById('div_tipo_uso_especifico');
+        selectUso.addEventListener('change', function() {
+            if (this.value === 'SIM') {
+                divUso.style.display = 'block';
+            } else {
+                divUso.style.display = 'none';
+                divUso.querySelector('select').value = "";
+            }
+        });
+    }
+
+    // === 3. LÓGICA DA TABELA E DADOS ===
     const fields = [
         "cpf_cnpj", "numero_processo", "substancia", "unidade_medida", "municipio",
         "uso", "mes_apuracao", "valor_venda_interno", "qtd_venda_interno", "ncm_interno",
@@ -244,80 +330,19 @@
     ];
 
     let storedData = [];
-    const form = document.getElementById('miningForm');
     const tableHead = document.querySelector('#dataTable thead');
     const tableBody = document.querySelector('#dataTable tbody');
     const btnDownload = document.getElementById('btnDownload');
-    
-    // Inputs Especiais
-    const inputProcesso = document.getElementById('numero_processo');
-    const inputMes = document.getElementById('mes_apuracao');
 
-    // === LÓGICA DE EXIBIÇÃO CONDICIONAL (SEÇÕES) ===
-    function toggleSection(groupId, value) {
-        const group = document.getElementById(groupId);
-        if (value === 'SIM') {
-            group.style.display = 'contents'; // Usa o grid do pai
-        } else {
-            group.style.display = 'none';
-            // Limpar valores ao ocultar para evitar envio de dados errados
-            const inputs = group.querySelectorAll('input, select');
-            inputs.forEach(input => input.value = "");
-        }
-    }
-
-    // === LÓGICA DE USO ESPECÍFICO ===
-    const selectUso = document.getElementById('possui_uso_especifico');
-    const divTipoUso = document.getElementById('div_tipo_uso_especifico');
-    const inputTipoUso = document.querySelector('[name="tipo_uso_especifico"]');
-
-    selectUso.addEventListener('change', function() {
-        if (this.value === 'SIM') {
-            divTipoUso.style.display = 'block';
-        } else {
-            divTipoUso.style.display = 'none';
-            inputTipoUso.value = ""; 
-        }
-    });
-
-    // === MÁSCARA PARA VALORES (0,00) ===
-    document.querySelectorAll('.money-mask').forEach(input => {
-        input.addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\D/g, "");
-            if (value === "") { e.target.value = ""; return; }
-            let number = parseInt(value) / 100;
-            e.target.value = number.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-        });
-    });
-    
-    // === MÁSCARAS DE PROCESSO E MÊS ===
-    inputProcesso.addEventListener('input', function(e) {
-        let v = e.target.value.replace(/\D/g, "");
-        if (v.length > 10) v = v.slice(0, 10);
-        v = v.replace(/^(\d{3})(\d)/, "$1.$2");
-        v = v.replace(/^(\d{3})\.(\d{3})(\d)/, "$1.$2/$3");
-        e.target.value = v;
-    });
-
-    inputMes.addEventListener('input', function(e) {
-        let v = e.target.value.replace(/\D/g, "");
-        if (v.length > 6) v = v.slice(0, 6); 
-        if (v.length > 2) v = v.replace(/^(\d{2})(\d)/, "$1/$2");
-        e.target.value = v;
-    });
-
-    // Inicializa Tabela
     function initTable() {
         let headerRow = '<tr>';
         fields.forEach(f => {
-            let headerTitle = f.replace(/_/g, ' ').toUpperCase();
-            headerRow += `<th>${headerTitle}</th>`;
+            headerRow += `<th>${f.replace(/_/g, ' ').toUpperCase()}</th>`;
         });
         headerRow += '<th>AÇÃO</th></tr>';
         tableHead.innerHTML = headerRow;
     }
 
-    // Renderiza Tabela
     function renderTable() {
         tableBody.innerHTML = '';
         storedData.forEach((rowObj, index) => {
@@ -331,126 +356,89 @@
             let btnDelete = document.createElement('button');
             btnDelete.textContent = 'Excluir';
             btnDelete.className = 'btn-delete';
-            btnDelete.onclick = () => deleteRow(index);
+            btnDelete.onclick = () => {
+                if(confirm('Excluir linha?')) {
+                    storedData.splice(index, 1);
+                    renderTable();
+                }
+            };
             tdAction.appendChild(btnDelete);
             tr.appendChild(tdAction);
             tableBody.appendChild(tr);
         });
+        
         btnDownload.disabled = storedData.length === 0;
-        btnDownload.textContent = storedData.length === 0 ? "Baixar CSV (Tabela Vazia)" : `Baixar CSV (${storedData.length} registros)`;
+        btnDownload.textContent = storedData.length === 0 ? "Enviar para Drive" : "Enviar para Drive";
     }
 
-    // Adicionar Dados
-    form.addEventListener('submit', function(e) {
+    document.getElementById('miningForm').addEventListener('submit', function(e) {
         e.preventDefault();
-
-        // Validações simples
-        const regexProcesso = /^\d{3}\.\d{3}\/\d{4}$/;
-        if (!regexProcesso.test(inputProcesso.value)) {
-            alert("Erro: O Nº Processo deve estar completo (000.000/0000).");
-            inputProcesso.focus();
-            return;
-        }
-
-        const mesVal = inputMes.value;
-        const regexMes = /^\d{2}\/\d{4}$/; 
-        if (!regexMes.test(mesVal)) {
-            alert("Erro: O Mês deve estar no formato MM/AAAA.");
-            inputMes.focus();
-            return;
-        }
-
-        const formData = new FormData(form);
+        const formData = new FormData(this);
         let newRow = {};
-
         fields.forEach(field => {
             let val = formData.get(field) || "";
             newRow[field] = val.replace(/;/g, " "); 
         });
-
         storedData.push(newRow);
         renderTable();
+        this.reset();
         
-        // Reset manual para manter os toggles funcionais visualmente
-        form.reset(); 
+        // Reset visual dos toggles
+        document.getElementById('toggle_venda_interna').value = "SIM"; // Padrão
+        document.getElementById('group_venda_interna').classList.add('active');
         
-        // Reseta visibilidade
-        document.getElementById('toggle_venda_interna').value = "SIM";
-        toggleSection('group_venda_interna', 'SIM');
+        ['toggle_exportacao', 'toggle_transformacao', 'toggle_consumo'].forEach(id => {
+            document.getElementById(id).value = "NAO";
+            document.getElementById(id).dispatchEvent(new Event('change'));
+        });
+        document.getElementById('possui_uso_especifico').value = "NAO";
+        document.getElementById('possui_uso_especifico').dispatchEvent(new Event('change'));
 
-        document.getElementById('toggle_exportacao').value = "NAO";
-        toggleSection('group_exportacao', 'NAO');
-
-        document.getElementById('toggle_transformacao').value = "NAO";
-        toggleSection('group_transformacao', 'NAO');
-
-        document.getElementById('toggle_consumo').value = "NAO";
-        toggleSection('group_consumo', 'NAO');
-        
-        divTipoUso.style.display = 'none';
-
-        document.querySelector('[name="cpf_cnpj"]').focus();
+        document.getElementById('cpf_cnpj').focus();
     });
 
-    function deleteRow(index) {
-        if(confirm('Tem certeza que deseja remover esta linha?')) {
-            storedData.splice(index, 1);
-            renderTable();
-        }
-    }
-   
+    // === 4. ENVIO PARA API (BACKEND) ===
     btnDownload.addEventListener('click', async function() {
         if (storedData.length === 0) return;
 
-        // 1. Gerar o conteúdo CSV
         let csvContent = fields.join(";") + "\n";
         storedData.forEach(row => {
-            let rowString = fields.map(field => row[field]).join(";");
-            csvContent += rowString + "\n";
+            csvContent += fields.map(field => row[field]).join(";") + "\n";
         });
-
-        // Adiciona BOM para Excel abrir acentos corretamente
         csvContent = "\ufeff" + csvContent;
 
-        // 2. Definir nome do arquivo
         const timestamp = new Date().toISOString().slice(0,19).replace(/[-T:]/g,"");
         const fileName = `Lote_Mineracao_${timestamp}.csv`;
 
-        // 3. Feedback visual (Carregando)
         const originalText = btnDownload.textContent;
-        btnDownload.textContent = "Enviando para o Drive...";
+        btnDownload.textContent = "Enviando...";
         btnDownload.disabled = true;
 
         try {
-            // 4. Enviar para a API da Vercel
             const response = await fetch('/api/upload', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    csvContent: csvContent,
-                    fileName: fileName
-                })
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ csvContent, fileName })
             });
 
             const result = await response.json();
 
             if (response.ok) {
-                alert(`Sucesso! Arquivo salvo no Drive.\nID: ${result.fileId}`);
-                // Opcional: Limpar tabela após sucesso
-                // storedData = [];
-                // renderTable();
+                alert(`Sucesso! Arquivo Salvo.\nID: ${result.fileId}`);
+                storedData = []; // Limpa dados após envio com sucesso
+                renderTable();
             } else {
-                throw new Error(result.error || 'Erro desconhecido');
+                throw new Error(result.error || JSON.stringify(result));
             }
-
         } catch (error) {
-            console.error(error);
-            alert("Erro ao enviar: " + error.message);
+            console.error("Erro no envio:", error);
+            alert("Erro ao enviar: " + error.message + "\n\nVerifique os Logs no Vercel para mais detalhes.");
         } finally {
-            // Restaurar botão
             btnDownload.textContent = originalText;
-            btnDownload.disabled = false;
+            btnDownload.disabled = storedData.length === 0;
         }
     });
+</script>
+
+</body>
+</html>
